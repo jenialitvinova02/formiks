@@ -1,4 +1,17 @@
 :root {
+  --background-color: #383B40;
+    --text-color: white;
+    --button-background-color: #1e1e1e;
+    --button-text-color: #35B8BE;
+    --background-second: #1F2023;
+    --input-background: #383B40;
+    --input-border: #444343;
+    --transparent-button: #35B8BE;
+  }
+  
+  
+  [data-theme='white'] {
+
     --background-color: #F5FBFC;
     --text-color: black;
     --button-background-color: #35B8BE;
@@ -7,20 +20,7 @@
     --input-background: #FAFAFA;
     --input-border: #DDDDDD;
     --transparent-button: black;
-  }
-  
-  
-  [data-theme='dark'] {
-    --background-color: #383B40;
-    --text-color: white;
-    --button-background-color: #1e1e1e;
-    --button-text-color: #35B8BE;
-    --background-second: #1F2023;
-    --input-background: #383B40;
-    --input-border: #444343;
-    --transparent-button: #35B8BE;
-  
-  
+
   }
   
   html {
@@ -58,14 +58,24 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
-  a {
-    text-decoration: none;
+a {
+  font-weight: normal;
+  color: white;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  cursor: pointer;
+  font-size: 24px;
+  text-decoration: none;
+  padding: 13px 20px;
+  transition: background 0.3s ease-in-out;
+  border-radius: 55px;
+
+  &:hover {
     color: black;
+    background-color: white;
+    border-radius: 55px;
   }
-  a:hover{
-    color: #8F9BB3;
-    text-decoration: underline;
-  }
+}
   
   h1 {
     font-size: 50px;
