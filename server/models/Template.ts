@@ -9,6 +9,7 @@ interface TemplateAttributes {
     image?: string | null;
     tags: string; 
     isPublic: boolean;
+    userId: number;
 }
 
 interface TemplateCreationAttributes extends Optional<TemplateAttributes, 'id' | 'image'> {}
@@ -21,6 +22,7 @@ class Template extends Model<TemplateAttributes, TemplateCreationAttributes> imp
     public image!: string | null;
     public tags!: string;
     public isPublic!: boolean;
+    public userId!: number;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -57,6 +59,10 @@ Template.init(
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true,
+        },
+        userId: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
         },
     },
     {

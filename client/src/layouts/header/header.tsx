@@ -1,21 +1,45 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './header.scss';
 import Logo from '../../assets/logo.png';
 
 const Header: React.FC = () => {
-    return (
-        <header className='header'>
-            <img className='header__logo' src={Logo} alt="Logo" />
-            <div className='header__right'>
-                <div className='header__links'>
-                    <a href="/" className='header__link'>Home</a>
-                    <a href="/" className='header__link'>My Forms</a>
-                    <a href="/" className='header__link'>Profile</a>
-                </div>
+  const token = localStorage.getItem('token');
+  const isGuest = localStorage.getItem('guest') === 'true';
+  const navigate = useNavigate();
 
-            </div>
-        </header>
-    );
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('guest');
+    navigate('/login');
+  };
+
+  return (
+    <header className="header">
+      <img className="header__logo" src={Logo} alt="Logo" />
+      <nav className="header__links">
+        <Link to={token || isGuest ? "/dashboard" : "/login"}>Dashboard</Link>
+        {!(isGuest) && (
+          <>
+            <Link to="/templates">Templates</Link>
+            <Link to="/create-template">Create Template</Link>
+            <Link to="/create-form">Create Form</Link>
+          </>
+        )}
+        {token ? (
+          <Link to="/profile">Profile</Link>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
+        {token && JSON.parse(atob(token.split('.')[1])).role === 'admin' && (
+          <Link to="/admin">Admin Panel</Link>
+        )}
+        {(token || isGuest) && (
+          <button onClick={handleLogout}>Logout</button>
+        )}
+      </nav>
+    </header>
+  );
 };
 
 export default Header;
