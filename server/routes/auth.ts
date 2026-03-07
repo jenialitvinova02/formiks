@@ -17,23 +17,27 @@ router.post(
             .withMessage('Password must be at least 6 characters long'),
     ],
     async (req: Request, res: Response): Promise<void> => {
+        console.log('Incoming request body:', req.body); 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log('Validation errors:', errors.array()); 
             res.status(400).json({ errors: errors.array() });
             return;
         }
-
         try {
             const { username, email, password } = req.body;
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
+                console.log('User already exists:', email); 
                 res.status(400).json({ error: 'User already exists' });
                 return;
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = await User.create({ username, email, password: hashedPassword });
+            console.log('User created:', user); 
             res.json(user);
         } catch (e) {
+            console.error('Error during registration:', e); 
             res.status(500).json({ error: 'Internal server error' });
         }
     }
@@ -58,46 +62,6 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
             { expiresIn: '1h' }
         );
         res.json({ token });
-    } catch (e) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-router.get('/profile', authenticateJWT, (req: AuthRequest, res: Response): void => {
-    res.json(req.user);
-});
-
-router.put('/profile', authenticateJWT, async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-        const user = await User.findByPk(req.user.id);
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-        const { username, email } = req.body;
-        await user.update({ username, email });
-        res.json(user);
-    } catch (e) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-router.put('/password', authenticateJWT, async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-        const { oldPassword, newPassword } = req.body;
-        const user = await User.findByPk(req.user.id);
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-        const validPassword = await bcrypt.compare(oldPassword, user.password);
-        if (!validPassword) {
-            res.status(401).json({ error: 'Invalid old password' });
-            return;
-        }
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await user.update({ password: hashedPassword });
-        res.json({ message: 'Password updated successfully' });
     } catch (e) {
         res.status(500).json({ error: 'Internal server error' });
     }
