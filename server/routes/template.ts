@@ -19,8 +19,9 @@ router.post('/', authenticateJWT, async (req: AuthRequest, res: Response): Promi
         const { title, description, topic, image, tags, isPublic } = req.body;
         const template = await Template.create({ title, description, topic, image, tags, isPublic, userId: req.user.id });
         res.json(template);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+    } catch (error: any) {
+        console.error('Error creating template:', error.message, error.stack);
+        res.status(500).json({ error: error.message });
     }
 });
 

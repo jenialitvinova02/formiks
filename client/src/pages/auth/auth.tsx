@@ -8,6 +8,7 @@ const Auth: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
@@ -27,10 +28,17 @@ const Auth: React.FC = () => {
                 setError(err.response?.data?.error || 'Login failed');
             }
         } else {
+            // Регистрация
             try {
-                console.log('Sending registration data:', { username, email, password });
-                const response = await axios.post('auth/register', { username, email, password });
+                console.log('Sending registration data:', { username, email, password, role: isAdmin ? 'admin' : 'user' });  // --> добавили role
+                const response = await axios.post('auth/register', {
+                    username,
+                    email,
+                    password,
+                    role: isAdmin ? 'admin' : 'user',  
+                });
                 console.log('Registration response:', response.data);
+                
                 const loginResponse = await axios.post('auth/login', { email, password });
                 const { token } = loginResponse.data;
                 localStorage.setItem('token', token);
@@ -51,63 +59,79 @@ const Auth: React.FC = () => {
     return (
         <div className="auth">
             <div className='auth__container'>
-            <div className="auth__box">
-                <h1 className="auth__box--title">{isLogin ? 'Login' : 'Register'}</h1>
-                <form onSubmit={handleSubmit} className="auth__box--form">
-                    {!isLogin && (
-                        <div className="auth__box--form-inputs">
-                            <p>Username</p>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={e => setUsername(e.target.value)}
-                                required
-                            />
+                <div className="auth__box">
+                    <h1 className="auth__box--title">{isLogin ? 'Login' : 'Register'}</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className='auth__box--form'>
+
+                            {!isLogin && (
+                                <div className="auth__box--form-inputs">
+                                    <p>Username</p>
+                                    <input
+                                        type="text"
+                                        value={username}
+                                        onChange={e => setUsername(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            )}
+
+                            <div className="auth__box--form-inputs">
+                                <p>Email</p>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="auth__box--form-inputs">
+                                <p>Password</p>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            {!isLogin && (
+                                <div className="auth__box--form-inputs">
+                                    <p>Register as Admin</p>
+                                    <input
+                                        type="checkbox"
+                                        checked={isAdmin}
+                                        onChange={e => setIsAdmin(e.target.checked)}
+                                    />
+                                </div>
+                            )}
+
+                            {error && <p className="error">{error}</p>}
+                            {success && !isLogin && (
+                                <p className="success">Registration successful!</p>
+                            )}
                         </div>
-                    )}
-                    <div className="auth__box--form-inputs">
-                        <p>Email</p>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="auth__box--form-inputs">
-                        <p>Password</p>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    {error && <p className="error">{error}</p>}
-                    {success && !isLogin && (
-                        <p className="success">Registration successful!</p>
-                    )}
-                </form>
-                     
-                <button
-                    className="auth__box--toggle toggle"
-                    onClick={() => {
-                        setIsLogin(prev => !prev);
-                        setError(null);
-                        setSuccess(false);
-                    }}
-                >
-                    {isLogin ? 'Switch to Register' : 'Switch to Login'}
-                </button>
-                <div className="auth__box--buttons">
-                        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
-                        {isLogin && (
-                    <button className="auth__guest" onClick={handleGuest}>
-                        Enter as Guest
-                    </button>
-                )}
-                    </div>
-            </div>
+                        <button
+                            className="auth__box--toggle toggle"
+                            onClick={() => {
+                                setIsLogin(prev => !prev);
+                                setError(null);
+                                setSuccess(false);
+                            }}
+                        >
+                            {isLogin ? 'Switch to Register' : 'Switch to Login'}
+                        </button>
+                        <div className="auth__box--buttons">
+                            <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                            {isLogin && (
+                                <button className="auth__guest" onClick={handleGuest}>
+                                    Enter as Guest
+                                </button>
+                            )}
+                        </div>
+                    </form>
+                </div>
             </div>
             <div className="auth__img"></div>
         </div>

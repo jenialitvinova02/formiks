@@ -14,10 +14,15 @@ const CreateTemplate: React.FC = () => {
   const [questions, setQuestions] = useState<Array<{ title: string; description: string; type: string }>>([]);
 
   const handleCreate = () => {
-    axios.post('templates', form)
+    const { questionsCount, ...templateData } = form;
+    axios.post('templates', templateData)
       .then(res => {
+        console.log('Template created:', res.data);
       })
-      .catch(err => setError('Failed to create template'));
+      .catch(err => {
+        console.error('Error while creating template:', err.response?.data);
+        setError(err.response?.data?.error || 'Failed to create template');
+      });
   };
 
   const handleQuestionsCountChange = (count: number) => {

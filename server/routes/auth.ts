@@ -25,7 +25,7 @@ router.post(
             return;
         }
         try {
-            const { username, email, password } = req.body;
+            const { username, email, password, role } = req.body;
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
                 console.log('User already exists:', email); 
@@ -33,7 +33,12 @@ router.post(
                 return;
             }
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await User.create({ username, email, password: hashedPassword });
+            const user = await User.create({
+                username,
+                email,
+                password: hashedPassword,
+                role: role === 'admin' ? 'admin' : 'user', 
+            });
             console.log('User created:', user); 
             res.json(user);
         } catch (e) {

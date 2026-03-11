@@ -26,10 +26,12 @@ router.get('/user', authenticateJWT, async (req: AuthRequest, res: Response): Pr
 router.post('/', authenticateJWT, async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { title, description, questions } = req.body;
+        console.log('Creating form with data:', { title, description, questions, userId: req.user.id });
         const form = await Form.create({ title, description, questions, userId: req.user.id });
         res.json(form);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+    } catch (error: any) {
+        console.error('Error creating form:', error.message, error.stack);
+        res.status(500).json({ error: error.message });
     }
 });
 
