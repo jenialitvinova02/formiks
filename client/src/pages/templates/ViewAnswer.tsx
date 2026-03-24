@@ -10,7 +10,8 @@ interface QuestionData {
 }
 
 const ViewAnswer: React.FC = () => {
-  const { formId, answerId } = useParams<{ formId: string; answerId: string }>();
+  const { templateId: tpl, formId, answerId } = useParams<{ templateId?: string; formId?: string; answerId: string }>();
+  const templateId = tpl ?? formId;
   const [answer, setAnswer] = useState<any>(null);
   const [form, setForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,13 +26,13 @@ const ViewAnswer: React.FC = () => {
       });
 
     // Fetch the form
-    axios.get(`templates/${formId}`)
+    axios.get(`templates/${templateId}`)
       .then(res => setForm(res.data))
       .catch(err => {
         console.error('Error fetching form:', err);
         setError('Failed to load form');
       });
-  }, [formId, answerId]);
+  }, [templateId, answerId]);
 
   if (error) return <p>{error}</p>;
   if (!answer || !form) return <p>Loading...</p>;

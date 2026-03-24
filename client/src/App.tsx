@@ -67,9 +67,10 @@ const AppContent: React.FC = () => {
             <FillForm />
           </ProtectedRoute>
         } />
-        {/* Route to see all answers for a specific form */}
+ 
+        {/* Route to see all answers for a specific template */}
         <Route
-          path="/templates/:formId/answers"
+          path="/templates/:templateId/answers"
           element={
             <ProtectedRoute>
               <FormAnswersList />

@@ -28,7 +28,7 @@ const Templates: React.FC = () => {
           {templates.map(template => (
             <li
               key={template.id}
-              onClick={() => navigate(`/templates/${template.id}/responses`)}
+              onClick={() => navigate(`/templates/${template.id}/answers`)}
               style={{ cursor: 'pointer', margin: '8px 0' }}
             >
               {template.title} - {template.description}
