@@ -21,9 +21,8 @@ const Header: React.FC = () => {
         <Link to={token || isGuest ? "/dashboard" : "/login"}>Dashboard</Link>
         {!(isGuest) && (
           <>
-            <Link to="/templates">Templates</Link>
+            <Link to="/templates">My Templates</Link>
             <Link to="/create-template">Create Template</Link>
-            <Link to="/create-form">Create Form</Link>
           </>
         )}
         {token ? (

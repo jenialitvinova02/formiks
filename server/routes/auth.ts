@@ -8,44 +8,53 @@ import { authenticateJWT, AuthRequest } from '../middleware/authenticateJWT';
 const router = Router();
 
 router.post(
-    '/register',
-    [
-        body('username').notEmpty().withMessage('Username is required'),
-        body('email').isEmail().withMessage('Valid email is required'),
-        body('password')
-            .isLength({ min: 6 })
-            .withMessage('Password must be at least 6 characters long'),
-    ],
-    async (req: Request, res: Response): Promise<void> => {
-        console.log('Incoming request body:', req.body); 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            console.log('Validation errors:', errors.array()); 
-            res.status(400).json({ errors: errors.array() });
-            return;
-        }
-        try {
-            const { username, email, password, role } = req.body;
-            const existingUser = await User.findOne({ where: { email } });
-            if (existingUser) {
-                console.log('User already exists:', email); 
-                res.status(400).json({ error: 'User already exists' });
-                return;
-            }
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await User.create({
-                username,
-                email,
-                password: hashedPassword,
-                role: role === 'admin' ? 'admin' : 'user', 
-            });
-            console.log('User created:', user); 
-            res.json(user);
-        } catch (e) {
-            console.error('Error during registration:', e); 
-            res.status(500).json({ error: 'Internal server error' });
-        }
+  '/register',
+  [
+    body('username').notEmpty().withMessage('Username is required'),
+    body('email').isEmail().withMessage('Valid email is required'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  ],
+  async (req: Request, res: Response): Promise<void> => {
+    console.log('Incoming request body:', req.body);
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      console.warn('Validation errors:', validationErrors.array());
+      res.status(400).json({ errors: validationErrors.array() });
+      return;
     }
+
+    try {
+      const { username, email, password, role } = req.body;
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        console.warn('Registration failed: user already exists:', email);
+        res.status(409).json({ error: 'User already exists' });
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.create({
+        username,
+        email,
+        password: hashedPassword,
+        role: role === 'admin' ? 'admin' : 'user',
+      });
+
+      console.log('User created:', user.toJSON());
+      res.status(201).json(user);
+    } catch (err: any) {
+      console.error('Error during registration:', err.name, err.message, err.errors);
+      if (
+        err.name === 'SequelizeValidationError' ||
+        err.name === 'SequelizeUniqueConstraintError'
+      ) {
+        const details = err.errors.map((e: any) => e.message);
+        res.status(400).json({ error: err.name, details });
+      } else {
+        res.status(500).json({ error: 'Internal server error', message: err.message });
+      }
+    }
+  }
 );
 
 router.post('/login', async (req: Request, res: Response): Promise<void> => {

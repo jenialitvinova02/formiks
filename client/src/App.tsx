@@ -10,6 +10,10 @@ import AdminPanel from './pages/AdminPanel/AdminPanel';
 import CreateForm from './pages/CreateForm/CreateForm';
 import GuestDashboard from './pages/GuestDashboard/GuestDashboard'; 
 import ProtectedRoute from './routes/ProtectedRoute';
+import FillForm from './pages/FillTemplate/FillTemplate';
+import FillTemplate from './pages/FillTemplate/FillTemplate';
+import FormAnswersList from './pages/templates/FormAnswersList';
+import ViewAnswer from './pages/templates/ViewAnswer';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -51,6 +55,36 @@ const AppContent: React.FC = () => {
             <Dashboard />
           </ProtectedRoute>
         } />
+        {/* Добавлен новый маршрут для заполнения шаблона */}
+        <Route path="/fill-template/:id" element={
+          <ProtectedRoute>
+            <FillTemplate />
+          </ProtectedRoute>
+        } />
+        {/* Уже существующий маршрут, если необходим */}
+        <Route path="/fill-form/:id" element={
+          <ProtectedRoute>
+            <FillForm />
+          </ProtectedRoute>
+        } />
+        {/* Route to see all answers for a specific form */}
+        <Route
+          path="/templates/:formId/answers"
+          element={
+            <ProtectedRoute>
+              <FormAnswersList />
+            </ProtectedRoute>
+          }
+        />
+        {/* Route to see a single answer's details */}
+        <Route
+          path="/templates/:formId/answers/:answerId"
+          element={
+            <ProtectedRoute>
+              <ViewAnswer />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

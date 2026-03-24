@@ -15,7 +15,10 @@ const CreateTemplate: React.FC = () => {
 
   const handleCreate = () => {
     const { questionsCount, ...templateData } = form;
-    axios.post('templates', templateData)
+    axios.post('templates', {
+      ...templateData,
+      questions
+    })
       .then(res => {
         console.log('Template created:', res.data);
       })

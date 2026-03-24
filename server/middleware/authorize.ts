@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Form from '../models/Form';
+import Form from '../models/Response';
 import { AuthRequest } from './authenticateJWT';
 
 export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
@@ -10,7 +10,7 @@ export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFuncti
     }
 };
 
-export const authorizeFormOwner = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authorizeResponseOwner = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const form = await Form.findByPk(req.params.id);
     if (!form) {
         res.status(404).json({ error: 'Form not found' });
