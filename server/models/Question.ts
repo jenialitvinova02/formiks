@@ -10,7 +10,6 @@ interface QuestionAttributes {
   order: number;
   showInTable: boolean;
   templateId?: number;
-  // убрали formId, в БД его нет
 }
 
 interface QuestionCreationAttributes extends Optional<QuestionAttributes, 'id' | 'order' | 'showInTable' | 'templateId'> {}
@@ -44,7 +43,7 @@ Question.init(
       allowNull: true,
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50), // increased length limit to 50 characters
       allowNull: false,
     },
     order: {
@@ -70,7 +69,9 @@ Question.init(
   },
   {
     sequelize,
+    modelName: 'Question',
     tableName: 'questions',
+    timestamps: true,
     underscored: true,  // если не задано глобально
   }
 );

@@ -6,7 +6,6 @@ import { authorizeTemplateOwner } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/templates — все шаблоны (user — свои, admin — все)
 router.get(
   '/',
   authenticateJWT,
@@ -27,7 +26,6 @@ router.get(
   }
 );
 
-// GET /api/templates/:id — один шаблон с вопросами
 router.get(
   '/:id',
   authenticateJWT,
@@ -52,35 +50,49 @@ router.get(
   }
 );
 
-// POST /api/templates — создать шаблон вместе с вопросами
 router.post(
   '/',
   authenticateJWT,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
+      console.log('[templates POST] Получены данные:', req.body);
       const { title, description, topic, image, tags, isPublic, questions } = req.body;
+      
+      // Создаём шаблон
       const tpl = await Template.create({
-        title, description, topic, image, tags, isPublic, userId: req.user.id
+        title,
+        description,
+        topic,
+        image,
+        tags,
+        isPublic,
+        userId: req.user.id
       });
+      
+      // Если вопросы переданы как массив – пытаемся создать их по одному
       if (Array.isArray(questions)) {
-        await Promise.all(
-          questions.map((q: any) =>
-            Question.create({ ...q, templateId: tpl.id })
-          )
-        );
+        for (const q of questions) {
+          try {
+            await Question.create({ ...q, templateId: tpl.id });
+          } catch (qError: any) {
+            console.error('[templates POST] Ошибка при создании вопроса:', q, qError.message);
+            // Можно решить, продолжать или возвращать ошибку
+          }
+        }
       }
+      
+      // Обновляем шаблон с вопросами для возврата клиенту
       const created = await Template.findByPk(tpl.id, {
         include: [{ model: Question, as: 'questions' }]
       });
       res.json(created);
     } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
+      console.error('[templates POST] Ошибка при создании шаблона:', e.message);
+      res.status(500).json({ error: 'Internal server error', message: e.message });
     }
   }
 );
 
-// PUT /api/templates/:id — обновить шаблон
 router.put(
   '/:id',
   authenticateJWT,
@@ -101,7 +113,6 @@ router.put(
   }
 );
 
-// DELETE /api/templates/:id — удалить шаблон + вопросы + ответы (cascade)
 router.delete(
   '/:id',
   authenticateJWT,
