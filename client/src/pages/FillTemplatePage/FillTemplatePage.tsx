@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuestions } from '../../hooks/useQuestions';
 import FieldInput from '../../components/FieldInput/FieldInput';
 import axios from '../../axiosInstance';
 
-
 const FillTemplatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { questions, loading, error } = useQuestions(id || '');
-  const [answers, setAnswers] = useState<Record<number,string>>({});
-  const [submitError, setSubmitError] = useState<string|null>(null);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleChange = (qid: number, val: string|boolean) =>
+  useEffect(() => {
+    console.log('Questions loaded:', questions);
+  }, [questions]);
+
+  const handleChange = (qid: number, val: string | boolean) =>
     setAnswers(prev => ({ ...prev, [qid]: String(val) }));
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +29,7 @@ const FillTemplatePage: React.FC = () => {
   };
 
   if (loading) return <p>Loading…</p>;
-  if (error)   return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <form onSubmit={handleSubmit}>

@@ -1,4 +1,3 @@
-// filepath: client/src/components/UserList/UserList.tsx
 import React from 'react';
 import { User } from '../../hooks/useUsers';
 import './UserList.scss';
@@ -9,11 +8,11 @@ interface Props {
 }
 
 const UserList: React.FC<Props> = ({ items, onRoleChange }) => (
-  <ul>
+  <ul className='userList'>
     {items.map(u=>(
-      <li key={u.id}>
+      <li className='userList__title' key={u.id}>
         {u.username} ({u.email}) – {u.role}
-        <button onClick={()=>onRoleChange(u.id, u.role==='user'?'admin':'user')}>
+        <button className='userList__title--button' onClick={()=>onRoleChange(u.id, u.role==='user'?'admin':'user')}>
           {u.role==='user'? 'Make Admin':'Revoke Admin'}
         </button>
       </li>

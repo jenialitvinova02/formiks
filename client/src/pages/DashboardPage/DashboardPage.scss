@@ -12,3 +12,8 @@
 
 
 
+.dashboard__container {
+  display: flex;
+  overflow-x: auto;
+  padding: 16px 0;
+}

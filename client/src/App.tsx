@@ -14,6 +14,7 @@ import FillForm from './pages/FillTemplatePage/FillTemplatePage';
 import FillTemplatePage from './pages/FillTemplatePage/FillTemplatePage';
 import FormAnswersListPage from './pages/Templates/FormAnswersListPage';
 import ViewAnswerPage from './pages/Templates/ViewAnswerPage';
+import EditAnswerPage from './pages/EditAnswerPage/EditAnswerPage';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -81,6 +82,14 @@ const AppContent: React.FC = () => {
           element={
             <ProtectedRoute>
               <ViewAnswerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/templates/:templateId/answers/:answerId/edit"
+          element={
+            <ProtectedRoute>
+              <EditAnswerPage />
             </ProtectedRoute>
           }
         />

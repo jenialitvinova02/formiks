@@ -15,12 +15,15 @@ export function useTemplates() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string|null>(null);
 
-  useEffect(() => {
+  const fetchTemplates = () => {
+    setLoading(true);
     axios.get(API_TEMPLATES)
       .then(res => setData(res.data))
       .catch(err => setError(err.response?.data?.error || err.message))
       .finally(() => setLoading(false));
-  }, []);
+  };
 
-  return { data, loading, error };
+  useEffect(fetchTemplates, []);
+
+  return { data, loading, error, refetch: fetchTemplates };
 }

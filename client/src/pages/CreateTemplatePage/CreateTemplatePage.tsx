@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCreateTemplate, TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
 import QuestionItem from '../../components/QuestionItem/QuestionItem';
+import { useNavigate } from 'react-router-dom';
 import './CreateTemplatePage.scss';
 
 const CreateTemplatePage: React.FC = () => {
@@ -13,6 +14,7 @@ const CreateTemplatePage: React.FC = () => {
   });
   const [questions, setQuestions] = useState<NewQuestion[]>([]);
   const { create, loading, error } = useCreateTemplate();
+  const navigate = useNavigate();
 
   const handleMetaChange = (field: keyof typeof meta, value: string | boolean) => {
     setMeta(prev => ({ ...prev, [field]: value }));
@@ -35,15 +37,16 @@ const CreateTemplatePage: React.FC = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await create({ ...meta, questions });
-    } catch {  }
+      const created = await create({ ...meta, questions });
+      navigate(`/fill-template/${created.id}`);
+    } catch { /* error уже в хуке */ }
   };
 
   return (
     <form className="createTemplate" onSubmit={onSubmit}>
       <h1>Create Template</h1>
       {error && <p className="error">{error}</p>}
-      <div className="createTemplate__container">
+      <div className="createTemplate__container container">
 
       <input
         placeholder="Title"
