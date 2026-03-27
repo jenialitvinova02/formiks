@@ -1,84 +1,48 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useQuestions } from '../../hooks/useQuestions';
+import FieldInput from '../../components/FieldInput/FieldInput';
 import axios from '../../axiosInstance';
 
-interface Question {
-  id: number;
-  title: string;
-  description: string;
-  type: string;
-}
-
-interface TemplateData {
-  id: number;
-  title: string;
-  description: string;
-  topic: string;
-}
 
 const FillTemplate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [templateData, setTemplateData] = useState<TemplateData | null>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-  const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const { questions, loading, error } = useQuestions(id || '');
+  const [answers, setAnswers] = useState<Record<number,string>>({});
+  const [submitError, setSubmitError] = useState<string|null>(null);
 
-  useEffect(() => {
-    axios.get(`templates/${id}`)
-      .then(res => setTemplateData(res.data))
-      .catch(err => setError('Не удалось загрузить шаблон: ' + (err.response?.data?.error || err.message)));
+  const handleChange = (qid: number, val: string|boolean) =>
+    setAnswers(prev => ({ ...prev, [qid]: String(val) }));
 
-    axios.get(`questions/template/${id}`)
-      .then(res => setQuestions(res.data))
-      .catch(err => console.error('Error fetching questions:', err));
-  }, [id]);
-
-  const handleChange = (questionId: number, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setAnswers({ ...answers, [questionId]: e.target.value });
-  };
-
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    axios.post(`responses/from-template/${id}`, { answers })
-      .then(() => {
-        setSubmitted(true);
-        navigate('/dashboard');
-      })
-      .catch(err => setError('Не удалось отправить ответы: ' + (err.response?.data?.error || err.message)));
+    try {
+      await axios.post(`responses/from-template/${id}`, { answers });
+      navigate('/dashboard');
+    } catch (e: any) {
+      setSubmitError(e.response?.data?.error || e.message);
+    }
   };
 
-  if (error) return <p>{error}</p>;
-  if (!templateData) return <p>Загрузка шаблона…</p>;
-  if (submitted) return <p>Ответы успешно отправлены!</p>;
+  if (loading) return <p>Loading…</p>;
+  if (error)   return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h1>{templateData.title}</h1>
-      <p>{templateData.description}</p>
-      <form onSubmit={handleSubmit}>
-        {questions.map(q => (
-          <div key={q.id}>
-            <label>{q.title}</label>
-            {q.type === 'text' && <input type="text" required onChange={e => handleChange(q.id, e)} />}
-            {q.type === 'integer' && <input type="number" required onChange={e => handleChange(q.id, e)} />}
-            {q.type === 'checkbox' && (
-              <input
-                type="checkbox"
-                onChange={e =>
-                  handleChange(q.id, {
-                    ...e,
-                    target: { ...e.target, value: e.target.checked ? 'true' : 'false' }
-                  } as any)
-                }
-              />
-            )}
-          </div>
-        ))}
-        <button type="submit">Отправить ответы</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      {questions.map(q => (
+        <div key={q.id} className="form-group">
+          <label>{q.title}</label>
+          <FieldInput
+            question={q}
+            value={answers[q.id] || ''}
+            onChange={handleChange}
+          />
+        </div>
+      ))}
+      {submitError && <p className="error">{submitError}</p>}
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 

@@ -1,120 +1,99 @@
 import React, { useState } from 'react';
-import axios from '../../axiosInstance';
+import { useCreateTemplate, TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
+import QuestionItem from '../../components/QuestionItem/QuestionItem';
 
 const CreateTemplate: React.FC = () => {
-  const [form, setForm] = useState({
+  const [meta, setMeta] = useState<Omit<TemplateForm, 'questions'>>({
     title: '',
     description: '',
     topic: '',
     tags: '',
     isPublic: true,
-    questionsCount: 0, 
   });
-  const [error, setError] = useState<string | null>(null);
-  const [questions, setQuestions] = useState<Array<{ title: string; description: string; type: string }>>([]);
+  const [questions, setQuestions] = useState<NewQuestion[]>([]);
+  const { create, loading, error } = useCreateTemplate();
 
-  const handleCreate = () => {
-    const { questionsCount, ...templateData } = form;
-    axios.post('templates', {
-      ...templateData,
-      questions
-    })
-      .then(res => {
-        console.log('Template created:', res.data);
-      })
-      .catch(err => {
-        console.error('Error while creating template:', err.response?.data);
-        setError(err.response?.data?.error || 'Failed to create template');
-      });
+  const handleMetaChange = (field: keyof typeof meta, value: string | boolean) => {
+    setMeta(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleQuestionsCountChange = (count: number) => {
-    const newQuestions = Array.from({ length: count }, (_, i) => questions[i] || { title: '', description: '', type: 'text' });
-    setQuestions(newQuestions);
+  const handleQuestionChange = (
+    idx: number,
+    field: keyof NewQuestion,
+    value: string
+  ) => {
+    const qs = [...questions];
+    qs[idx] = { ...qs[idx], [field]: value };
+    setQuestions(qs);
+  };
+
+  const addQuestion = () => {
+    setQuestions(prev => [...prev, { title: '', description: '', type: 'single-line' }]);
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await create({ ...meta, questions });
+      // можно редиректить или сбрасывать форму
+    } catch { /* error уже в хуке */ }
   };
 
   return (
-    <div>
+    <form className="create-template" onSubmit={onSubmit}>
       <h1>Create Template</h1>
-      {error && <p>{error}</p>}
-      <input 
-        type="text" 
-        placeholder="Title" 
-        value={form.title} 
-        onChange={e => setForm({...form, title: e.target.value})}
+      {error && <p className="error">{error}</p>}
+
+      <input
+        placeholder="Title"
+        value={meta.title}
+        onChange={e => handleMetaChange('title', e.target.value)}
+        required
       />
-      <textarea 
-        placeholder="Description" 
-        value={form.description} 
-        onChange={e => setForm({...form, description: e.target.value})}
+      <textarea
+        placeholder="Description"
+        value={meta.description}
+        onChange={e => handleMetaChange('description', e.target.value)}
       />
-      <input 
-        type="text" 
-        placeholder="Topic" 
-        value={form.topic} 
-        onChange={e => setForm({...form, topic: e.target.value})}
+      <input
+        placeholder="Topic"
+        value={meta.topic}
+        onChange={e => handleMetaChange('topic', e.target.value)}
       />
-      <input 
-        type="text" 
-        placeholder="Tags" 
-        value={form.tags} 
-        onChange={e => setForm({...form, tags: e.target.value})}
+      <input
+        placeholder="Tags (comma separated)"
+        value={meta.tags}
+        onChange={e => handleMetaChange('tags', e.target.value)}
       />
       <label>
-        <input 
-          type="checkbox" 
-          checked={form.isPublic} 
-          onChange={e => setForm({...form, isPublic: e.target.checked})}
+        <input
+          type="checkbox"
+          checked={meta.isPublic}
+          onChange={e => handleMetaChange('isPublic', e.target.checked)}
         />
         Public
       </label>
+
       <hr />
-      <input 
-        type="number" 
-        placeholder="Number of Questions" 
-        value={form.questionsCount} 
-        onChange={e => {
-          setForm({...form, questionsCount: Number(e.target.value)});
-          handleQuestionsCountChange(Number(e.target.value));
-        }}
-      />
-      {questions.map((q, index) => (
-        <div key={index}>
-          <input 
-            placeholder={`Question ${index + 1} Title`} 
-            value={q.title} 
-            onChange={e => {
-              const newQuestions = [...questions];
-              newQuestions[index].title = e.target.value;
-              setQuestions(newQuestions);
-            }} 
-          />
-          <input 
-            placeholder={`Question ${index + 1} Description`} 
-            value={q.description} 
-            onChange={e => {
-              const newQuestions = [...questions];
-              newQuestions[index].description = e.target.value;
-              setQuestions(newQuestions);
-            }} 
-          />
-          <select
-            value={q.type}
-            onChange={e => {
-              const newQuestions = [...questions];
-              newQuestions[index].type = e.target.value;
-              setQuestions(newQuestions);
-            }}
-          >
-            <option value="single-line">Single-line</option>
-            <option value="multi-line">Multi-line</option>
-            <option value="integer">Integer</option>
-            <option value="checkbox">Checkbox</option>
-          </select>
-        </div>
+      <h2>Questions</h2>
+      {questions.map((q, i) => (
+        <QuestionItem
+          key={i}
+          index={i}
+          title={q.title}
+          description={q.description}
+          type={q.type}
+          onChange={(field, val) => handleQuestionChange(i, field, val)}
+        />
       ))}
-      <button onClick={handleCreate}>Create Template</button>
-    </div>
+
+      <button type="button" onClick={addQuestion}>
+        + Add Question
+      </button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating…' : 'Create Template'}
+      </button>
+    </form>
   );
 };
 

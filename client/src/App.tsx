@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './layouts/header/header';
-import Auth from './pages/auth/auth';
+import AuthPage from './pages/auth/AuthPage';
 import Dashboard from './pages/dashboard/dashboard';
 import Profile from './pages/profile/Profile';
 import Templates from './pages/templates/Templates';
@@ -17,13 +17,15 @@ import ViewAnswer from './pages/templates/ViewAnswer';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const showHeader = location.pathname !== '/login';
+  const showHeader = !['/login', '/register'].includes(location.pathname);
+
   return (
     <>
       {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Auth />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/register" element={<AuthPage />} />
         <Route path="/guest" element={<GuestDashboard />} />
         <Route path="/profile" element={
           <ProtectedRoute>

@@ -1,65 +1,34 @@
 // filepath: c:\Users\Danila\Desktop\ITtransition\CourseProject\client\src\pages\templates\ViewAnswer.tsx
-import React, { useState, useEffect } from 'react';
-import axios from '../../axiosInstance';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-
-interface QuestionData {
-  title: string;
-  description: string;
-  type: string;
-}
+import { useTemplate } from '../../hooks/useTemplate';
+import { useAnswer } from '../../hooks/useAnswer';
 
 const ViewAnswer: React.FC = () => {
-  const { templateId: tpl, formId, answerId } = useParams<{ templateId?: string; formId?: string; answerId: string }>();
-  const templateId = tpl ?? formId;
-  const [answer, setAnswer] = useState<any>(null);
-  const [form, setForm] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { templateId, answerId } = useParams<{ templateId: string; answerId: string }>();
+  const { data: tpl, loading: l1, error: e1 } = useTemplate(templateId);
+  const { data: ans, loading: l2, error: e2 } = useAnswer(answerId);
 
-  useEffect(() => {
-    // Fetch the single answer
-    axios.get(`answers/${answerId}`)
-      .then(res => setAnswer(res.data))
-      .catch(err => {
-        console.error('Error fetching answer:', err);
-        setError('Failed to load answer');
-      });
+  if (l1 || l2) return <p>Loading…</p>;
+  if (e1)       return <p>Error loading template: {e1}</p>;
+  if (e2)       return <p>Error loading answer: {e2}</p>;
+  if (!tpl || !ans) return null;
 
-    // Fetch the form
-    axios.get(`templates/${templateId}`)
-      .then(res => setForm(res.data))
-      .catch(err => {
-        console.error('Error fetching form:', err);
-        setError('Failed to load form');
-      });
-  }, [templateId, answerId]);
-
-  if (error) return <p>{error}</p>;
-  if (!answer || !form) return <p>Loading...</p>;
-
-  // If your form has questions in form.questions, you might want to show them.
-  // Right now, we only have the single answer record. The "value" might correspond
-  // to a specific question or an index. If you store multiple answers per "value",
-  // you could parse JSON, etc. Adjust as needed.
+  const question = tpl.questions.find(q => q.id === ans.questionId);
 
   return (
     <div>
-      <h1>Form: {form.title}</h1>
-      <p>{form.description}</p>
+      <h1>{tpl.title}</h1>
+      <p>{tpl.description}</p>
 
-      <h2>Answer #{answer.id}</h2>
-      <p>Value: {answer.value}</p>
-
-      {/* If you want to display all questions, you can do: */}
-      <div>
-        {Array.isArray(form.questions) && form.questions.map((q: QuestionData, i: number) => (
-          <div key={i} style={{ marginTop: '10px' }}>
-            <strong>Question:</strong> {q.title} <br />
-            <em>Type:</em> {q.type}
-          </div>
-        ))}
-      </div>
-      {/* Then you could indicate which question the "answer" is tied to (answer.questionId). */}
+      <h2>Answer #{ans.id}</h2>
+      {question && (
+        <>
+          <strong>Question:</strong> {question.title}<br/>
+          <em>Type:</em> {question.type}<br/>
+        </>
+      )}
+      <p><strong>Value:</strong> {ans.value}</p>
     </div>
   );
 };

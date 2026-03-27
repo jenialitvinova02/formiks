@@ -3,21 +3,15 @@ import TemplateList, { TemplateInfo } from '../../components/TemplateList/Templa
 import { usePublicTemplates, TemplateData } from '../../hooks/usePublicTemplates';
 
 const GuestDashboard: React.FC = () => {
-  const raw = usePublicTemplates();
-  const items: TemplateInfo[] = raw.map((t: TemplateData) => ({
+  const rawItems: TemplateData[] = usePublicTemplates();
+
+  const items: TemplateInfo[] = rawItems.map(t => ({
     id: Number(t.id),
     title: t.name,
     description: t.description,
   }));
 
-  return (
-    <div>
-      <h1>All Public Templates</h1>
-      {items.length > 0
-        ? <TemplateList items={items} onSelect={id => {/*navigate если надо*/}} />
-        : <p>No public templates</p>}
-    </div>
-  );
+  return <TemplateList items={items} onSelect={() => { /* ... */ }} />;
 };
 
 export default GuestDashboard;

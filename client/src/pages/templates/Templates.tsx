@@ -1,41 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import axios from '../../axiosInstance';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTemplates } from '../../hooks/useTemplates';
+import TemplateList, { TemplateInfo } from '../../components/TemplateList/TemplateList';
 
 const Templates: React.FC = () => {
-  const [templates, setTemplates] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const { data: templates, loading, error } = useTemplates();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Запрашиваем шаблоны автора (если обычный пользователь)
-    // или все шаблоны (если администратор)
-    axios.get('templates')
-      .then(res => setTemplates(res.data))
-      .catch(err => {
-        console.error(err);
-        setError('Failed to load templates');
-      });
-  }, []);
+  if (loading) return <p>Loading…</p>;
+  if (error)   return <p>Error: {error}</p>;
 
-  if (error) return <p>{error}</p>;
+  // Явно мапим поля из TemplateData в TemplateInfo
+  const items: TemplateInfo[] = templates.map(t => ({
+    id: t.id,
+    title: t.title,
+    description: t.description,
+  }));
 
   return (
     <div>
       <h1>My Templates</h1>
-      {templates.length > 0 ? (
-        <ul>
-          {templates.map(template => (
-            <li
-              key={template.id}
-              onClick={() => navigate(`/templates/${template.id}/answers`)}
-              style={{ cursor: 'pointer', margin: '8px 0' }}
-            >
-              {template.title} - {template.description}
-              {/* Можно отобразить количество ответов, если ответов включено в данные */}
-            </li>
-          ))}
-        </ul>
+      {items.length > 0 ? (
+        <TemplateList
+          items={items}
+          onSelect={id => navigate(`/templates/${id}/answers`)}
+        />
       ) : (
         <p>No templates found</p>
       )}
