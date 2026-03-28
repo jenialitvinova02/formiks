@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants/api';
 import { useTemplates } from '../../hooks/useTemplates';
-import './TemplatesPage.scss'
+import { useTranslation } from 'react-i18next';
+import './TemplatesPage.scss';
 
 const TemplatesPage: React.FC = () => {
+  const { t } = useTranslation();
   const { data: templates, loading, error, refetch } = useTemplates();
   const navigate = useNavigate();
 
@@ -18,9 +20,9 @@ const TemplatesPage: React.FC = () => {
   const [selectedDelete, setSelectedDelete] = useState<number[]>([]);
   const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
 
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!templates.length) return <p>No templates available</p>;
+  if (loading) return <p>{t('templates.loading')}</p>;
+  if (error) return <p>{t('templates.error', { error })}</p>;
+  if (!templates.length) return <p>{t('templates.noTemplates')}</p>;
 
   const toggleDeleteSelection = (id: number) => {
     setSelectedDelete(prev =>
@@ -46,7 +48,7 @@ const TemplatesPage: React.FC = () => {
 
   const handleDeleteConfirm = async () => {
     if (selectedDelete.length === 0) return;
-    if (!window.confirm('Удалить выбранные шаблоны?')) return;
+    if (!window.confirm(t('templates.deleteConfirm'))) return;
     try {
       await Promise.all(
         selectedDelete.map(id => axios.delete(`${ROUTES.templates}/${id}`))
@@ -60,7 +62,7 @@ const TemplatesPage: React.FC = () => {
 
   const handleEditConfirm = () => {
     if (selectedEdit === null) {
-      alert('Пожалуйста, выберите один шаблон для редактирования');
+      alert(t('templates.pleaseSelectEdit'));
       return;
     }
     navigate(`/templates/edit/${selectedEdit}`);
@@ -68,34 +70,34 @@ const TemplatesPage: React.FC = () => {
 
   return (
     <div className="TemplatesPage">
-      <h1>My Templates</h1>
+      <h1>{t('templates.myTemplates')}</h1>
 
       {isAdmin && (
         <div className="TemplatesPage__buttons">
           {mode === 'normal' && (
             <>
-              <button onClick={enterDeleteMode}>Delete</button>
-              <button onClick={enterEditMode}>Edit</button>
+              <button onClick={enterDeleteMode}>{t('templates.delete')}</button>
+              <button onClick={enterEditMode}>{t('templates.edit')}</button>
             </>
           )}
           {mode !== 'normal' && (
             <>
               {mode === 'delete' && (
-                <button onClick={handleDeleteConfirm}>Confirm Delete</button>
+                <button onClick={handleDeleteConfirm}>{t('templates.confirmDelete')}</button>
               )}
               {mode === 'edit' && (
-                <button onClick={handleEditConfirm}>Confirm Edit</button>
+                <button onClick={handleEditConfirm}>{t('templates.confirmEdit')}</button>
               )}
-              <button onClick={cancelAction}>Cancel</button>
+              <button onClick={cancelAction}>{t('templates.cancel')}</button>
             </>
           )}
         </div>
       )}
 
       <ul className="template-list">
-        {templates.map(t => (
+        {templates.map(tmpl => (
           <li
-            key={t.id}
+            key={tmpl.id}
             className="template-list__item"
             style={{
               display: 'flex',
@@ -104,26 +106,26 @@ const TemplatesPage: React.FC = () => {
               cursor: mode === 'normal' ? 'pointer' : 'default'
             }}
             onClick={() => {
-              if (mode === 'normal') navigate(`/templates/${t.id}/answers`);
+              if (mode === 'normal') navigate(`/templates/${tmpl.id}/answers`);
             }}
           >
             {mode === 'delete' && (
               <input
                 type="checkbox"
-                checked={selectedDelete.includes(t.id)}
-                onChange={() => toggleDeleteSelection(t.id)}
+                checked={selectedDelete.includes(tmpl.id)}
+                onChange={() => toggleDeleteSelection(tmpl.id)}
               />
             )}
             {mode === 'edit' && (
               <input
                 type="radio"
                 name="editSelection"
-                checked={selectedEdit === t.id}
-                onChange={() => setSelectedEdit(t.id)}
+                checked={selectedEdit === tmpl.id}
+                onChange={() => setSelectedEdit(tmpl.id)}
               />
             )}
             <span>
-              <strong>{t.title}</strong>: {t.description}
+              <strong>{tmpl.title}</strong>: {tmpl.description}
             </span>
           </li>
         ))}

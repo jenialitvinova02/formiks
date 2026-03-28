@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuestions } from '../../hooks/useQuestions';
 import FieldInput from '../../components/FieldInput/FieldInput';
 import axios from '../../axiosInstance';
+import { useTranslation } from 'react-i18next';
 import './FillTemplatePage.scss';
 
 const FillTemplatePage: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { questions, loading, error } = useQuestions(id || '');
@@ -29,8 +31,8 @@ const FillTemplatePage: React.FC = () => {
     }
   };
 
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>{t('fillTemplate.loading')}</p>;
+  if (error) return <p>{t('fillTemplate.error', { error })}</p>;
 
   return (
     <div className="formGroup">
@@ -46,7 +48,7 @@ const FillTemplatePage: React.FC = () => {
           </div>
         ))}
         {submitError && <p className="error">{submitError}</p>}
-        <button type="submit">Submit</button>
+        <button type="submit">{t('fillTemplate.submit')}</button>
       </form>
     </div>
   );

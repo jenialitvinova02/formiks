@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
-import { useAnswersForResponse, AnswerFull } from '../../hooks/useAnswersForResponse';
+import { useAnswersForResponse } from '../../hooks/useAnswersForResponse';
+import { useTranslation } from 'react-i18next';
 
 const EditAnswerPage: React.FC = () => {
+  const { t } = useTranslation();
   const { templateId, answerId } = useParams<{ templateId: string; answerId: string }>();
   const navigate = useNavigate();
   const { data: answers, loading, error } = useAnswersForResponse(answerId!);
 
-  const [values, setValues] = useState<Record<number,string>>({});
+  const [values, setValues] = useState<Record<number, string>>({});
 
   useEffect(() => {
-    const init: Record<number,string> = {};
-    answers.forEach(a => { init[a.id] = a.value; });
+    const init: Record<number, string> = {};
+    answers.forEach(a => {
+      init[a.id] = a.value;
+    });
     setValues(init);
   }, [answers]);
 
@@ -23,21 +27,23 @@ const EditAnswerPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await Promise.all(Object.entries(values).map(([id, val]) =>
-        axios.put(`answers/${id}`, { value: val })
-      ));
+      await Promise.all(
+        Object.entries(values).map(([id, val]) =>
+          axios.put(`answers/${id}`, { value: val })
+        )
+      );
       navigate(`/templates/${templateId}/answers`);
     } catch (e: any) {
       alert(e.response?.data?.error || e.message);
     }
   };
 
-  if (loading) return <p>Loading…</p>;
-  if (error)   return <p>Error: {error}</p>;
+  if (loading) return <p>{t('editAnswer.loading')}</p>;
+  if (error) return <p>{t('editAnswer.error', { error })}</p>;
 
   return (
     <form onSubmit={handleSubmit} className="container">
-      <h2>Edit Response #{answerId}</h2>
+      <h2>{t('editAnswer.title', { answerId })}</h2>
       {answers.map(a => (
         <div key={a.id} className="form-group">
           <label>{a.question.title}</label>
@@ -55,8 +61,8 @@ const EditAnswerPage: React.FC = () => {
           )}
         </div>
       ))}
-      <button type="submit">Save Changes</button>
-      <button type="button" onClick={() => navigate(-1)}>Cancel</button>
+      <button type="submit">{t('editAnswer.saveChanges')}</button>
+      <button type="button" onClick={() => navigate(-1)}>{t('editAnswer.cancel')}</button>
     </form>
   );
 };

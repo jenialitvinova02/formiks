@@ -1,0 +1,150 @@
+{
+    "header": {
+      "dashboard": "Панель управления",
+      "myTemplates": "Мои шаблоны",
+      "createTemplate": "Создать шаблон",
+      "profile": "Профиль",
+      "login": "Вход",
+      "logout": "Выход",
+      "lightMode": "Светлая тема",
+      "darkMode": "Тёмная тема"
+    },
+    "admin": {
+      "title": "Админ-панель",
+      "makeAdmin": "Сделать админом",
+      "makeUser": "Сделать пользователем",
+      "delete": "Удалить",
+      "confirm": "Подтвердить",
+      "cancel": "Отмена",
+      "selectUsers": "Выберите пользователей для операции:"
+    },
+    "auth": {
+      "signIn": "Войти",
+      "register": "Регистрация",
+      "dontHaveAccount": "Нет аккаунта?",
+      "registerHere": "Зарегистрироваться",
+      "alreadyHaveAccount": "Уже есть аккаунт?",
+      "signInHere": "Войти"
+    },
+    "dashboard": {
+      "title": "Панель управления",
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}"
+    },
+    "templates": {
+      "myTemplates": "Мои шаблоны",
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}",
+      "noTemplates": "Нет доступных шаблонов",
+      "delete": "Удалить",
+      "edit": "Редактировать",
+      "confirmDelete": "Подтвердить удаление",
+      "confirmEdit": "Подтвердите редактирование",
+      "cancel": "Отмена",
+      "pleaseSelectEdit": "Пожалуйста, выберите один шаблон для редактирования",
+      "deleteConfirm": "Удалить выбранные шаблоны?"
+    },
+    "templateCard": {
+      "topic": "Тема"
+    },
+    "fillTemplate": {
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}",
+      "submit": "Отправить"
+    },
+    "viewAnswer": {
+      "noAnswerId": "Не указан id ответа",
+      "loading": "Загрузка...",
+      "errorTemplate": "Ошибка при загрузке шаблона: {{error}}",
+      "errorAnswers": "Ошибка при загрузке ответов: {{error}}",
+      "noAnswers": "Ответы для данного отклика не найдены",
+      "response": "Ответ",
+      "question": "Вопрос",
+      "type": "Тип",
+      "answer": "Ответ"
+    },
+    "guestDashboard": {
+      "allPublicTemplates": "Все публичные шаблоны",
+      "noPublicTemplates": "Нет публичных шаблонов"
+    },
+    "formAnswersList": {
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}",
+      "noResponses": "Нет откликов",
+      "responsesFor": "Ответы для #{{templateId}}",
+      "deleteButton": "Удалить",
+      "editButton": "Редактировать",
+      "confirmDelete": "Подтвердить удаление",
+      "confirmEdit": "Подтвердите редактирование",
+      "cancel": "Отмена",
+      "deleteConfirmPrompt": "Удалить выбранные отклики?",
+      "selectEditAlert": "Пожалуйста, выберите один отклик для редактирования"
+    },
+    "editAnswer": {
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}",
+      "title": "Редактировать ответ №{{answerId}}",
+      "saveChanges": "Сохранить изменения",
+      "cancel": "Отмена"
+    },
+    "createTemplate": {
+      "loading": "Загрузка...",
+      "error": "Ошибка: {{error}}",
+      "editTemplate": "Редактировать шаблон",
+      "createTemplate": "Создать шаблон",
+      "title": "Заголовок",
+      "description": "Описание",
+      "topic": "Тема",
+      "tags": "Теги (через запятую)",
+      "public": "Публичный",
+      "questionsTitle": "Вопросы",
+      "addQuestion": "+ Добавить вопрос",
+      "saveChanges": "Сохранить изменения",
+      "createTemplateButton": "Создать шаблон"
+    },
+    "createForm": {
+      "createFormTitle": "Создать форму",
+      "formTitlePlaceholder": "Название формы",
+      "descriptionPlaceholder": "Описание",
+      "questionsCountPlaceholder": "Количество вопросов",
+      "questionTitlePlaceholder": "Вопрос №{{number}}",
+      "optionText": "Текст",
+      "optionNumber": "Число",
+      "optionCheckbox": "Чекбокс",
+      "submitButton": "Создать форму",
+      "creationError": "Ошибка создания формы"
+    },
+    "authForm": {
+      "username": "Имя пользователя",
+      "email": "Email",
+      "password": "Пароль",
+      "admin": "Админ",
+      "pleaseWait": "Подождите…",
+      "login": "Вход",
+      "register": "Регистрация"
+    },
+    "fieldInput": {
+      "unknownField": "Неизвестный тип поля: {{type}}"
+    },
+    "profileForm": {
+      "loading": "Загрузка…",
+      "error": "Ошибка",
+      "profile": "Профиль",
+      "editProfile": "Редактировать профиль",
+      "username": "Имя пользователя",
+      "email": "Email",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "edit": "Редактировать"
+    },
+    "questionItem": {
+      "question": "Вопрос",
+      "titlePlaceholder": "Заголовок",
+      "descriptionPlaceholder": "Описание",
+      "option": {
+        "text": "Текст",
+        "number": "Число",
+        "checkbox": "Чекбокс"
+      }
+    }
+}

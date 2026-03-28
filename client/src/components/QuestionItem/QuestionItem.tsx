@@ -1,5 +1,6 @@
 import React from 'react';
 import { QUESTION_TYPES } from '../../constants/form';
+import { useTranslation } from 'react-i18next';
 import './QuestionItem.scss';
 
 interface Props {
@@ -7,31 +8,35 @@ interface Props {
   title: string;
   description: string;
   type: string;
-  onChange: (field: 'title'|'description'|'type', value: string) => void;
+  onChange: (field: 'title' | 'description' | 'type', value: string) => void;
 }
 
-const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChange }) => (
-  <div className="questionItem">
-    <h4>Question {index + 1}</h4>
-    <div className="questionItem__container">
-    <input
-      placeholder="Title"
-      value={title}
-      onChange={e => onChange('title', e.target.value)}
-    />
-    <input
-      placeholder="Description"
-      value={description}
-      onChange={e => onChange('description', e.target.value)}
-    />
-    <select value={type} onChange={e => onChange('type', e.target.value)}>
-      {QUESTION_TYPES.map(t => (
-        <option key={t.value} value={t.value}>{t.label}</option>
-      ))}
-    </select>
+const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChange }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="questionItem">
+      <h4>{t('questionItem.question')} {index + 1}</h4>
+      <div className="questionItem__container">
+        <input
+          placeholder={t('questionItem.titlePlaceholder')}
+          value={title}
+          onChange={e => onChange('title', e.target.value)}
+        />
+        <input
+          placeholder={t('questionItem.descriptionPlaceholder')}
+          value={description}
+          onChange={e => onChange('description', e.target.value)}
+        />
+        <select value={type} onChange={e => onChange('type', e.target.value)}>
+          {QUESTION_TYPES.map(option => (
+            <option key={option.value} value={option.value}>
+              {t(`questionItem.option.${option.value}`)}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
-
-  </div>
-);
+  );
+};
 
 export default QuestionItem;

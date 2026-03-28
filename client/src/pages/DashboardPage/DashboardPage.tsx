@@ -5,9 +5,11 @@ import { SortableContext, arrayMove, horizontalListSortingStrategy } from '@dnd-
 import { useTemplates, TemplateData } from '../../hooks/useTemplates';
 import TemplateCard from '../../components/TemplateCard/TemplateCard';
 import SortableItem from '../../components/SortableItem/SortableItem';
+import { useTranslation } from 'react-i18next';
 import './DashboardPage.scss';
 
 const DashboardPage: React.FC = () => {
+    const { t } = useTranslation();
     const { data: templates, loading, error } = useTemplates();
     const [items, setItems] = useState<TemplateData[]>([]);
     const navigate = useNavigate();
@@ -24,22 +26,22 @@ const DashboardPage: React.FC = () => {
         setItems(arrayMove(items, oldIndex, newIndex));
     };
 
-    if (loading) return <p>Loading…</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <p>{t('dashboard.loading')}</p>;
+    if (error) return <p>{t('dashboard.error', { error })}</p>;
 
     return (
         <div className="dashboard">
-            <h1>Dashboard</h1>
+            <h1>{t('dashboard.title')}</h1>
             <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={items.map(item => item.id.toString())} strategy={horizontalListSortingStrategy}>
                     <div className="dashboard__container" style={{ display: 'flex' }}>
-                        {items.map(t => (
-                            <SortableItem key={t.id} id={t.id.toString()}>
+                        {items.map(tmpl => (
+                            <SortableItem key={tmpl.id} id={tmpl.id.toString()}>
                                 <TemplateCard
-                                    title={t.title}
-                                    description={t.description}
-                                    topic={t.topic}
-                                    onClick={() => navigate(`/fill-template/${t.id}`)}
+                                    title={tmpl.title}
+                                    description={tmpl.description}
+                                    topic={tmpl.topic}
+                                    onClick={() => navigate(`/fill-template/${tmpl.id}`)}
                                 />
                             </SortableItem>
                         ))}

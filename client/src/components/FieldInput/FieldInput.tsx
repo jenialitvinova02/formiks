@@ -1,5 +1,6 @@
 import React from 'react';
 import { Question } from '../../hooks/useQuestions';
+import { useTranslation } from 'react-i18next';
 import './FieldInput.scss';
 
 interface Props {
@@ -10,11 +11,12 @@ interface Props {
 
 const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   const { id, type } = question;
-  const t = type.toLowerCase().trim();
+  const { t: translate } = useTranslation();
+  const fieldType = type.toLowerCase().trim();
 
-  console.log(`Rendering FieldInput for question id ${id} with type:`, t);
+  console.log(`Rendering FieldInput for question id ${id} with type:`, fieldType);
 
-  if (t === 'integer' || t === 'number' || t === 'int') {
+  if (fieldType === 'integer' || fieldType === 'number' || fieldType === 'int') {
     return (
       <input
         type="number"
@@ -24,7 +26,7 @@ const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     );
   }
 
-  if (t === 'single-line' || t === 'single line' || t === 'text') {
+  if (fieldType === 'single-line' || fieldType === 'single line' || fieldType === 'text') {
     return (
       <input
         type="text"
@@ -34,7 +36,7 @@ const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     );
   }
 
-  if (t === 'multi-line' || t === 'multi line' || t === 'multiline') {
+  if (fieldType === 'multi-line' || fieldType === 'multi line' || fieldType === 'multiline') {
     return (
       <textarea
         value={value}
@@ -43,7 +45,7 @@ const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     );
   }
 
-  if (t === 'checkbox') {
+  if (fieldType === 'checkbox') {
     return (
       <input
         type="checkbox"
@@ -54,7 +56,7 @@ const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   }
 
   console.warn(`FieldInput: Unhandled question type "${type}" for question id ${id}`);
-  return <div>Unknown field type: {type}</div>;
+  return <div>{translate('fieldInput.unknownField', { type })}</div>;
 };
 
 export default FieldInput;

@@ -1,0 +1,150 @@
+{
+    "header": {
+      "dashboard": "Dashboard",
+      "myTemplates": "My Templates",
+      "createTemplate": "Create Template",
+      "profile": "Profile",
+      "login": "Login",
+      "logout": "Logout",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+    },
+    "admin": {
+      "title": "Admin Panel",
+      "makeAdmin": "Make Admin",
+      "makeUser": "Make User",
+      "delete": "Delete",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "selectUsers": "Select the users for the operation:"
+    },
+    "auth": {
+      "signIn": "Sign In",
+      "register": "Register",
+      "dontHaveAccount": "Don't have an account?",
+      "registerHere": "Register here",
+      "alreadyHaveAccount": "Already have an account?",
+      "signInHere": "Sign In here"
+    },
+    "authForm": {
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "admin": "Admin",
+      "pleaseWait": "Please wait…",
+      "login": "Login",
+      "register": "Register"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "loading": "Loading...",
+      "error": "Error: {{error}}"
+    },
+    "templates": {
+      "myTemplates": "My Templates",
+      "loading": "Loading…",
+      "error": "Error: {{error}}",
+      "noTemplates": "No templates available",
+      "delete": "Delete",
+      "edit": "Edit",
+      "confirmDelete": "Confirm Delete",
+      "confirmEdit": "Confirm Edit",
+      "cancel": "Cancel",
+      "pleaseSelectEdit": "Please select one template for editing",
+      "deleteConfirm": "Delete selected templates?"
+    },
+    "templateCard": {
+      "topic": "Topic"
+    },
+    "fillTemplate": {
+      "loading": "Loading…",
+      "error": "Error: {{error}}",
+      "submit": "Submit"
+    },
+    "viewAnswer": {
+      "noAnswerId": "No answer id provided",
+      "loading": "Loading…",
+      "errorTemplate": "Error loading template: {{error}}",
+      "errorAnswers": "Error loading answers: {{error}}",
+      "noAnswers": "No answers found for this response",
+      "response": "Response",
+      "question": "Question",
+      "type": "Type",
+      "answer": "Answer"
+    },
+    "guestDashboard": {
+      "allPublicTemplates": "All Public Templates",
+      "noPublicTemplates": "No public templates"
+    },
+    "formAnswersList": {
+      "loading": "Loading…",
+      "error": "Error: {{error}}",
+      "noResponses": "No responses yet",
+      "responsesFor": "Responses for #{{templateId}}",
+      "deleteButton": "Delete",
+      "editButton": "Edit",
+      "confirmDelete": "Confirm Delete",
+      "confirmEdit": "Confirm Edit",
+      "cancel": "Cancel",
+      "deleteConfirmPrompt": "Delete selected responses?",
+      "selectEditAlert": "Please select one response for editing"
+    },
+    "editAnswer": {
+      "loading": "Loading…",
+      "error": "Error: {{error}}",
+      "title": "Edit Response #{{answerId}}",
+      "saveChanges": "Save Changes",
+      "cancel": "Cancel"
+    },
+    "createTemplate": {
+      "loading": "Loading…",
+      "error": "Error: {{error}}",
+      "editTemplate": "Edit Template",
+      "createTemplate": "Create Template",
+      "title": "Title",
+      "description": "Description",
+      "topic": "Topic",
+      "tags": "Tags (comma separated)",
+      "public": "Public",
+      "questionsTitle": "Questions",
+      "addQuestion": "+ Add Question",
+      "saveChanges": "Save Changes",
+      "createTemplateButton": "Create Template"
+    },
+    "createForm": {
+      "createFormTitle": "Create Form",
+      "formTitlePlaceholder": "Form Title",
+      "descriptionPlaceholder": "Description",
+      "questionsCountPlaceholder": "Number of Questions",
+      "questionTitlePlaceholder": "Question {{number}} Title",
+      "optionText": "Text",
+      "optionNumber": "Number",
+      "optionCheckbox": "Checkbox",
+      "submitButton": "Create Form",
+      "creationError": "Form creation failed"
+    },
+    "fieldInput": {
+      "unknownField": "Unknown field type: {{type}}"
+    },
+    "profileForm": {
+      "loading": "Loading…",
+      "error": "Error",
+      "profile": "Profile",
+      "editProfile": "Edit Profile",
+      "username": "Username",
+      "email": "Email",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
+    },
+    "questionItem": {
+      "question": "Question",
+      "titlePlaceholder": "Title",
+      "descriptionPlaceholder": "Description",
+      "option": {
+        "text": "Text",
+        "number": "Number",
+        "checkbox": "Checkbox"
+      }
+    }
+  }

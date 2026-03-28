@@ -1,0 +1,150 @@
+{
+    "header": {
+      "dashboard": "Panel sterowania",
+      "myTemplates": "Moje Szablony",
+      "createTemplate": "Utwórz szablon",
+      "profile": "Profil",
+      "login": "Logowanie",
+      "logout": "Wyloguj",
+      "lightMode": "Jasny tryb",
+      "darkMode": "Ciemny tryb"
+    },
+    "admin": {
+      "title": "Panel Administratora",
+      "makeAdmin": "Nadaj uprawnienia administratora",
+      "makeUser": "Nadaj uprawnienia użytkownika",
+      "delete": "Usuń",
+      "confirm": "Potwierdź",
+      "cancel": "Anuluj",
+      "selectUsers": "Wybierz użytkowników do operacji:"
+    },
+    "auth": {
+      "signIn": "Zaloguj się",
+      "register": "Rejestracja",
+      "dontHaveAccount": "Nie masz konta?",
+      "registerHere": "Zarejestruj się tutaj",
+      "alreadyHaveAccount": "Masz już konto?",
+      "signInHere": "Zaloguj się tutaj"
+    },
+    "authForm": {
+      "username": "Nazwa użytkownika",
+      "email": "Email",
+      "password": "Hasło",
+      "admin": "Administrator",
+      "pleaseWait": "Proszę czekać…",
+      "login": "Logowanie",
+      "register": "Rejestracja"
+    },
+    "dashboard": {
+      "title": "Panel Sterowania",
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}"
+    },
+    "templates": {
+      "myTemplates": "Moje Szablony",
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}",
+      "noTemplates": "Brak dostępnych szablonów",
+      "delete": "Usuń",
+      "edit": "Edytuj",
+      "confirmDelete": "Potwierdź usunięcie",
+      "confirmEdit": "Potwierdź edycję",
+      "cancel": "Anuluj",
+      "pleaseSelectEdit": "Proszę wybrać jeden szablon do edycji",
+      "deleteConfirm": "Usunąć wybrane szablony?"
+    },
+    "templateCard": {
+      "topic": "Temat"
+    },
+    "fillTemplate": {
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}",
+      "submit": "Wyślij"
+    },
+    "viewAnswer": {
+      "noAnswerId": "Nie podano identyfikatora odpowiedzi",
+      "loading": "Ładowanie...",
+      "errorTemplate": "Błąd podczas ładowania szablonu: {{error}}",
+      "errorAnswers": "Błąd podczas ładowania odpowiedzi: {{error}}",
+      "noAnswers": "Nie znaleziono odpowiedzi dla tego zgłoszenia",
+      "response": "Odpowiedź",
+      "question": "Pytanie",
+      "type": "Typ",
+      "answer": "Odpowiedź"
+    },
+    "guestDashboard": {
+      "allPublicTemplates": "Wszystkie publiczne szablony",
+      "noPublicTemplates": "Brak publicznych szablonów"
+    },
+    "formAnswersList": {
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}",
+      "noResponses": "Brak odpowiedzi",
+      "responsesFor": "Odpowiedzi dla #{{templateId}}",
+      "deleteButton": "Usuń",
+      "editButton": "Edytuj",
+      "confirmDelete": "Potwierdź usunięcie",
+      "confirmEdit": "Potwierdź edycję",
+      "cancel": "Anuluj",
+      "deleteConfirmPrompt": "Usunąć wybrane odpowiedzi?",
+      "selectEditAlert": "Proszę wybrać jedną odpowiedź do edycji"
+    },
+    "editAnswer": {
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}",
+      "title": "Edytuj odpowiedź nr {{answerId}}",
+      "saveChanges": "Zapisz zmiany",
+      "cancel": "Anuluj"
+    },
+    "createTemplate": {
+      "loading": "Ładowanie...",
+      "error": "Błąd: {{error}}",
+      "editTemplate": "Edytuj szablon",
+      "createTemplate": "Utwórz szablon",
+      "title": "Tytuł",
+      "description": "Opis",
+      "topic": "Temat",
+      "tags": "Tagi (oddzielone przecinkiem)",
+      "public": "Publiczny",
+      "questionsTitle": "Pytania",
+      "addQuestion": "+ Dodaj pytanie",
+      "saveChanges": "Zapisz zmiany",
+      "createTemplateButton": "Utwórz szablon"
+    },
+    "createForm": {
+      "createFormTitle": "Utwórz formularz",
+      "formTitlePlaceholder": "Tytuł formularza",
+      "descriptionPlaceholder": "Opis",
+      "questionsCountPlaceholder": "Liczba pytań",
+      "questionTitlePlaceholder": "Pytanie nr {{number}}",
+      "optionText": "Tekst",
+      "optionNumber": "Liczba",
+      "optionCheckbox": "Checkbox",
+      "submitButton": "Utwórz formularz",
+      "creationError": "Błąd tworzenia formularza"
+    },
+    "fieldInput": {
+      "unknownField": "Nieznany typ pola: {{type}}"
+    },
+    "profileForm": {
+      "loading": "Ładowanie…",
+      "error": "Błąd",
+      "profile": "Profil",
+      "editProfile": "Edytuj profil",
+      "username": "Nazwa użytkownika",
+      "email": "Email",
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "edit": "Edytuj"
+    },
+    "questionItem": {
+      "question": "Pytanie",
+      "titlePlaceholder": "Tytuł",
+      "descriptionPlaceholder": "Opis",
+      "option": {
+        "text": "Tekst",
+        "number": "Liczba",
+        "checkbox": "Checkbox"
+      }
+    }
+  }

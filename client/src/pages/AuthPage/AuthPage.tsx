@@ -1,9 +1,11 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';  
+import { useTranslation } from 'react-i18next';
 import AuthForm from '../../components/AuthForm/AuthForm';
 import './AuthPage.scss';
 
 const AuthPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const mode = pathname.endsWith('register') ? 'register' : 'login';
@@ -14,7 +16,7 @@ const AuthPage: React.FC = () => {
       <div className="auth__container">
         <div className="auth__box">
           <h1 className="auth__box--title">
-            {mode === 'login' ? 'Sign In' : 'Register'}
+            {mode === 'login' ? t('auth.signIn') : t('auth.register')}
           </h1>
 
           <div className="auth__box--form">
@@ -26,13 +28,13 @@ const AuthPage: React.FC = () => {
           <div className="auth__box--toggle">
             {mode === 'login' ? (
               <p>
-                Don't have an account?{' '}
-                <Link to="/register">Register here</Link>
+                {t('auth.dontHaveAccount')}{' '}
+                <Link to="/register">{t('auth.registerHere')}</Link>
               </p>
             ) : (
               <p>
-                Already have an account?{' '}
-                <Link to="/login">Sign In here</Link>
+                {t('auth.alreadyHaveAccount')}{' '}
+                <Link to="/login">{t('auth.signInHere')}</Link>
               </p>
             )}
           </div>

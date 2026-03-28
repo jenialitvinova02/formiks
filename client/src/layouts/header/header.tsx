@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './header.scss';
 import Logo from '../../assets/logo.png';
 
 const Header: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const token = localStorage.getItem('token');
   const isGuest = localStorage.getItem('guest') === 'true';
   const navigate = useNavigate();
@@ -17,7 +19,6 @@ const Header: React.FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
-    // Если тема светлая, устанавливаем data-theme="white", иначе сбрасываем атрибут
     if (theme === 'light') {
       document.documentElement.setAttribute('data-theme', 'white');
     } else {
@@ -29,32 +30,41 @@ const Header: React.FC = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <header className="header">
       <img className="header__logo" src={Logo} alt="Logo" />
       <nav className="header__links">
-        <Link to={token || isGuest ? "/dashboard" : "/login"}>Dashboard</Link>
+        <Link to={token || isGuest ? "/dashboard" : "/login"}>{t('header.dashboard')}</Link>
         {!(isGuest) && (
           <>
-            <Link to="/templates">My Templates</Link>
-            <Link to="/create-template">Create Template</Link>
+            <Link to="/templates">{t('header.myTemplates')}</Link>
+            <Link to="/create-template">{t('header.createTemplate')}</Link>
           </>
         )}
         {token ? (
-          <Link to="/profile">Profile</Link>
+          <Link to="/profile">{t('header.profile')}</Link>
         ) : (
-          <Link to="/login">Login</Link>
+          <Link to="/login">{t('header.login')}</Link>
         )}
         {token && JSON.parse(atob(token.split('.')[1])).role === 'admin' && (
-          <Link to="/admin">Admin Panel</Link>
+          <Link to="/admin">Admin</Link>
         )}
       </nav>
       <div className="header__right">
         <button onClick={toggleTheme}>
-          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          {theme === 'dark' ? t('header.lightMode') : t('header.darkMode')}
         </button>
+        <select onChange={(e) => changeLanguage(e.target.value)} defaultValue={i18n.language}>
+          <option value="en">EN</option>
+          <option value="ru">RU</option>
+          <option value="pl">PL</option>
+        </select>
         {(token || isGuest) && (
-          <button className="header__button" onClick={handleLogout}>Logout</button>
+          <button className="header__button" onClick={handleLogout}>{t('header.logout')}</button>
         )}
       </div>
     </header>

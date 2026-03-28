@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 import './AuthForm.scss';
 
 interface Props {
-  mode: 'login'|'register';
+  mode: 'login' | 'register';
   onSuccess: () => void;
 }
 
 const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
+  const { t } = useTranslation();
   const { login, register, error, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,45 +20,51 @@ const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
     e.preventDefault();
     try {
       if (mode === 'login') await login(email, password);
-      else           await register(username, email, password, isAdmin ? 'admin' : 'user');
+      else await register(username, email, password, isAdmin ? 'admin' : 'user');
       onSuccess();
-    } catch {}  
+    } catch {}
   };
 
   return (
     <form className="authForm" onSubmit={submit}>
-      {mode==='register' && (
+      {mode === 'register' && (
         <input
-          placeholder="Username"
+          placeholder={t('authForm.username')}
           value={username}
-          onChange={e=>setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           required
         />
       )}
       <input
-        type="email" placeholder="Email"
+        type="email"
+        placeholder={t('authForm.email')}
         value={email}
-        onChange={e=>setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
         required
       />
       <input
-        type="password" placeholder="Password"
+        type="password"
+        placeholder={t('authForm.password')}
         value={password}
-        onChange={e=>setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
         required
       />
-      {mode==='register' && (
+      {mode === 'register' && (
         <label className="authForm__check">
           <input
             type="checkbox"
             checked={isAdmin}
-            onChange={e=>setIsAdmin(e.target.checked)}
-          /> Admin
+            onChange={e => setIsAdmin(e.target.checked)}
+          /> {t('authForm.admin')}
         </label>
       )}
       {error && <p className="error">{error}</p>}
       <button type="submit" disabled={loading}>
-        {loading ? 'Please wait…' : mode==='login' ? 'Login' : 'Register'}
+        {loading
+          ? t('authForm.pleaseWait')
+          : mode === 'login'
+            ? t('authForm.login')
+            : t('authForm.register')}
       </button>
     </form>
   );

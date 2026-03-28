@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../../axiosInstance';
+import { useTranslation } from 'react-i18next';
 
 interface Question {
     title: string;
@@ -7,6 +8,7 @@ interface Question {
 }
 
 const CreateFormPage: React.FC = () => {
+    const { t } = useTranslation();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [questionsCount, setQuestionsCount] = useState(0);
@@ -26,26 +28,35 @@ const CreateFormPage: React.FC = () => {
             const response = await axios.post('forms', data);
             console.log('Form created:', response.data);
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Form creation failed');
+            setError(err.response?.data?.error || t('createForm.creationError'));
         }
     };
 
     return (
         <div>
-            <h1>Create Form</h1>
+            <h1>{t('createForm.createFormTitle')}</h1>
             {error && <p>{error}</p>}
-            <input type="text" placeholder="Form Title" value={title} onChange={e => setTitle(e.target.value)} />
-            <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+            <input 
+                type="text" 
+                placeholder={t('createForm.formTitlePlaceholder')} 
+                value={title} 
+                onChange={e => setTitle(e.target.value)} 
+            />
+            <textarea 
+                placeholder={t('createForm.descriptionPlaceholder')} 
+                value={description} 
+                onChange={e => setDescription(e.target.value)} 
+            />
             <input
                 type="number"
-                placeholder="Number of Questions"
+                placeholder={t('createForm.questionsCountPlaceholder')}
                 value={questionsCount}
                 onChange={e => handleQuestionsCountChange(Number(e.target.value))}
             />
             {questions.map((q, index) => (
                 <div key={index}>
                     <input
-                        placeholder={`Question ${index + 1} Title`}
+                        placeholder={t('createForm.questionTitlePlaceholder', { number: index + 1 })}
                         value={q.title}
                         onChange={e => {
                             const newQuestions = [...questions];
@@ -61,13 +72,13 @@ const CreateFormPage: React.FC = () => {
                             setQuestions(newQuestions);
                         }}
                     >
-                        <option value="text">Text</option>
-                        <option value="number">Number</option>
-                        <option value="checkbox">Checkbox</option>
+                        <option value="text">{t('createForm.optionText')}</option>
+                        <option value="number">{t('createForm.optionNumber')}</option>
+                        <option value="checkbox">{t('createForm.optionCheckbox')}</option>
                     </select>
                 </div>
             ))}
-            <button onClick={handleSubmit}>Create Form</button>
+            <button onClick={handleSubmit}>{t('createForm.submitButton')}</button>
         </div>
     );
 };

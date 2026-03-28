@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import TemplateList, { TemplateInfo } from '../../components/TemplateList/TemplateList';
 import { usePublicTemplates, TemplateData } from '../../hooks/usePublicTemplates';
 
 const GuestDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const raw = usePublicTemplates();
   const items: TemplateInfo[] = raw.map((t: TemplateData) => ({
     id: Number(t.id),
@@ -12,10 +14,11 @@ const GuestDashboard: React.FC = () => {
 
   return (
     <div>
-      <h1>All Public Templates</h1>
+      <h1>{t('guestDashboard.allPublicTemplates')}</h1>
       {items.length > 0
-        ? <TemplateList items={items} onSelect={id => {/*navigate если надо*/}} />
-        : <p>No public templates</p>}
+        ? <TemplateList items={items} onSelect={id => {/*navigate if needed*/}} />
+        : <p>{t('guestDashboard.noPublicTemplates')}</p>
+      }
     </div>
   );
 };

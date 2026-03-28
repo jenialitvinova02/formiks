@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants/api';
 import { useResponsesForTemplate, ResponseInfo } from '../../hooks/useResponsesForTemplate';
+import { useTranslation } from 'react-i18next';
 import './FormAnswersListPage.scss';
 
 const FormAnswersListPage: React.FC = () => {
+  const { t } = useTranslation();
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
 
@@ -19,9 +21,9 @@ const FormAnswersListPage: React.FC = () => {
   const [selectedDelete, setSelectedDelete] = useState<number[]>([]);
   const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
 
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!responses.length) return <p>No responses yet</p>;
+  if (loading) return <p>{t('formAnswersList.loading')}</p>;
+  if (error) return <p>{t('formAnswersList.error', { error })}</p>;
+  if (!responses.length) return <p>{t('formAnswersList.noResponses')}</p>;
 
   const toggleDeleteSelection = (id: number) => {
     setSelectedDelete(prev =>
@@ -47,7 +49,7 @@ const FormAnswersListPage: React.FC = () => {
 
   const handleDeleteConfirm = async () => {
     if (selectedDelete.length === 0) return;
-    if (!window.confirm('Delete selected responses?')) return;
+    if (!window.confirm(t('formAnswersList.deleteConfirmPrompt'))) return;
     try {
       await Promise.all(
         selectedDelete.map(id => axios.delete(`${ROUTES.responses}/${id}`))
@@ -60,7 +62,7 @@ const FormAnswersListPage: React.FC = () => {
 
   const handleEditConfirm = () => {
     if (selectedEdit === null) {
-      alert('Please select one response for editing');
+      alert(t('formAnswersList.selectEditAlert'));
       return;
     }
     navigate(`/templates/${templateId}/answers/${selectedEdit}/edit`);
@@ -68,20 +70,20 @@ const FormAnswersListPage: React.FC = () => {
 
   return (
     <div className="FormAnswersList">
-      <h2>Responses for #{templateId}</h2>
+      <h2>{t('formAnswersList.responsesFor', { templateId })}</h2>
       {isAdmin && (
-        <div className="FormAnswersList__buttons" >
+        <div className="FormAnswersList__buttons">
           {mode === 'normal' && (
             <>
-              <button onClick={enterDeleteMode}>Delete</button>
-              <button onClick={enterEditMode}>Edit</button>
+              <button onClick={enterDeleteMode}>{t('formAnswersList.deleteButton')}</button>
+              <button onClick={enterEditMode}>{t('formAnswersList.editButton')}</button>
             </>
           )}
           {mode !== 'normal' && (
             <>
-              {mode === 'delete' && <button onClick={handleDeleteConfirm}>Confirm Delete</button>}
-              {mode === 'edit' && <button onClick={handleEditConfirm}>Confirm Edit</button>}
-              <button onClick={cancelAction}>Cancel</button>
+              {mode === 'delete' && <button onClick={handleDeleteConfirm}>{t('formAnswersList.confirmDelete')}</button>}
+              {mode === 'edit' && <button onClick={handleEditConfirm}>{t('formAnswersList.confirmEdit')}</button>}
+              <button onClick={cancelAction}>{t('formAnswersList.cancel')}</button>
             </>
           )}
         </div>
