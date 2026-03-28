@@ -1,0 +1,33 @@
+.formGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  &__container{
+    gap: 30px;
+    background-color: var(--background-second);
+    padding: 30px 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    &--block{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    
+        input,
+        textarea {
+          width: 400px;
+        }
+    }
+  }
+  button {
+    margin: 0 auto;
+    display: block;
+    margin-top: 30px;
+  }
+}
+
+
+
+

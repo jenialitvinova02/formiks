@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuestions } from '../../hooks/useQuestions';
 import FieldInput from '../../components/FieldInput/FieldInput';
 import axios from '../../axiosInstance';
+import './FillTemplatePage.scss';
 
 const FillTemplatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,20 +33,22 @@ const FillTemplatePage: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      {questions.map(q => (
-        <div key={q.id} className="form-group">
-          <label>{q.title}</label>
-          <FieldInput
-            question={q}
-            value={answers[q.id] || ''}
-            onChange={handleChange}
-          />
-        </div>
-      ))}
-      {submitError && <p className="error">{submitError}</p>}
-      <button type="submit">Submit</button>
-    </form>
+    <div className="formGroup">
+      <form className="formGroup__container" onSubmit={handleSubmit}>
+        {questions.map(q => (
+          <div key={q.id} className="formGroup__container--block">
+            <label>{q.title}</label>
+            <FieldInput
+              question={q}
+              value={answers[q.id] || ''}
+              onChange={handleChange}
+            />
+          </div>
+        ))}
+        {submitError && <p className="error">{submitError}</p>}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
 

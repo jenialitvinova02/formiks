@@ -23,7 +23,7 @@ const TemplatesPage: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div>
       <h1>My Templates</h1>
       <ul className="template-list">
         {templates.map(t => (

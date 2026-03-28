@@ -192,6 +192,7 @@ input, textarea,select {
 select{
   height: auto;
   padding-left: 0;
+  cursor: pointer;
 }
 li{
   &:hover {
