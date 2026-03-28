@@ -12,7 +12,7 @@ import GuestDashboard from './pages/GuestDashboard/GuestDashboard';
 import ProtectedRoute from './routes/ProtectedRoute';
 import FillForm from './pages/FillTemplatePage/FillTemplatePage';
 import FillTemplatePage from './pages/FillTemplatePage/FillTemplatePage';
-import FormAnswersListPage from './pages/Templates/FormAnswersListPage';
+import FormAnswersListPage from './pages/FormAnswersListPage/FormAnswersListPage';
 import ViewAnswerPage from './pages/Templates/ViewAnswerPage';
 import EditAnswerPage from './pages/EditAnswerPage/EditAnswerPage';
 

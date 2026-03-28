@@ -1,0 +1,9 @@
+.FormAnswersList{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__buttons{
+        display: flex;
+        gap: 20px;
+    }
+}
