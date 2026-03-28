@@ -1,14 +1,14 @@
 import React from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';  
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AuthForm from '../../components/AuthForm/AuthForm';
+import useAuthMode from '../../hooks/useAuthMode';
 import './AuthPage.scss';
 
 const AuthPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const mode = pathname.endsWith('register') ? 'register' : 'login';
+  const mode = useAuthMode();
 
   return (
     <div className="auth">
@@ -20,10 +20,7 @@ const AuthPage: React.FC = () => {
           </h1>
 
           <div className="auth__box--form">
-            <AuthForm
-              mode={mode as 'login' | 'register'}
-              onSuccess={() => navigate('/dashboard')}
-            />
+            <AuthForm mode={mode} onSuccess={() => navigate('/dashboard')} />
           </div>
           <div className="auth__box--toggle">
             {mode === 'login' ? (

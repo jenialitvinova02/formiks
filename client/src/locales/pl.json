@@ -146,9 +146,10 @@
       "titlePlaceholder": "Tytuł",
       "descriptionPlaceholder": "Opis",
       "option": {
-        "text": "Tekst",
-        "number": "Liczba",
-        "checkbox": "Checkbox"
+        "single-line": "Pojedyncza linia",
+        "multi-line": "Wieloliniowy",
+        "integer": "Liczba",
+        "checkbox": "Pole wyboru"
       }
     }
   }

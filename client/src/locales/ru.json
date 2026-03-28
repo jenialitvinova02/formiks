@@ -146,8 +146,9 @@
       "titlePlaceholder": "Заголовок",
       "descriptionPlaceholder": "Описание",
       "option": {
-        "text": "Текст",
-        "number": "Число",
+        "single-line": "Однострочный",
+        "multi-line": "Многострочный",
+        "integer": "Число",
         "checkbox": "Чекбокс"
       }
     }

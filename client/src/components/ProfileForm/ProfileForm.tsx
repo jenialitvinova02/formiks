@@ -1,24 +1,14 @@
-import React, { useState } from 'react';
-import { useProfile } from '../../hooks/useProfile';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useEditableProfile } from '../../hooks/useEditableProfile';
 import './ProfileForm.scss';
 
 const ProfileForm: React.FC = () => {
   const { t } = useTranslation();
-  const { data, loading, error, update } = useProfile();
-  const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ username: '', email: '' });
+  const { form, onChangeField, saveProfile, startEditing, cancelEditing, editing, loading, error } = useEditableProfile();
 
   if (loading) return <p>{t('profileForm.loading')}</p>;
-  if (error || !data) return <p>{error || t('profileForm.error')}</p>;
-
-  const save = async () => {
-    try {
-      await update(form);
-      setEditing(false);
-    } catch {
-    }
-  };
+  if (error || !form) return <p>{error || t('profileForm.error')}</p>;
 
   return editing ? (
     <div className="profileEdit">
@@ -27,18 +17,18 @@ const ProfileForm: React.FC = () => {
         <div className="profileEdit__container--inputs">
           <label>{t('profileForm.username')}</label>
           <input
-            value={form.username || data.username}
-            onChange={e => setForm({ ...form, username: e.target.value })}
+            value={form.username}
+            onChange={e => onChangeField('username', e.target.value)}
           />
           <label>{t('profileForm.email')}</label>
           <input
-            value={form.email || data.email}
-            onChange={e => setForm({ ...form, email: e.target.value })}
+            value={form.email}
+            onChange={e => onChangeField('email', e.target.value)}
           />
         </div>
         <div className="profileEdit__container--buttons">
-          <button onClick={save}>{t('profileForm.save')}</button>
-          <button onClick={() => setEditing(false)}>{t('profileForm.cancel')}</button>
+          <button onClick={saveProfile}>{t('profileForm.save')}</button>
+          <button onClick={cancelEditing}>{t('profileForm.cancel')}</button>
         </div>
       </div>
     </div>
@@ -46,14 +36,11 @@ const ProfileForm: React.FC = () => {
     <div className="profileForm">
       <h1>{t('profileForm.profile')}</h1>
       <div className="profileForm__container">
-        <p>{t('profileForm.username')}: {data.username}</p>
-        <p>{t('profileForm.email')}: {data.email}</p>
+        <p>{t('profileForm.username')}: {form.username}</p>
+        <p>{t('profileForm.email')}: {form.email}</p>
         <button
           className="profileForm__container--button"
-          onClick={() => {
-            setForm({ username: data.username, email: data.email });
-            setEditing(true);
-          }}
+          onClick={startEditing}
         >
           {t('profileForm.edit')}
         </button>

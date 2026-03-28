@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants/api';
 import { useTemplates } from '../../hooks/useTemplates';
 import { useTranslation } from 'react-i18next';
+import { useIsAdmin } from '../../hooks/useIsAdmin';
+import { useFormAnswersActions } from '../../hooks/useFormAnswersActions';
 import './TemplatesPage.scss';
 
 const TemplatesPage: React.FC = () => {
@@ -11,42 +13,20 @@ const TemplatesPage: React.FC = () => {
   const { data: templates, loading, error, refetch } = useTemplates();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
-  const isAdmin = token
-    ? (JSON.parse(atob(token.split('.')[1])) as any).role === 'admin'
-    : false;
+  const isAdmin = useIsAdmin();
 
-  const [mode, setMode] = useState<'normal' | 'delete' | 'edit'>('normal');
-  const [selectedDelete, setSelectedDelete] = useState<number[]>([]);
-  const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
+  const {
+    mode,
+    selectedDelete,
+    selectedEdit,
+    toggleDeleteSelection,
+    enterDeleteMode,
+    enterEditMode,
+    cancelAction,
+    setSelectedEdit,
+  } = useFormAnswersActions();
 
-  if (loading) return <p>{t('templates.loading')}</p>;
-  if (error) return <p>{t('templates.error', { error })}</p>;
-  if (!templates.length) return <p>{t('templates.noTemplates')}</p>;
-
-  const toggleDeleteSelection = (id: number) => {
-    setSelectedDelete(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-    );
-  };
-
-  const enterDeleteMode = () => {
-    setMode('delete');
-    setSelectedDelete([]);
-  };
-
-  const enterEditMode = () => {
-    setMode('edit');
-    setSelectedEdit(null);
-  };
-
-  const cancelAction = () => {
-    setMode('normal');
-    setSelectedDelete([]);
-    setSelectedEdit(null);
-  };
-
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = useCallback(async () => {
     if (selectedDelete.length === 0) return;
     if (!window.confirm(t('templates.deleteConfirm'))) return;
     try {
@@ -54,19 +34,23 @@ const TemplatesPage: React.FC = () => {
         selectedDelete.map(id => axios.delete(`${ROUTES.templates}/${id}`))
       );
       refetch();
-      setMode('normal');
+      cancelAction();
     } catch (err: any) {
       alert(err.response?.data?.error || err.message);
     }
-  };
+  }, [selectedDelete, refetch, cancelAction, t]);
 
-  const handleEditConfirm = () => {
+  const handleEditConfirm = useCallback(() => {
     if (selectedEdit === null) {
       alert(t('templates.pleaseSelectEdit'));
       return;
     }
     navigate(`/templates/edit/${selectedEdit}`);
-  };
+  }, [selectedEdit, navigate, t]);
+
+  if (loading) return <p>{t('templates.loading')}</p>;
+  if (error) return <p>{t('templates.error', { error })}</p>;
+  if (!templates.length) return <p>{t('templates.noTemplates')}</p>;
 
   return (
     <div className="TemplatesPage">
@@ -74,14 +58,13 @@ const TemplatesPage: React.FC = () => {
 
       {isAdmin && (
         <div className="TemplatesPage__buttons">
-          {mode === 'normal' && (
+          {mode === 'normal' ? (
             <>
               <button onClick={enterDeleteMode}>{t('templates.delete')}</button>
               <button onClick={enterEditMode}>{t('templates.edit')}</button>
             </>
-          )}
-          {mode !== 'normal' && (
-            <>
+          ) : (
+            <div>
               {mode === 'delete' && (
                 <button onClick={handleDeleteConfirm}>{t('templates.confirmDelete')}</button>
               )}
@@ -89,7 +72,7 @@ const TemplatesPage: React.FC = () => {
                 <button onClick={handleEditConfirm}>{t('templates.confirmEdit')}</button>
               )}
               <button onClick={cancelAction}>{t('templates.cancel')}</button>
-            </>
+            </div>
           )}
         </div>
       )}

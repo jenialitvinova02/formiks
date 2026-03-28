@@ -1,66 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
-import { useTemplate } from '../../hooks/useTemplate';
-import QuestionItem from '../../components/QuestionItem/QuestionItem';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
+import QuestionItem from '../../components/QuestionItem/QuestionItem';
+import { useTemplateForm } from '../../hooks/useTemplateForm';
 import './CreateTemplatePage.scss';
 
 const CreateTemplatePage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId?: string }>();
   const navigate = useNavigate();
-  const isEditMode = Boolean(templateId);
-
-  const [meta, setMeta] = useState<Omit<TemplateForm, 'questions'>>({
-    title: '',
-    description: '',
-    topic: '',
-    tags: '',
-    isPublic: true,
-  });
-  const [questions, setQuestions] = useState<NewQuestion[]>([]);
-
-  const { data: template, loading, error } = useTemplate(templateId);
-  useEffect(() => {
-    if (isEditMode && template) {
-      setMeta({
-        title: template.title,
-        description: template.description,
-        topic: (template as any).topic || '',
-        tags: (template as any).tags || '',
-        isPublic: (template as any).isPublic || false,
-      });
-      if (template.questions && Array.isArray(template.questions)) {
-        setQuestions(
-          template.questions.map((q: any) => ({
-            title: q.title,
-            description: q.description || '',
-            type: q.type,
-          }))
-        );
-      }
-    }
-  }, [isEditMode, template]);
-
-  const handleMetaChange = (field: keyof typeof meta, value: string | boolean) => {
-    setMeta(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleQuestionChange = (idx: number, field: keyof NewQuestion, value: string) => {
-    const qs = [...questions];
-    qs[idx] = { ...qs[idx], [field]: value };
-    setQuestions(qs);
-  };
-
-  const addQuestion = () => {
-    setQuestions(prev => [...prev, { title: '', description: '', type: 'single-line' }]);
-  };
+  
+  const {
+    isEditMode,
+    meta,
+    questions,
+    handleMetaChange,
+    handleQuestionChange,
+    addQuestion,
+    loading,
+    error,
+  } = useTemplateForm(templateId);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: TemplateForm = { ...meta, questions };
+    const payload = { ...meta, questions };
     try {
       if (isEditMode && templateId) {
         await axios.put(`templates/${templateId}`, payload);

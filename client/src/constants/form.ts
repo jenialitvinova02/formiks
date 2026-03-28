@@ -4,3 +4,8 @@ export const QUESTION_TYPES = [
     { label: 'Integer',     value: 'integer'     },
     { label: 'Checkbox',    value: 'checkbox'    },
   ];
+  export const DEFAULT_QUESTION = {
+  title: '',
+  description: '',
+  type: 'text',
+} as const;

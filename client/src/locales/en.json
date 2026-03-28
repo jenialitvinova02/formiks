@@ -146,8 +146,9 @@
       "titlePlaceholder": "Title",
       "descriptionPlaceholder": "Description",
       "option": {
-        "text": "Text",
-        "number": "Number",
+        "single-line": "Single Line",
+        "multi-line": "Multi Line",
+        "integer": "Number",
         "checkbox": "Checkbox"
       }
     }

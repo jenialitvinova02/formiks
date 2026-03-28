@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useAnswersForResponse } from '../../hooks/useAnswersForResponse';
+import { useAnswerValues } from '../../hooks/useAnswerValues';
 import { useTranslation } from 'react-i18next';
 
 const EditAnswerPage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId, answerId } = useParams<{ templateId: string; answerId: string }>();
   const navigate = useNavigate();
+  
   const { data: answers, loading, error } = useAnswersForResponse(answerId!);
+  const { values, handleChange } = useAnswerValues(answers);
 
-  const [values, setValues] = useState<Record<number, string>>({});
-
-  useEffect(() => {
-    const init: Record<number, string> = {};
-    answers.forEach(a => {
-      init[a.id] = a.value;
-    });
-    setValues(init);
-  }, [answers]);
-
-  const handleChange = (ansId: number, val: string) => {
-    setValues(v => ({ ...v, [ansId]: val }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await Promise.all(
@@ -36,7 +25,7 @@ const EditAnswerPage: React.FC = () => {
     } catch (e: any) {
       alert(e.response?.data?.error || e.message);
     }
-  };
+  }, [values, navigate, templateId]);
 
   if (loading) return <p>{t('editAnswer.loading')}</p>;
   if (error) return <p>{t('editAnswer.error', { error })}</p>;
@@ -62,7 +51,9 @@ const EditAnswerPage: React.FC = () => {
         </div>
       ))}
       <button type="submit">{t('editAnswer.saveChanges')}</button>
-      <button type="button" onClick={() => navigate(-1)}>{t('editAnswer.cancel')}</button>
+      <button type="button" onClick={() => navigate(-1)}>
+        {t('editAnswer.cancel')}
+      </button>
     </form>
   );
 };

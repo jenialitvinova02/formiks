@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../../hooks/useTheme';
+import { useLanguage } from '../../hooks/useLanguage';
+import { useInput } from '../../hooks/useInput';
+import { SUPPORTED_LANGUAGES } from '../../constants/languages';
 import './AuthForm.scss';
 
 interface Props {
@@ -9,62 +13,55 @@ interface Props {
 }
 
 const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { login, register, error, loading } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const { currentLanguage, changeLanguage } = useLanguage();
 
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const emailInput = useInput('');
+  const passwordInput = useInput('');
+  const usernameInput = useInput('');
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (mode === 'login') await login(email, password);
-      else await register(username, email, password, isAdmin ? 'admin' : 'user');
-      onSuccess();
-    } catch {}
-  };
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
-  const toggleTheme = () => {
-    setTheme(prev => {
-      const newTheme = prev === 'dark' ? 'light' : 'dark';
-      if (newTheme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'white');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
+  const submit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        if (mode === 'login') {
+          await login(emailInput.value, passwordInput.value);
+        } else {
+          await register(usernameInput.value, emailInput.value, passwordInput.value, isAdmin ? 'admin' : 'user');
+        }
+        onSuccess();
+      } catch {
       }
-      return newTheme;
-    });
-  };
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
+    },
+    [mode, emailInput.value, passwordInput.value, usernameInput.value, isAdmin, login, register, onSuccess]
+  );
 
   return (
     <form className="authForm" onSubmit={submit}>
       {mode === 'register' && (
         <input
           placeholder={t('authForm.username')}
-          value={username}
-          onChange={e => setUsername(e.target.value)}
+          value={usernameInput.value}
+          onChange={usernameInput.onChange}
           required
         />
       )}
       <input
         type="email"
         placeholder={t('authForm.email')}
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+        value={emailInput.value}
+        onChange={emailInput.onChange}
         required
       />
       <input
         type="password"
         placeholder={t('authForm.password')}
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        value={passwordInput.value}
+        onChange={passwordInput.onChange}
         required
       />
       {mode === 'register' && (
@@ -86,19 +83,15 @@ const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
             : t('authForm.register')}
       </button>
       <div className="authForm__controls">
-          <select
-            onChange={e => changeLanguage(e.target.value)}
-            value={i18n.language}
-            className="authForm__controls--language"
-          >
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
-            <option value="pl">PL</option>
+          <select onChange={e => changeLanguage(e.target.value)} value={currentLanguage}>
+            {SUPPORTED_LANGUAGES.map(lang => (
+              <option key={lang.code} value={lang.code}>{lang.label}</option>
+            ))}
           </select>
-          <button className="authForm__controls--theme" type="button" onClick={toggleTheme}>
+          <button type="button" onClick={toggleTheme}>
             {theme === 'dark' ? t('authForm.lightMode') : t('authForm.darkMode')}
           </button>
-        </div>
+      </div>
     </form>
   );
 };
