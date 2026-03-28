@@ -99,16 +99,38 @@ router.put(
   authorizeTemplateOwner,
   async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-      const tpl = await Template.findByPk(req.params.id);
+      const tpl = await Template.findByPk(req.params.id, {
+        include: [{ model: Question, as: 'questions' }]
+      });
       if (!tpl) {
         res.status(404).json({ error: 'Template not found' });
         return;
       }
-      await tpl.update(req.body);
-      res.json(tpl);
+      
+      // Извлекаем поля шаблона и вопросы из тела запроса
+      const { title, description, topic, image, tags, isPublic, questions } = req.body;
+      
+      // Обновляем данные шаблона
+      await tpl.update({ title, description, topic, image, tags, isPublic });
+      
+      // Обновляем связанные вопросы:
+      // 1. Удаляем старые вопросы
+      await Question.destroy({ where: { templateId: tpl.id } });
+      // 2. Если вопросы переданы, создаём новые с templateId
+      if (Array.isArray(questions)) {
+        for (const q of questions) {
+          await Question.create({ ...q, templateId: tpl.id });
+        }
+      }
+
+      // Возвращаем обновлённый шаблон с вопросами
+      const updatedTemplate = await Template.findByPk(tpl.id, {
+        include: [{ model: Question, as: 'questions' }]
+      });
+      res.json(updatedTemplate);
     } catch (e: any) {
       console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: 'Internal server error', message: e.message });
     }
   }
 );

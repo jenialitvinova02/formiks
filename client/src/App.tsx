@@ -8,7 +8,7 @@ import TemplatesPage from './pages/TemplatesPage/TemplatesPage';
 import CreateTemplatePage from './pages/CreateTemplatePage/CreateTemplatePage';
 import AdminPanel from './pages/AdminPanel/AdminPanel';
 import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
-import GuestDashboard from './pages/GuestDashboard/GuestDashboard'; 
+import GuestDashboard from './pages/GuestDashboard/GuestDashboard';
 import ProtectedRoute from './routes/ProtectedRoute';
 import FillForm from './pages/FillTemplatePage/FillTemplatePage';
 import FillTemplatePage from './pages/FillTemplatePage/FillTemplatePage';
@@ -33,6 +33,7 @@ const AppContent: React.FC = () => {
             <ProfilePage />
           </ProtectedRoute>
         } />
+     
         <Route path="/templates" element={
           <ProtectedRoute>
             <TemplatesPage />
@@ -43,6 +44,14 @@ const AppContent: React.FC = () => {
             <CreateTemplatePage />
           </ProtectedRoute>
         } />
+        <Route
+  path="/templates/edit/:templateId"
+  element={
+    <ProtectedRoute>
+      <CreateTemplatePage />
+    </ProtectedRoute>
+  }
+/>
         <Route path="/create-form" element={
           <ProtectedRoute>
             <CreateFormPage />
@@ -68,7 +77,7 @@ const AppContent: React.FC = () => {
             <FillForm />
           </ProtectedRoute>
         } />
- 
+
         <Route
           path="/templates/:templateId/answers"
           element={
