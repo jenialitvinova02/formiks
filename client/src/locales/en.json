@@ -33,7 +33,11 @@
       "admin": "Admin",
       "pleaseWait": "Please wait…",
       "login": "Login",
-      "register": "Register"
+      "register": "Register",
+      "language": "Language",
+      "theme": "Theme",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
     },
     "dashboard": {
       "title": "Dashboard",

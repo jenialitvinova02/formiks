@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import axios from '../axiosInstance';
 
@@ -12,7 +11,7 @@ export function useProfile() {
   useEffect(() => {
     axios.get('users/me')
       .then(r=>setData(r.data))
-      .catch(e=>setError('Failed to load'))
+      .catch(() => setError('Failed to load'))
       .finally(()=>setLoading(false));
   }, []);
 

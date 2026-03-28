@@ -1,6 +1,5 @@
-import { Router, Request, Response as ExResponse } from 'express';
+import { Router, Response as ExResponse } from 'express';
 import Template from '../models/Template';
-import Question from '../models/Question';
 import ResponseModel from '../models/Response';
 import Answer from '../models/Answer';
 import { authenticateJWT, AuthRequest } from '../middleware/authenticateJWT';
@@ -8,7 +7,6 @@ import { authorizeResponseOwner } from '../middleware/authorize';
 
 const router = Router();
 
-// GET /api/responses — все пройденные (admin)
 router.get(
   '/',
   authenticateJWT,
@@ -27,7 +25,6 @@ router.get(
   }
 );
 
-// GET /api/responses/user — свои (user/admin)
 router.get(
   '/user',
   authenticateJWT,
@@ -45,7 +42,6 @@ router.get(
   }
 );
 
-// GET /api/responses/:id — детали (включая answers)
 router.get(
   '/:id',
   authenticateJWT,
@@ -70,7 +66,6 @@ router.get(
   }
 );
 
-// POST /api/responses/from-template/:templateId — пройти шаблон
 router.post(
   '/from-template/:templateId',
   authenticateJWT,
@@ -104,7 +99,6 @@ router.post(
   }
 );
 
-// GET /api/responses/template/:templateId — все ответившие на этот шаблон
 router.get(
   '/template/:templateId',
   authenticateJWT,
@@ -123,7 +117,6 @@ router.get(
   }
 );
 
-// DELETE /api/responses/:id — удалить свою/любую (admin)
 router.delete(
   '/:id',
   authenticateJWT,

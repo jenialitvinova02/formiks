@@ -43,7 +43,7 @@ Question.init(
       allowNull: true,
     },
     type: {
-      type: DataTypes.STRING(50), // increased length limit to 50 characters
+      type: DataTypes.STRING(50), 
       allowNull: false,
     },
     order: {
@@ -65,16 +65,14 @@ Question.init(
       },
       field: 'template_id'
     },
-    // удалили declaration for formId
   },
   {
     sequelize,
     modelName: 'Question',
     tableName: 'questions',
     timestamps: true,
-    underscored: true,  // если не задано глобально
+    underscored: true,  
   }
 );
 
 export default Question;
-// никаких ассоциаций здесь

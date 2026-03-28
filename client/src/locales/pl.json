@@ -33,7 +33,11 @@
       "admin": "Administrator",
       "pleaseWait": "Proszę czekać…",
       "login": "Logowanie",
-      "register": "Rejestracja"
+      "register": "Rejestracja",
+      "language": "Język",
+      "theme": "Motyw",
+      "lightMode": "Jasny motyw",
+      "darkMode": "Ciemny motyw"
     },
     "dashboard": {
       "title": "Panel Sterowania",

@@ -24,8 +24,6 @@ class Template extends Model<TemplateAttributes, TemplateCreationAttributes> imp
   public tags?: string;
   public isPublic!: boolean;
   public userId!: number;
-
-  // Добавляем ассоциированное свойство вопросов
   public questions?: Question[]; 
 
   public readonly createdAt!: Date;

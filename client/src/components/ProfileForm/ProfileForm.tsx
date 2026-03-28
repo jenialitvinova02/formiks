@@ -17,7 +17,6 @@ const ProfileForm: React.FC = () => {
       await update(form);
       setEditing(false);
     } catch {
-      // Обработка ошибки сохранения, если необходима
     }
   };
 

@@ -23,7 +23,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// инициализируем связи
 initAssociations();
 
 app.use('/api/auth', authRoutes);

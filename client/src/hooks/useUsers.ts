@@ -12,7 +12,7 @@ export function useUsers() {
   useEffect(() => {
     axios.get('users')
       .then(r=>setData(r.data))
-      .catch(e=>setError('Cannot fetch users'))
+      .catch(() => setError('Cannot fetch users'))
       .finally(()=>setLoading(false));
   }, []);
 

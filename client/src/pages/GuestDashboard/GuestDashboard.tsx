@@ -16,7 +16,7 @@ const GuestDashboard: React.FC = () => {
     <div>
       <h1>{t('guestDashboard.allPublicTemplates')}</h1>
       {items.length > 0
-        ? <TemplateList items={items} onSelect={id => {/*navigate if needed*/}} />
+        ? <TemplateList items={items} onSelect={() => {/**/}} />
         : <p>{t('guestDashboard.noPublicTemplates')}</p>
       }
     </div>

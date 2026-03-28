@@ -25,7 +25,6 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, children }) => {
     return (
         <div ref={setNodeRef} style={style} {...attributes}>
             <div style={{ position: 'relative' }}>
-                {/* Иконка-драг внутри карточки */}
                 <div
                     {...listeners}
                     style={{

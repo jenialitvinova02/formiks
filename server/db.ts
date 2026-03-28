@@ -1,16 +1,15 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
-dotenv.config();  // ← убедитесь, что в этой же папке лежит server/.env
+dotenv.config();  
 
 
-// Используем переменную DB_URI из .env, чтобы задать user/password/host/db
 const sequelize = new Sequelize(process.env.DB_URI!, {
   dialect: 'mysql',
   define: {
-    underscored: true,   // создаёт/ищет колонки created_at/updated_at
-    timestamps: true     // автоматически добавляет поля createdAt/updatedAt
+    underscored: true,   
+    timestamps: true     
   },
-  logging: console.log,  // или false, если не нужен SQL‑лог
+  logging: console.log,  
 });
 
 sequelize

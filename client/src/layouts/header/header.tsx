@@ -55,14 +55,14 @@ const Header: React.FC = () => {
         )}
       </nav>
       <div className="header__right">
-        <button onClick={toggleTheme}>
-          {theme === 'dark' ? t('header.lightMode') : t('header.darkMode')}
-        </button>
-        <select onChange={(e) => changeLanguage(e.target.value)} defaultValue={i18n.language}>
+      <select onChange={(e) => changeLanguage(e.target.value)} defaultValue={i18n.language}>
           <option value="en">EN</option>
           <option value="ru">RU</option>
           <option value="pl">PL</option>
         </select>
+        <button onClick={toggleTheme}>
+          {theme === 'dark' ? t('header.lightMode') : t('header.darkMode')}
+        </button>
         {(token || isGuest) && (
           <button className="header__button" onClick={handleLogout}>{t('header.logout')}</button>
         )}

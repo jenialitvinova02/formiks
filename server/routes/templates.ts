@@ -58,7 +58,6 @@ router.post(
       console.log('[templates POST] Получены данные:', req.body);
       const { title, description, topic, image, tags, isPublic, questions } = req.body;
       
-      // Создаём шаблон
       const tpl = await Template.create({
         title,
         description,
@@ -69,19 +68,16 @@ router.post(
         userId: req.user.id
       });
       
-      // Если вопросы переданы как массив – пытаемся создать их по одному
       if (Array.isArray(questions)) {
         for (const q of questions) {
           try {
             await Question.create({ ...q, templateId: tpl.id });
           } catch (qError: any) {
             console.error('[templates POST] Ошибка при создании вопроса:', q, qError.message);
-            // Можно решить, продолжать или возвращать ошибку
           }
         }
       }
       
-      // Обновляем шаблон с вопросами для возврата клиенту
       const created = await Template.findByPk(tpl.id, {
         include: [{ model: Question, as: 'questions' }]
       });
@@ -107,23 +103,17 @@ router.put(
         return;
       }
       
-      // Извлекаем поля шаблона и вопросы из тела запроса
       const { title, description, topic, image, tags, isPublic, questions } = req.body;
       
-      // Обновляем данные шаблона
       await tpl.update({ title, description, topic, image, tags, isPublic });
       
-      // Обновляем связанные вопросы:
-      // 1. Удаляем старые вопросы
       await Question.destroy({ where: { templateId: tpl.id } });
-      // 2. Если вопросы переданы, создаём новые с templateId
       if (Array.isArray(questions)) {
         for (const q of questions) {
           await Question.create({ ...q, templateId: tpl.id });
         }
       }
 
-      // Возвращаем обновлённый шаблон с вопросами
       const updatedTemplate = await Template.findByPk(tpl.id, {
         include: [{ model: Question, as: 'questions' }]
       });

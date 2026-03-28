@@ -4,7 +4,6 @@ import { authenticateJWT } from '../middleware/authenticateJWT';
 
 const router = Router();
 
-// GET /api/answers/response/:responseId — все ответы по форме
 router.get(
   '/response/:responseId',
   authenticateJWT,
@@ -23,7 +22,6 @@ router.get(
   }
 );
 
-// GET /api/answers/:id — один ответ
 router.get(
   '/:id',
   authenticateJWT,
@@ -42,7 +40,6 @@ router.get(
   }
 );
 
-// POST /api/answers — добавить вручную
 router.post(
   '/',
   authenticateJWT,
@@ -61,7 +58,6 @@ router.post(
   }
 );
 
-// PUT /api/answers/:id — обновить
 router.put(
   '/:id',
   authenticateJWT,
@@ -84,7 +80,6 @@ router.put(
   }
 );
 
-// DELETE /api/answers/:id — удалить
 router.delete(
   '/:id',
   authenticateJWT,

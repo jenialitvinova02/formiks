@@ -4,6 +4,7 @@
     padding: 20px 5% 20px 5%;
     align-items: center;
     background-color: var(--background-second);
+    justify-content: space-between;
 }
 .header__logo{
     height: 100%;
@@ -11,8 +12,7 @@
 }
 .header__right{
     display: flex;
-    margin-left: auto;
-    gap: 100px;
+    gap: 40px;
     height: 100%;
     align-items: center;
 
@@ -20,7 +20,6 @@
 .header__links{
     display: flex;
     gap:40px;
-    margin-left: 30px;
 }
 .header__button{
     margin-left: auto;

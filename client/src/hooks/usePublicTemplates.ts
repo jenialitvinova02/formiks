@@ -4,7 +4,7 @@ import axios from '../axiosInstance';
 export interface TemplateData {
   id: string;
   name: string;
-  description: string; // <-- если API отдаёт поле description
+  description: string; 
 }
 
 export function usePublicTemplates() {

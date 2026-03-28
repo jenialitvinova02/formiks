@@ -13,7 +13,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import FillForm from './pages/FillTemplatePage/FillTemplatePage';
 import FillTemplatePage from './pages/FillTemplatePage/FillTemplatePage';
 import FormAnswersListPage from './pages/FormAnswersListPage/FormAnswersListPage';
-import ViewAnswerPage from './pages/Templates/ViewAnswerPage';
+import ViewAnswerPage from './pages/ViewAnswerPage/ViewAnswerPage';
 import EditAnswerPage from './pages/EditAnswerPage/EditAnswerPage';
 
 const AppContent: React.FC = () => {
@@ -33,7 +33,7 @@ const AppContent: React.FC = () => {
             <ProfilePage />
           </ProtectedRoute>
         } />
-     
+
         <Route path="/templates" element={
           <ProtectedRoute>
             <TemplatesPage />
@@ -45,13 +45,13 @@ const AppContent: React.FC = () => {
           </ProtectedRoute>
         } />
         <Route
-  path="/templates/edit/:templateId"
-  element={
-    <ProtectedRoute>
-      <CreateTemplatePage />
-    </ProtectedRoute>
-  }
-/>
+          path="/templates/edit/:templateId"
+          element={
+            <ProtectedRoute>
+              <CreateTemplatePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/create-form" element={
           <ProtectedRoute>
             <CreateFormPage />

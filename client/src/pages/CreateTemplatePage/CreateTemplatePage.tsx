@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useCreateTemplate, TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
+import { TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
 import { useTemplate } from '../../hooks/useTemplate';
 import QuestionItem from '../../components/QuestionItem/QuestionItem';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,7 +13,6 @@ const CreateTemplatePage: React.FC = () => {
   const navigate = useNavigate();
   const isEditMode = Boolean(templateId);
 
-  // Состояние для метаданных шаблона
   const [meta, setMeta] = useState<Omit<TemplateForm, 'questions'>>({
     title: '',
     description: '',
@@ -21,10 +20,8 @@ const CreateTemplatePage: React.FC = () => {
     tags: '',
     isPublic: true,
   });
-  // Состояние для вопросов
   const [questions, setQuestions] = useState<NewQuestion[]>([]);
 
-  // Если режим редактирования – загружаем существующий шаблон
   const { data: template, loading, error } = useTemplate(templateId);
   useEffect(() => {
     if (isEditMode && template) {
@@ -66,11 +63,9 @@ const CreateTemplatePage: React.FC = () => {
     const payload: TemplateForm = { ...meta, questions };
     try {
       if (isEditMode && templateId) {
-        // Режим редактирования – обновление существующего шаблона
         await axios.put(`templates/${templateId}`, payload);
         navigate('/templates');
       } else {
-        // Режим создания нового шаблона
         const created = await axios.post('templates', payload);
         navigate(`/fill-template/${created.data.id}`);
       }
