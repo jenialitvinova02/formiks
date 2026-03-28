@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from '../axiosInstance';
 import { API_TEMPLATES } from '../constants/apiRoutes';
 
-export interface TemplateData {
+ interface TemplateData {
   id: number;
   title: string;
   description: string;
