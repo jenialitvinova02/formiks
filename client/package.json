@@ -1,18 +1,20 @@
 {
-  "name": "my-app",
+  "name": "formics",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:barrels": "barrelsby -d src/components -l all -s flat --delete && barrelsby -d src/hooks -l all -s flat --delete && barrelsby -d src/constants -l all -s flat --delete && barrelsby -d src/layouts -l all -s flat --delete && barrelsby -d src/pages -l all -s flat --delete"
   },
   "devDependencies": {
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.1",
     "@types/react-i18next": "^7.8.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "barrelsby": "^2.8.1",
     "typescript": "~5.7.2",
     "vite": "^6.2.0"
   },

@@ -1,10 +1,7 @@
 import React, { useCallback } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth, useTheme, useLanguage, useInput } from '../../hooks';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../../hooks/useTheme';
-import { useLanguage } from '../../hooks/useLanguage';
-import { useInput } from '../../hooks/useInput';
-import { SUPPORTED_LANGUAGES } from '../../constants/languages';
+import { SUPPORTED_LANGUAGES } from '../../constants';
 import './AuthForm.scss';
 
 interface Props {
@@ -12,7 +9,7 @@ interface Props {
   onSuccess: () => void;
 }
 
-const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
+export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
   const { t } = useTranslation();
   const { login, register, error, loading } = useAuth();
   const { theme, toggleTheme } = useTheme();

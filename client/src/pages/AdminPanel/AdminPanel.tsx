@@ -1,12 +1,11 @@
 import React from 'react';
-import { useUsers } from '../../hooks/useUsers';
 import { useTranslation } from 'react-i18next';
-import { useAdminPanel } from '../../hooks/useAdminPanel';
-import { ADMIN_ACTIONS } from '../../constants/adminActions';
+import { useAdminPanel, useUsers } from '../../hooks';
+import { ADMIN_ACTIONS } from '../../constants';
 import './AdminPanel.scss';
 
 
-const AdminPanel: React.FC = () => {
+export const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
   const { data: users, loading, error, updateRole } = useUsers();
   const { action, setAction, selectedIds, toggleSelection, cancelAction, handleConfirm } =

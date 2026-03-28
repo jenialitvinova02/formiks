@@ -2,18 +2,17 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
-import { useTemplates, TemplateData } from '../../hooks/useTemplates';
-import TemplateCard from '../../components/TemplateCard/TemplateCard';
-import SortableItem from '../../components/SortableItem/SortableItem';
+import { useTemplates, useSortableItems} from '../../hooks'; 
+import {TemplateCard, SortableItem} from '../../components'; 
 import { useTranslation } from 'react-i18next';
-import { useSortableItems } from '../../hooks/useSortableItems';
+import { TemplateData } from '../../hooks/useTemplates';
 import './DashboardPage.scss';
 
 const containerStyle: React.CSSProperties = {
   display: 'flex',
 };
 
-const DashboardPage: React.FC = () => {
+export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
   const { data: templates, loading, error } = useTemplates();
   const navigate = useNavigate();

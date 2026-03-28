@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEditableProfile } from '../../hooks/useEditableProfile';
+import { useEditableProfile } from '../../hooks'; 
 import './ProfileForm.scss';
 
-const ProfileForm: React.FC = () => {
+export const ProfileForm: React.FC = () => {
   const { t } = useTranslation();
   const { form, onChangeField, saveProfile, startEditing, cancelEditing, editing, loading, error } = useEditableProfile();
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileForm from '../../components/ProfileForm/ProfileForm';
+import {ProfileForm} from '../../components';
 import './ProfilePage.scss'
-const ProfilePage: React.FC = () => {
+export const ProfilePage: React.FC = () => {
     return (
         <div className='profilePage'>
             <ProfileForm />

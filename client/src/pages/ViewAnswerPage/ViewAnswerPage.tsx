@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useTemplate } from '../../hooks/useTemplate';
-import { useAnswersForResponse } from '../../hooks/useAnswersForResponse';
+import { useTemplate, useAnswersForResponse } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 
-const ViewAnswerPage: React.FC = () => {
+export const ViewAnswerPage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId, answerId } = useParams<{ templateId: string; answerId?: string }>();
   

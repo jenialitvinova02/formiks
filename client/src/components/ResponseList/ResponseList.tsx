@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponseInfo } from '../../hooks/useResponsesForTemplate';
+import { ResponseInfo } from '../../hooks';
 
 interface Props {
   items: ResponseInfo[];

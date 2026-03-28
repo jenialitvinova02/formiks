@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import TemplateList, { TemplateInfo } from '../../components/TemplateList/TemplateList';
-import { usePublicTemplates, TemplateData } from '../../hooks/usePublicTemplates';
+import {TemplateList,  TemplateInfo}  from '../../components';
+import { usePublicTemplates, TemplateData } from '../../hooks';
 
-const GuestDashboard: React.FC = () => {
+export const GuestDashboard: React.FC = () => {
   const { t } = useTranslation();
   const raw = usePublicTemplates();
   const items: TemplateInfo[] = raw.map((t: TemplateData) => ({

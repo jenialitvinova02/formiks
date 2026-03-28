@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
-import { ROUTES } from '../../constants/api';
-import { useTemplates } from '../../hooks/useTemplates';
+import { ROUTES } from '../../constants';
+import { useTemplates, useIsAdmin, useFormAnswersActions } from '../../hooks';
 import { useTranslation } from 'react-i18next';
-import { useIsAdmin } from '../../hooks/useIsAdmin';
-import { useFormAnswersActions } from '../../hooks/useFormAnswersActions';
 import './TemplatesPage.scss';
 
-const TemplatesPage: React.FC = () => {
+export const TemplatesPage: React.FC = () => {
   const { t } = useTranslation();
   const { data: templates, loading, error, refetch } = useTemplates();
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { QUESTION_TYPES } from '../../constants/form';
+import { QUESTION_TYPES } from '../../constants'; 
 import { useTranslation } from 'react-i18next';
 import './QuestionItem.scss';
 
@@ -11,7 +11,7 @@ interface Props {
   onChange: (field: 'title' | 'description' | 'type', value: string) => void;
 }
 
-const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChange }) => {
+export const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChange }) => {
   const { t } = useTranslation();
   return (
     <div className="questionItem">

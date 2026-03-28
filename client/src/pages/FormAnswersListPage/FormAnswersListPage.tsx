@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
-import { ROUTES } from '../../constants/api';
-import { useResponsesForTemplate, ResponseInfo } from '../../hooks/useResponsesForTemplate';
+import { ROUTES } from '../../constants';
+import { useResponsesForTemplate, ResponseInfo } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 import './FormAnswersListPage.scss';
 
-const FormAnswersListPage: React.FC = () => {
+export const FormAnswersListPage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();

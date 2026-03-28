@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import './header.scss';
 import Logo from '../../assets/logo.png';
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
   const token = localStorage.getItem('token');
   const isGuest = localStorage.getItem('guest') === 'true';

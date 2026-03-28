@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useQuestions } from '../../hooks/useQuestions';
-import FieldInput from '../../components/FieldInput/FieldInput';
+import { useQuestions, useAnswersState } from '../../hooks';
+import {FieldInput} from '../../components';
 import axios from '../../axiosInstance';
-import { useAnswersState } from '../../hooks/useAnswersState';
-import { API_RESPONSE_FROM_TEMPLATE } from '../../constants/apiRoutes';
+import { API_RESPONSE_FROM_TEMPLATE } from '../../constants';
 import './FillTemplatePage.scss';
 
-const FillTemplatePage: React.FC = () => {
+export const FillTemplatePage: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

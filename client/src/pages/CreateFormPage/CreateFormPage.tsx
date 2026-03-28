@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
-import { useInput } from '../../hooks/useInput';
-import { DEFAULT_QUESTION } from '../../constants/form';
+import { useInput } from '../../hooks';
+import { DEFAULT_QUESTION } from '../../constants';
 
 interface Question {
   title: string;
   type: 'text' | 'number' | 'checkbox';
 }
 
-const CreateFormPage: React.FC = () => {
+export const CreateFormPage: React.FC = () => {
   const { t } = useTranslation();
   const title = useInput('');
   const description = useInput('');

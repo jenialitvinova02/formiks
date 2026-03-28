@@ -1,7 +1,6 @@
 import React from 'react';
-import { Question } from '../../hooks/useQuestions';
+import { Question, useNormalizedFieldType } from '../../hooks';
 import { useTranslation } from 'react-i18next';
-import { useNormalizedFieldType } from '../../hooks/useNormalizedFieldType';
 import './FieldInput.scss';
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
   onChange: (qid: number, val: string | boolean) => void;
 }
 
-const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
+export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   const { id, type } = question;
   const { t } = useTranslation();
   const normalizedType = useNormalizedFieldType(type);

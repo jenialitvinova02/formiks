@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../../hooks/useUsers';
+import { User } from '../../hooks';
 import './UserList.scss';
 
 interface Props {

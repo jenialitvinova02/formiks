@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthForm from '../../components/AuthForm/AuthForm';
-import useAuthMode from '../../hooks/useAuthMode';
+import {AuthForm} from '../../components';
+import {useAuthMode} from '../../hooks';
 import './AuthPage.scss';
 
-const AuthPage: React.FC = () => {
+export const AuthPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const mode = useAuthMode();

@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
-import QuestionItem from '../../components/QuestionItem/QuestionItem';
-import { useTemplateForm } from '../../hooks/useTemplateForm';
+import {QuestionItem} from '../../components';
+import { useTemplateForm } from '../../hooks';
 import './CreateTemplatePage.scss';
 
-const CreateTemplatePage: React.FC = () => {
+export const CreateTemplatePage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId?: string }>();
   const navigate = useNavigate();
