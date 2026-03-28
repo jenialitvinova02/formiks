@@ -4,7 +4,7 @@ import Header from './layouts/header/header';
 import AuthPage from './pages/AuthPage/AuthPage';
 import DashboardPage from './pages/DashboardPage/DashboardPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
-import TemplatesPage from './pages/Templates/TemplatesPage';
+import TemplatesPage from './pages/TemplatesPage/TemplatesPage';
 import CreateTemplatePage from './pages/CreateTemplatePage/CreateTemplatePage';
 import AdminPanel from './pages/AdminPanel/AdminPanel';
 import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
