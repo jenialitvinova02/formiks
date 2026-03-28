@@ -41,4 +41,34 @@ router.get('/', authenticateJWT, authorizeAdmin, async (req: Request, res: Respo
     }
 });
 
+router.put('/:id', authenticateJWT, authorizeAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        await user.update({ role: req.body.role });
+        res.json(user);
+    } catch (e: any) {
+        res.status(500).json({ error: 'Internal server error', message: e.message });
+    }
+});
+
+router.delete('/:id', authenticateJWT, authorizeAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        await user.destroy();
+        res.json({ message: 'User deleted' });
+    } catch (e: any) {
+        res.status(500).json({ error: 'Internal server error', message: e.message });
+    }
+});
+
 export default router;
