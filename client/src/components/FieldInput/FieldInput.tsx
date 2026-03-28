@@ -12,7 +12,6 @@ const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   const { id, type } = question;
   const t = type.toLowerCase().trim();
 
-  // Вывод отладочной информации о типе вопроса
   console.log(`Rendering FieldInput for question id ${id} with type:`, t);
 
   if (t === 'integer' || t === 'number' || t === 'int') {
