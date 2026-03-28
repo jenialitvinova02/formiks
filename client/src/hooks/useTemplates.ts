@@ -13,13 +13,14 @@ export interface TemplateData {
 export function useTemplates() {
   const [data, setData] = useState<TemplateData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchTemplates = () => {
     setLoading(true);
-    axios.get(API_TEMPLATES)
-      .then(res => setData(res.data))
-      .catch(err => setError(err.response?.data?.error || err.message))
+    axios
+      .get(API_TEMPLATES)
+      .then((res) => setData(res.data))
+      .catch((err) => setError(err.response?.data?.error || err.message))
       .finally(() => setLoading(false));
   };
 

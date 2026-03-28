@@ -1,14 +1,14 @@
-
 import { useState } from 'react';
 import axios from '../axiosInstance';
 import { ROUTES } from '../constants/api';
 
 export function useAuth() {
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function login(email: string, password: string) {
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       const { data } = await axios.post(ROUTES.auth.login, { email, password });
       localStorage.setItem('token', data.token);
@@ -21,13 +21,28 @@ export function useAuth() {
     }
   }
 
-  async function register(username: string, email: string, password: string, role: string) {
-    setLoading(true); setError(null);
+  async function register(
+    username: string,
+    email: string,
+    password: string,
+    role: string,
+  ) {
+    setLoading(true);
+    setError(null);
     try {
-      await axios.post(ROUTES.auth.register, { username, email, password, role });
+      await axios.post(ROUTES.auth.register, {
+        username,
+        email,
+        password,
+        role,
+      });
       return login(email, password);
     } catch (e: any) {
-      setError(e.response?.data?.errors?.[0]?.msg || e.response?.data?.error || e.message);
+      setError(
+        e.response?.data?.errors?.[0]?.msg ||
+          e.response?.data?.error ||
+          e.message,
+      );
       throw e;
     } finally {
       setLoading(false);

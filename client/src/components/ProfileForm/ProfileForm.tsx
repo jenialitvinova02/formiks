@@ -1,11 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEditableProfile } from '../../hooks'; 
+import { useEditableProfile } from '../../hooks';
 import './ProfileForm.scss';
 
 export const ProfileForm: React.FC = () => {
   const { t } = useTranslation();
-  const { form, onChangeField, saveProfile, startEditing, cancelEditing, editing, loading, error } = useEditableProfile();
+  const {
+    form,
+    onChangeField,
+    saveProfile,
+    startEditing,
+    cancelEditing,
+    editing,
+    loading,
+    error,
+  } = useEditableProfile();
 
   if (loading) return <p>{t('profileForm.loading')}</p>;
   if (error || !form) return <p>{error || t('profileForm.error')}</p>;
@@ -18,12 +27,12 @@ export const ProfileForm: React.FC = () => {
           <label>{t('profileForm.username')}</label>
           <input
             value={form.username}
-            onChange={e => onChangeField('username', e.target.value)}
+            onChange={(e) => onChangeField('username', e.target.value)}
           />
           <label>{t('profileForm.email')}</label>
           <input
             value={form.email}
-            onChange={e => onChangeField('email', e.target.value)}
+            onChange={(e) => onChangeField('email', e.target.value)}
           />
         </div>
         <div className="profileEdit__container--buttons">
@@ -36,8 +45,12 @@ export const ProfileForm: React.FC = () => {
     <div className="profileForm">
       <h1>{t('profileForm.profile')}</h1>
       <div className="profileForm__container">
-        <p>{t('profileForm.username')}: {form.username}</p>
-        <p>{t('profileForm.email')}: {form.email}</p>
+        <p>
+          {t('profileForm.username')}: {form.username}
+        </p>
+        <p>
+          {t('profileForm.email')}: {form.email}
+        </p>
         <button
           className="profileForm__container--button"
           onClick={startEditing}

@@ -12,13 +12,14 @@ export interface TemplateDetail {
 export function useTemplate(id: string | undefined) {
   const [data, setData] = useState<TemplateDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
-    axios.get<TemplateDetail>(`${ROUTES.templates}/${id}`)
-      .then(r => setData(r.data))
-      .catch(e => setError(e.response?.data?.error || e.message))
+    axios
+      .get<TemplateDetail>(`${ROUTES.templates}/${id}`)
+      .then((r) => setData(r.data))
+      .catch((e) => setError(e.response?.data?.error || e.message))
       .finally(() => setLoading(false));
   }, [id]);
 

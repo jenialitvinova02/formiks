@@ -7,18 +7,16 @@ import translationPL from './locales/pl.json';
 const resources = {
   en: { translation: translationEN },
   ru: { translation: translationRU },
-  pl: { translation: translationPL }
+  pl: { translation: translationPL },
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: 'en', 
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false
-    }
-  });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: 'en',
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 export default i18n;

@@ -4,12 +4,17 @@ import { useAdminPanel, useUsers } from '../../hooks';
 import { ADMIN_ACTIONS } from '../../constants';
 import './AdminPanel.scss';
 
-
 export const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
   const { data: users, loading, error, updateRole } = useUsers();
-  const { action, setAction, selectedIds, toggleSelection, cancelAction, handleConfirm } =
-    useAdminPanel({ updateRole });
+  const {
+    action,
+    setAction,
+    selectedIds,
+    toggleSelection,
+    cancelAction,
+    handleConfirm,
+  } = useAdminPanel({ updateRole });
 
   if (loading) return <p>{t('loading')}</p>;
   if (error) return <p>{error}</p>;
@@ -20,9 +25,15 @@ export const AdminPanel: React.FC = () => {
       <div className="adminPanel__buttons">
         {action === null ? (
           <>
-            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_ADMIN)}>{t('admin.makeAdmin')}</button>
-            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_USER)}>{t('admin.makeUser')}</button>
-            <button onClick={() => setAction(ADMIN_ACTIONS.DELETE)}>{t('admin.delete')}</button>
+            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_ADMIN)}>
+              {t('admin.makeAdmin')}
+            </button>
+            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_USER)}>
+              {t('admin.makeUser')}
+            </button>
+            <button onClick={() => setAction(ADMIN_ACTIONS.DELETE)}>
+              {t('admin.delete')}
+            </button>
           </>
         ) : (
           <div className="adminPanel__managementButtons">
@@ -33,7 +44,7 @@ export const AdminPanel: React.FC = () => {
       </div>
       {action !== null && <p>{t('admin.selectUsers')}</p>}
       <ul className="adminPanel__userList">
-        {users.map(user => (
+        {users.map((user) => (
           <li key={user.id}>
             <label>
               {action !== null && (

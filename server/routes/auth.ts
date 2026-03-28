@@ -11,7 +11,9 @@ router.post(
   [
     body('username').notEmpty().withMessage('Username is required'),
     body('email').isEmail().withMessage('Valid email is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    body('password')
+      .isLength({ min: 6 })
+      .withMessage('Password must be at least 6 characters long'),
   ],
   async (req: Request, res: Response): Promise<void> => {
     console.log('Incoming request body:', req.body);
@@ -42,7 +44,12 @@ router.post(
       console.log('User created:', user.toJSON());
       res.status(201).json(user);
     } catch (err: any) {
-      console.error('Error during registration:', err.name, err.message, err.errors);
+      console.error(
+        'Error during registration:',
+        err.name,
+        err.message,
+        err.errors,
+      );
       if (
         err.name === 'SequelizeValidationError' ||
         err.name === 'SequelizeUniqueConstraintError'
@@ -50,34 +57,36 @@ router.post(
         const details = err.errors.map((e: any) => e.message);
         res.status(400).json({ error: err.name, details });
       } else {
-        res.status(500).json({ error: 'Internal server error', message: err.message });
+        res
+          .status(500)
+          .json({ error: 'Internal server error', message: err.message });
       }
     }
-  }
+  },
 );
 
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) {
-            res.status(401).json({ error: 'Invalid credentials' });
-            return;
-        }
-        const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
-            process.env.JWT_SECRET || 'your_jwt_secret',
-            { expiresIn: '1h' }
-        );
-        res.json({ token });
-    } catch (e) {
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
+    }
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'your_jwt_secret',
+      { expiresIn: '1h' },
+    );
+    res.json({ token });
+  } catch (e) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 export default router;

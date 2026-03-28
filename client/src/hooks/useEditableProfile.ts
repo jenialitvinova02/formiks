@@ -9,7 +9,10 @@ export type ProfileFormFields = {
 export function useEditableProfile() {
   const { data, update, loading, error } = useProfile();
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState<ProfileFormFields>({ username: '', email: '' });
+  const [form, setForm] = useState<ProfileFormFields>({
+    username: '',
+    email: '',
+  });
 
   // При загрузке профиля и изменении data инициализируем форму
   useEffect(() => {
@@ -20,9 +23,9 @@ export function useEditableProfile() {
 
   const onChangeField = useCallback(
     (field: keyof ProfileFormFields, value: string) => {
-      setForm(prev => ({ ...prev, [field]: value }));
+      setForm((prev) => ({ ...prev, [field]: value }));
     },
-    []
+    [],
   );
 
   const saveProfile = useCallback(async () => {
@@ -39,5 +42,14 @@ export function useEditableProfile() {
 
   const cancelEditing = useCallback(() => setEditing(false), []);
 
-  return { form, onChangeField, saveProfile, startEditing, cancelEditing, editing, loading, error };
+  return {
+    form,
+    onChangeField,
+    saveProfile,
+    startEditing,
+    cancelEditing,
+    editing,
+    loading,
+    error,
+  };
 }

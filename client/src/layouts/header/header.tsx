@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const changeLanguage = (lng: string) => {
@@ -38,8 +38,10 @@ export const Header: React.FC = () => {
     <header className="header">
       <img className="header__logo" src={Logo} alt="Logo" />
       <nav className="header__links">
-        <Link to={token || isGuest ? "/dashboard" : "/login"}>{t('header.dashboard')}</Link>
-        {!(isGuest) && (
+        <Link to={token || isGuest ? '/dashboard' : '/login'}>
+          {t('header.dashboard')}
+        </Link>
+        {!isGuest && (
           <>
             <Link to="/templates">{t('header.myTemplates')}</Link>
             <Link to="/create-template">{t('header.createTemplate')}</Link>
@@ -55,7 +57,10 @@ export const Header: React.FC = () => {
         )}
       </nav>
       <div className="header__right">
-      <select onChange={(e) => changeLanguage(e.target.value)} defaultValue={i18n.language}>
+        <select
+          onChange={(e) => changeLanguage(e.target.value)}
+          defaultValue={i18n.language}
+        >
           <option value="en">EN</option>
           <option value="ru">RU</option>
           <option value="pl">PL</option>
@@ -64,7 +69,9 @@ export const Header: React.FC = () => {
           {theme === 'dark' ? t('header.lightMode') : t('header.darkMode')}
         </button>
         {(token || isGuest) && (
-          <button className="header__button" onClick={handleLogout}>{t('header.logout')}</button>
+          <button className="header__button" onClick={handleLogout}>
+            {t('header.logout')}
+          </button>
         )}
       </div>
     </header>

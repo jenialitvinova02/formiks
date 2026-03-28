@@ -9,13 +9,20 @@ interface Props {
   onClick: () => void;
 }
 
-export const TemplateCard: React.FC<Props> = ({ title, description, topic, onClick }) => {
+export const TemplateCard: React.FC<Props> = ({
+  title,
+  description,
+  topic,
+  onClick,
+}) => {
   const { t } = useTranslation();
   return (
     <div className="template-card" onClick={onClick}>
       <h3>{title}</h3>
       <p>{description}</p>
-      <small>{t('templateCard.topic')}: {topic}</small>
+      <small>
+        {t('templateCard.topic')}: {topic}
+      </small>
     </div>
   );
 };

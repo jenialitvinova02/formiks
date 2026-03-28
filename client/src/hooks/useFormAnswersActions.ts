@@ -8,8 +8,8 @@ export function useFormAnswersActions() {
   const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
 
   const toggleDeleteSelection = useCallback((id: number) => {
-    setSelectedDelete(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    setSelectedDelete((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   }, []);
 
@@ -38,6 +38,6 @@ export function useFormAnswersActions() {
     enterDeleteMode,
     enterEditMode,
     cancelAction,
-    setSelectedEdit, 
+    setSelectedEdit,
   };
 }

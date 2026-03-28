@@ -5,14 +5,21 @@ import { useTranslation } from 'react-i18next';
 
 export const ViewAnswerPage: React.FC = () => {
   const { t } = useTranslation();
-  const { templateId, answerId } = useParams<{ templateId: string; answerId?: string }>();
-  
+  const { templateId, answerId } = useParams<{
+    templateId: string;
+    answerId?: string;
+  }>();
+
   if (!answerId) {
     return <p>{t('viewAnswer.noAnswerId')}</p>;
   }
 
   const { data: tpl, loading: l1, error: e1 } = useTemplate(templateId);
-  const { data: answers, loading: l2, error: e2 } = useAnswersForResponse(answerId);
+  const {
+    data: answers,
+    loading: l2,
+    error: e2,
+  } = useAnswersForResponse(answerId);
 
   if (l1 || l2) return <p>{t('viewAnswer.loading')}</p>;
   if (e1) return <p>{t('viewAnswer.errorTemplate', { error: e1 })}</p>;
@@ -23,16 +30,23 @@ export const ViewAnswerPage: React.FC = () => {
     <div>
       <h1>{tpl.title}</h1>
       <p>{tpl.description}</p>
-      <h2>{t('viewAnswer.response')} #{answerId}</h2>
-      {answers.map(answer => (
+      <h2>
+        {t('viewAnswer.response')} #{answerId}
+      </h2>
+      {answers.map((answer) => (
         <div key={answer.id}>
           {answer.question && (
             <>
-              <strong>{t('viewAnswer.question')}: </strong> {answer.question.title}<br />
-              <em>{t('viewAnswer.type')}: </em> {answer.question.type}<br />
+              <strong>{t('viewAnswer.question')}: </strong>{' '}
+              {answer.question.title}
+              <br />
+              <em>{t('viewAnswer.type')}: </em> {answer.question.type}
+              <br />
             </>
           )}
-          <p><strong>{t('viewAnswer.answer')}: </strong> {answer.value}</p>
+          <p>
+            <strong>{t('viewAnswer.answer')}: </strong> {answer.value}
+          </p>
         </div>
       ))}
     </div>

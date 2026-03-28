@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
-import {QuestionItem} from '../../components';
+import { QuestionItem } from '../../components';
 import { useTemplateForm } from '../../hooks';
 import './CreateTemplatePage.scss';
 
@@ -10,7 +10,7 @@ export const CreateTemplatePage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId?: string }>();
   const navigate = useNavigate();
-  
+
   const {
     isEditMode,
     meta,
@@ -43,34 +43,38 @@ export const CreateTemplatePage: React.FC = () => {
 
   return (
     <form className="createTemplate" onSubmit={onSubmit}>
-      <h1>{isEditMode ? t('createTemplate.editTemplate') : t('createTemplate.createTemplate')}</h1>
+      <h1>
+        {isEditMode
+          ? t('createTemplate.editTemplate')
+          : t('createTemplate.createTemplate')}
+      </h1>
       <div className="createTemplate__container container">
         <input
           placeholder={t('createTemplate.title')}
           value={meta.title}
-          onChange={e => handleMetaChange('title', e.target.value)}
+          onChange={(e) => handleMetaChange('title', e.target.value)}
           required
         />
         <textarea
           placeholder={t('createTemplate.description')}
           value={meta.description}
-          onChange={e => handleMetaChange('description', e.target.value)}
+          onChange={(e) => handleMetaChange('description', e.target.value)}
         />
         <input
           placeholder={t('createTemplate.topic')}
           value={meta.topic}
-          onChange={e => handleMetaChange('topic', e.target.value)}
+          onChange={(e) => handleMetaChange('topic', e.target.value)}
         />
         <input
           placeholder={t('createTemplate.tags')}
           value={meta.tags}
-          onChange={e => handleMetaChange('tags', e.target.value)}
+          onChange={(e) => handleMetaChange('tags', e.target.value)}
         />
         <label>
           <input
             type="checkbox"
             checked={meta.isPublic}
-            onChange={e => handleMetaChange('isPublic', e.target.checked)}
+            onChange={(e) => handleMetaChange('isPublic', e.target.checked)}
           />
           {t('createTemplate.public')}
         </label>
@@ -84,7 +88,9 @@ export const CreateTemplatePage: React.FC = () => {
             {t('createTemplate.addQuestion')}
           </button>
           <button type="submit">
-            {isEditMode ? t('createTemplate.saveChanges') : t('createTemplate.createTemplateButton')}
+            {isEditMode
+              ? t('createTemplate.saveChanges')
+              : t('createTemplate.createTemplateButton')}
           </button>
         </div>
 

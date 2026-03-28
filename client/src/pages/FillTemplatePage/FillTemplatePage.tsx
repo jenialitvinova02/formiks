@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuestions, useAnswersState } from '../../hooks';
-import {FieldInput} from '../../components';
+import { FieldInput } from '../../components';
 import axios from '../../axiosInstance';
 import { API_RESPONSE_FROM_TEMPLATE } from '../../constants';
 import './FillTemplatePage.scss';
@@ -25,7 +25,7 @@ export const FillTemplatePage: React.FC = () => {
         setSubmitError(e.response?.data?.error || e.message);
       }
     },
-    [answers, navigate, id]
+    [answers, navigate, id],
   );
 
   if (loading) return <p>{t('fillTemplate.loading')}</p>;
@@ -34,7 +34,7 @@ export const FillTemplatePage: React.FC = () => {
   return (
     <div className="formGroup">
       <form className="formGroup__container" onSubmit={handleSubmit}>
-        {questions.map(q => (
+        {questions.map((q) => (
           <div key={q.id} className="formGroup__container--block">
             <label>{q.title}</label>
             <FieldInput

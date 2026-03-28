@@ -29,7 +29,7 @@ export const TemplatesPage: React.FC = () => {
     if (!window.confirm(t('templates.deleteConfirm'))) return;
     try {
       await Promise.all(
-        selectedDelete.map(id => axios.delete(`${ROUTES.templates}/${id}`))
+        selectedDelete.map((id) => axios.delete(`${ROUTES.templates}/${id}`)),
       );
       refetch();
       cancelAction();
@@ -64,10 +64,14 @@ export const TemplatesPage: React.FC = () => {
           ) : (
             <div>
               {mode === 'delete' && (
-                <button onClick={handleDeleteConfirm}>{t('templates.confirmDelete')}</button>
+                <button onClick={handleDeleteConfirm}>
+                  {t('templates.confirmDelete')}
+                </button>
               )}
               {mode === 'edit' && (
-                <button onClick={handleEditConfirm}>{t('templates.confirmEdit')}</button>
+                <button onClick={handleEditConfirm}>
+                  {t('templates.confirmEdit')}
+                </button>
               )}
               <button onClick={cancelAction}>{t('templates.cancel')}</button>
             </div>
@@ -76,7 +80,7 @@ export const TemplatesPage: React.FC = () => {
       )}
 
       <ul className="template-list">
-        {templates.map(tmpl => (
+        {templates.map((tmpl) => (
           <li
             key={tmpl.id}
             className="template-list__item"
@@ -84,7 +88,7 @@ export const TemplatesPage: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              cursor: mode === 'normal' ? 'pointer' : 'default'
+              cursor: mode === 'normal' ? 'pointer' : 'default',
             }}
             onClick={() => {
               if (mode === 'normal') navigate(`/templates/${tmpl.id}/answers`);

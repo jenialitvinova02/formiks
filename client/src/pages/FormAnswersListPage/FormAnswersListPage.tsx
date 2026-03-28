@@ -26,8 +26,8 @@ export const FormAnswersListPage: React.FC = () => {
   if (!responses.length) return <p>{t('formAnswersList.noResponses')}</p>;
 
   const toggleDeleteSelection = (id: number) => {
-    setSelectedDelete(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    setSelectedDelete((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -52,7 +52,7 @@ export const FormAnswersListPage: React.FC = () => {
     if (!window.confirm(t('formAnswersList.deleteConfirmPrompt'))) return;
     try {
       await Promise.all(
-        selectedDelete.map(id => axios.delete(`${ROUTES.responses}/${id}`))
+        selectedDelete.map((id) => axios.delete(`${ROUTES.responses}/${id}`)),
       );
       navigate(0);
     } catch (err: any) {
@@ -75,15 +75,29 @@ export const FormAnswersListPage: React.FC = () => {
         <div className="FormAnswersList__buttons">
           {mode === 'normal' && (
             <>
-              <button onClick={enterDeleteMode}>{t('formAnswersList.deleteButton')}</button>
-              <button onClick={enterEditMode}>{t('formAnswersList.editButton')}</button>
+              <button onClick={enterDeleteMode}>
+                {t('formAnswersList.deleteButton')}
+              </button>
+              <button onClick={enterEditMode}>
+                {t('formAnswersList.editButton')}
+              </button>
             </>
           )}
           {mode !== 'normal' && (
             <>
-              {mode === 'delete' && <button onClick={handleDeleteConfirm}>{t('formAnswersList.confirmDelete')}</button>}
-              {mode === 'edit' && <button onClick={handleEditConfirm}>{t('formAnswersList.confirmEdit')}</button>}
-              <button onClick={cancelAction}>{t('formAnswersList.cancel')}</button>
+              {mode === 'delete' && (
+                <button onClick={handleDeleteConfirm}>
+                  {t('formAnswersList.confirmDelete')}
+                </button>
+              )}
+              {mode === 'edit' && (
+                <button onClick={handleEditConfirm}>
+                  {t('formAnswersList.confirmEdit')}
+                </button>
+              )}
+              <button onClick={cancelAction}>
+                {t('formAnswersList.cancel')}
+              </button>
             </>
           )}
         </div>
@@ -97,10 +111,11 @@ export const FormAnswersListPage: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              cursor: mode === 'normal' ? 'pointer' : 'default'
+              cursor: mode === 'normal' ? 'pointer' : 'default',
             }}
             onClick={() => {
-              if (mode === 'normal') navigate(`/templates/${templateId}/answers/${r.id}`);
+              if (mode === 'normal')
+                navigate(`/templates/${templateId}/answers/${r.id}`);
             }}
           >
             {mode === 'delete' && (

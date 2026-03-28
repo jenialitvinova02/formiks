@@ -12,9 +12,16 @@ interface QuestionAttributes {
   templateId?: number;
 }
 
-interface QuestionCreationAttributes extends Optional<QuestionAttributes, 'id' | 'order' | 'showInTable' | 'templateId'> {}
+interface QuestionCreationAttributes
+  extends Optional<
+    QuestionAttributes,
+    'id' | 'order' | 'showInTable' | 'templateId'
+  > {}
 
-class Question extends Model<QuestionAttributes, QuestionCreationAttributes> implements QuestionAttributes {
+class Question
+  extends Model<QuestionAttributes, QuestionCreationAttributes>
+  implements QuestionAttributes
+{
   public id!: number;
   public title!: string;
   public description!: string;
@@ -43,7 +50,7 @@ Question.init(
       allowNull: true,
     },
     type: {
-      type: DataTypes.STRING(50), 
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
     order: {
@@ -63,7 +70,7 @@ Question.init(
         model: Template,
         key: 'id',
       },
-      field: 'template_id'
+      field: 'template_id',
     },
   },
   {
@@ -71,8 +78,8 @@ Question.init(
     modelName: 'Question',
     tableName: 'questions',
     timestamps: true,
-    underscored: true,  
-  }
+    underscored: true,
+  },
 );
 
 export default Question;

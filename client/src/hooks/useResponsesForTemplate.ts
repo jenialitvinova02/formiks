@@ -10,12 +10,13 @@ export interface ResponseInfo {
 export function useResponsesForTemplate(templateId: number | string) {
   const [responses, setResponses] = useState<ResponseInfo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get(`${ROUTES.responses}/template/${templateId}`)
-      .then(r => setResponses(r.data))
-      .catch(e => setError(e.response?.data?.error || e.message))
+    axios
+      .get(`${ROUTES.responses}/template/${templateId}`)
+      .then((r) => setResponses(r.data))
+      .catch((e) => setError(e.response?.data?.error || e.message))
       .finally(() => setLoading(false));
   }, [templateId]);
 

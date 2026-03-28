@@ -11,8 +11,8 @@ export function useAdminPanel({ updateRole }: UseAdminPanelProps) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const toggleSelection = useCallback((id: number) => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   }, []);
 
@@ -25,11 +25,11 @@ export function useAdminPanel({ updateRole }: UseAdminPanelProps) {
     if (!action || selectedIds.length === 0) return;
     try {
       if (action === ADMIN_ACTIONS.MAKE_ADMIN) {
-        await Promise.all(selectedIds.map(id => updateRole(id, 'admin')));
+        await Promise.all(selectedIds.map((id) => updateRole(id, 'admin')));
       } else if (action === ADMIN_ACTIONS.MAKE_USER) {
-        await Promise.all(selectedIds.map(id => updateRole(id, 'user')));
+        await Promise.all(selectedIds.map((id) => updateRole(id, 'user')));
       } else if (action === ADMIN_ACTIONS.DELETE) {
-        await Promise.all(selectedIds.map(id => axios.delete(`users/${id}`)));
+        await Promise.all(selectedIds.map((id) => axios.delete(`users/${id}`)));
       }
       cancelAction();
     } catch (err: any) {
@@ -37,5 +37,12 @@ export function useAdminPanel({ updateRole }: UseAdminPanelProps) {
     }
   }, [action, selectedIds, updateRole, cancelAction]);
 
-  return { action, setAction, selectedIds, toggleSelection, cancelAction, handleConfirm };
+  return {
+    action,
+    setAction,
+    selectedIds,
+    toggleSelection,
+    cancelAction,
+    handleConfirm,
+  };
 }

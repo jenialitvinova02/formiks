@@ -32,7 +32,7 @@ export const useTemplateForm = (templateId?: string) => {
             title: q.title,
             description: q.description || '',
             type: q.type,
-          }))
+          })),
         );
       }
     }
@@ -40,21 +40,35 @@ export const useTemplateForm = (templateId?: string) => {
 
   const handleMetaChange = useCallback(
     (field: keyof typeof meta, value: string | boolean) => {
-      setMeta(prev => ({ ...prev, [field]: value }));
+      setMeta((prev) => ({ ...prev, [field]: value }));
     },
-    []
+    [],
   );
 
   const handleQuestionChange = useCallback(
     (idx: number, field: keyof NewQuestion, value: string) => {
-      setQuestions(prev => prev.map((q, i) => (i === idx ? { ...q, [field]: value } : q)));
+      setQuestions((prev) =>
+        prev.map((q, i) => (i === idx ? { ...q, [field]: value } : q)),
+      );
     },
-    []
+    [],
   );
 
   const addQuestion = useCallback(() => {
-    setQuestions(prev => [...prev, { ...DEFAULT_QUESTION, type: 'single-line' }]);
+    setQuestions((prev) => [
+      ...prev,
+      { ...DEFAULT_QUESTION, type: 'single-line' },
+    ]);
   }, []);
 
-  return { isEditMode, meta, questions, handleMetaChange, handleQuestionChange, addQuestion, loading, error };
+  return {
+    isEditMode,
+    meta,
+    questions,
+    handleMetaChange,
+    handleQuestionChange,
+    addQuestion,
+    loading,
+    error,
+  };
 };

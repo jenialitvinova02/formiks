@@ -7,19 +7,22 @@ const router = Router();
 router.get(
   '/response/:responseId',
   authenticateJWT,
-  async (req: Request<{ responseId: string }>, res: Response): Promise<void> => {
+  async (
+    req: Request<{ responseId: string }>,
+    res: Response,
+  ): Promise<void> => {
     try {
       const responseId = Number(req.params.responseId);
       const answers = await Answer.findAll({
         where: { responseId },
-        include: ['question']
+        include: ['question'],
       });
       res.json(answers);
     } catch (e: any) {
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -37,15 +40,19 @@ router.get(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.post(
   '/',
   authenticateJWT,
   async (
-    req: Request<{}, {}, { responseId: number; questionId: number; value: string }>,
-    res: Response
+    req: Request<
+      {},
+      {},
+      { responseId: number; questionId: number; value: string }
+    >,
+    res: Response,
   ): Promise<void> => {
     try {
       const { responseId, questionId, value } = req.body;
@@ -55,7 +62,7 @@ router.post(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.put(
@@ -63,7 +70,7 @@ router.put(
   authenticateJWT,
   async (
     req: Request<{ id: string }, {}, { value: string }>,
-    res: Response
+    res: Response,
   ): Promise<void> => {
     try {
       const ans = await Answer.findByPk(req.params.id);
@@ -77,7 +84,7 @@ router.put(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.delete(
@@ -96,7 +103,7 @@ router.delete(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 export default router;

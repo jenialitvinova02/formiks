@@ -13,9 +13,13 @@ interface TemplateAttributes {
   userId: number;
 }
 
-interface TemplateCreationAttributes extends Optional<TemplateAttributes, 'id' | 'image' | 'tags'> {}
+interface TemplateCreationAttributes
+  extends Optional<TemplateAttributes, 'id' | 'image' | 'tags'> {}
 
-class Template extends Model<TemplateAttributes, TemplateCreationAttributes> implements TemplateAttributes {
+class Template
+  extends Model<TemplateAttributes, TemplateCreationAttributes>
+  implements TemplateAttributes
+{
   public id!: number;
   public title!: string;
   public description!: string;
@@ -24,7 +28,7 @@ class Template extends Model<TemplateAttributes, TemplateCreationAttributes> imp
   public tags?: string;
   public isPublic!: boolean;
   public userId!: number;
-  public questions?: Question[]; 
+  public questions?: Question[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -70,7 +74,7 @@ Template.init(
   {
     sequelize,
     tableName: 'templates',
-  }
+  },
 );
 
 export default Template;

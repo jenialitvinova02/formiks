@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {TemplateList,  TemplateInfo}  from '../../components';
+import { TemplateList, TemplateInfo } from '../../components';
 import { usePublicTemplates, TemplateData } from '../../hooks';
 
 export const GuestDashboard: React.FC = () => {
@@ -15,10 +15,16 @@ export const GuestDashboard: React.FC = () => {
   return (
     <div>
       <h1>{t('guestDashboard.allPublicTemplates')}</h1>
-      {items.length > 0
-        ? <TemplateList items={items} onSelect={() => {/**/}} />
-        : <p>{t('guestDashboard.noPublicTemplates')}</p>
-      }
+      {items.length > 0 ? (
+        <TemplateList
+          items={items}
+          onSelect={() => {
+            /**/
+          }}
+        />
+      ) : (
+        <p>{t('guestDashboard.noPublicTemplates')}</p>
+      )}
     </div>
   );
 };

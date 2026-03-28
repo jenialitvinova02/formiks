@@ -8,9 +8,13 @@ interface ResponseAttributes {
   templateId: number;
   userId: number;
 }
-interface ResponseCreationAttributes extends Optional<ResponseAttributes, 'id'> {}
+interface ResponseCreationAttributes
+  extends Optional<ResponseAttributes, 'id'> {}
 
-class Response extends Model<ResponseAttributes, ResponseCreationAttributes> implements ResponseAttributes {
+class Response
+  extends Model<ResponseAttributes, ResponseCreationAttributes>
+  implements ResponseAttributes
+{
   public id!: number;
   public templateId!: number;
   public userId!: number;
@@ -40,7 +44,7 @@ Response.init(
   {
     sequelize,
     tableName: 'responses',
-  }
+  },
 );
 
 export default Response;

@@ -1,15 +1,14 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
-dotenv.config();  
-
+dotenv.config();
 
 const sequelize = new Sequelize(process.env.DB_URI!, {
   dialect: 'mysql',
   define: {
-    underscored: true,   
-    timestamps: true     
+    underscored: true,
+    timestamps: true,
   },
-  logging: console.log,  
+  logging: console.log,
 });
 
 sequelize

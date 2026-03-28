@@ -8,8 +8,12 @@ interface Props {
 
 const ResponseList: React.FC<Props> = ({ items, onSelect }) => (
   <ul>
-    {items.map(r => (
-      <li key={r.id} onClick={() => onSelect(r.id)} style={{ cursor: 'pointer' }}>
+    {items.map((r) => (
+      <li
+        key={r.id}
+        onClick={() => onSelect(r.id)}
+        style={{ cursor: 'pointer' }}
+      >
         #{r.id} – {new Date(r.createdAt).toLocaleString()}
       </li>
     ))}

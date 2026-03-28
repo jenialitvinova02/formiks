@@ -13,8 +13,12 @@ interface Props {
 
 export const TemplateList: React.FC<Props> = ({ items, onSelect }) => (
   <ul>
-    {items.map(t => (
-      <li key={t.id} onClick={() => onSelect(t.id)} style={{ cursor: 'pointer' }}>
+    {items.map((t) => (
+      <li
+        key={t.id}
+        onClick={() => onSelect(t.id)}
+        style={{ cursor: 'pointer' }}
+      >
         <strong>{t.title}</strong>: {t.description}
       </li>
     ))}

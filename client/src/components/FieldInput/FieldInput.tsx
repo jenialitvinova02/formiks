@@ -14,7 +14,10 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   const { t } = useTranslation();
   const normalizedType = useNormalizedFieldType(type);
 
-  console.log(`Rendering FieldInput for question id ${id} with normalized type:`, normalizedType);
+  console.log(
+    `Rendering FieldInput for question id ${id} with normalized type:`,
+    normalizedType,
+  );
 
   switch (normalizedType) {
     case 'number':
@@ -22,7 +25,7 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
         <input
           type="number"
           value={value}
-          onChange={e => onChange(id, e.target.value)}
+          onChange={(e) => onChange(id, e.target.value)}
         />
       );
     case 'text':
@@ -30,14 +33,14 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
         <input
           type="text"
           value={value}
-          onChange={e => onChange(id, e.target.value)}
+          onChange={(e) => onChange(id, e.target.value)}
         />
       );
     case 'textarea':
       return (
         <textarea
           value={value}
-          onChange={e => onChange(id, e.target.value)}
+          onChange={(e) => onChange(id, e.target.value)}
         />
       );
     case 'checkbox':
@@ -45,11 +48,13 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
         <input
           type="checkbox"
           checked={value === 'true' || value === 'on'}
-          onChange={e => onChange(id, e.target.checked)}
+          onChange={(e) => onChange(id, e.target.checked)}
         />
       );
     default:
-      console.warn(`FieldInput: Unhandled question type "${type}" for question id ${id}`);
+      console.warn(
+        `FieldInput: Unhandled question type "${type}" for question id ${id}`,
+      );
       return <div>{t('fieldInput.unknownField', { type })}</div>;
   }
 };

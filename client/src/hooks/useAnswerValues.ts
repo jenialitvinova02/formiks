@@ -6,14 +6,14 @@ export function useAnswerValues(answers: AnswerFull[]) {
 
   useEffect(() => {
     const init: Record<number, string> = {};
-    answers.forEach(a => {
+    answers.forEach((a) => {
       init[a.id] = a.value;
     });
     setValues(init);
   }, [answers]);
 
   const handleChange = useCallback((ansId: number, val: string) => {
-    setValues(prev => ({ ...prev, [ansId]: val }));
+    setValues((prev) => ({ ...prev, [ansId]: val }));
   }, []);
 
   return { values, handleChange };

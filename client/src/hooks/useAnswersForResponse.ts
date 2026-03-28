@@ -10,13 +10,14 @@ export interface AnswerFull {
 export function useAnswersForResponse(responseId: number | string) {
   const [data, setData] = useState<AnswerFull[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!responseId) return;
-    axios.get<AnswerFull[]>(`answers/response/${responseId}`)
-      .then(r => setData(r.data))
-      .catch(e => setError(e.response?.data?.error || e.message))
+    axios
+      .get<AnswerFull[]>(`answers/response/${responseId}`)
+      .then((r) => setData(r.data))
+      .catch((e) => setError(e.response?.data?.error || e.message))
       .finally(() => setLoading(false));
   }, [responseId]);
 

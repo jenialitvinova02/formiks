@@ -17,22 +17,30 @@ export const CreateFormPage: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const handleQuestionsCountChange = useCallback((count: number) => {
-    const newQuestions = Array.from({ length: count }, (_, i) => questions[i] || { ...DEFAULT_QUESTION });
-    setQuestions(newQuestions);
-    setQuestionsCount(count);
-  }, [questions]);
+  const handleQuestionsCountChange = useCallback(
+    (count: number) => {
+      const newQuestions = Array.from(
+        { length: count },
+        (_, i) => questions[i] || { ...DEFAULT_QUESTION },
+      );
+      setQuestions(newQuestions);
+      setQuestionsCount(count);
+    },
+    [questions],
+  );
 
   const updateQuestionAt = useCallback(
     (index: number, field: keyof Question, value: string) => {
-      setQuestions(prev => prev.map((q, i) => (i === index ? { ...q, [field]: value } : q)));
+      setQuestions((prev) =>
+        prev.map((q, i) => (i === index ? { ...q, [field]: value } : q)),
+      );
     },
-    []
+    [],
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const payload = {
         title: title.value,
@@ -65,18 +73,20 @@ export const CreateFormPage: React.FC = () => {
         type="number"
         placeholder={t('createForm.questionsCountPlaceholder')}
         value={questionsCount}
-        onChange={e => handleQuestionsCountChange(Number(e.target.value))}
+        onChange={(e) => handleQuestionsCountChange(Number(e.target.value))}
       />
       {questions.map((q, index) => (
         <div key={index}>
           <input
-            placeholder={t('createForm.questionTitlePlaceholder', { number: index + 1 })}
+            placeholder={t('createForm.questionTitlePlaceholder', {
+              number: index + 1,
+            })}
             value={q.title}
-            onChange={e => updateQuestionAt(index, 'title', e.target.value)}
+            onChange={(e) => updateQuestionAt(index, 'title', e.target.value)}
           />
           <select
             value={q.type}
-            onChange={e => updateQuestionAt(index, 'type', e.target.value)}
+            onChange={(e) => updateQuestionAt(index, 'type', e.target.value)}
           >
             <option value="text">{t('createForm.optionText')}</option>
             <option value="number">{t('createForm.optionNumber')}</option>

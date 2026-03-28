@@ -16,13 +16,15 @@ router.get(
         res.status(403).json({ error: 'Forbidden' });
         return;
       }
-      const all = await ResponseModel.findAll({ include: ['template', 'user'] });
+      const all = await ResponseModel.findAll({
+        include: ['template', 'user'],
+      });
       res.json(all);
     } catch (e: any) {
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -32,14 +34,14 @@ router.get(
     try {
       const list = await ResponseModel.findAll({
         where: { userId: req.user.id },
-        include: ['template']
+        include: ['template'],
       });
       res.json(list);
     } catch (e: any) {
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -51,8 +53,8 @@ router.get(
       const resp = await ResponseModel.findByPk(req.params.id, {
         include: [
           { model: Answer, as: 'answers', include: ['question'] },
-          'template'
-        ]
+          'template',
+        ],
       });
       if (!resp) {
         res.status(404).json({ error: 'Response not found' });
@@ -63,7 +65,7 @@ router.get(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.post(
@@ -73,30 +75,32 @@ router.post(
     try {
       const { templateId } = req.params;
       const { answers } = req.body;
-      const tpl = await Template.findByPk(templateId, { include: ['questions'] });
+      const tpl = await Template.findByPk(templateId, {
+        include: ['questions'],
+      });
       if (!tpl) {
         res.status(404).json({ error: 'Template not found' });
         return;
       }
       const resp = await ResponseModel.create({
         templateId: Number(templateId),
-        userId: req.user.id
+        userId: req.user.id,
       });
       const created = await Promise.all(
         Object.entries(answers).map(([qid, val]) =>
           Answer.create({
             responseId: resp.id,
             questionId: Number(qid),
-            value: String(val)
-          })
-        )
+            value: String(val),
+          }),
+        ),
       );
       res.json({ response: resp, answers: created });
     } catch (e: any) {
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.get(
@@ -107,14 +111,14 @@ router.get(
       const templateId = Number(req.params.templateId);
       const list = await ResponseModel.findAll({
         where: { templateId },
-        include: [{ model: Answer, as: 'answers' }]
+        include: [{ model: Answer, as: 'answers' }],
       });
       res.json(list);
     } catch (e: any) {
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 router.delete(
@@ -134,7 +138,7 @@ router.delete(
       console.error(e);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 );
 
 export default router;

@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DndContext, closestCenter } from '@dnd-kit/core';
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
-import { useTemplates, useSortableItems} from '../../hooks'; 
-import {TemplateCard, SortableItem} from '../../components'; 
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { useTemplates, useSortableItems } from '../../hooks';
+import { TemplateCard, SortableItem } from '../../components';
 import { useTranslation } from 'react-i18next';
 import { TemplateData } from '../../hooks/useTemplates';
 import './DashboardPage.scss';
@@ -19,8 +22,7 @@ export const DashboardPage: React.FC = () => {
 
   const { items, handleDragEnd } = useSortableItems(templates);
 
-  useEffect(() => {
-  }, [templates]);
+  useEffect(() => {}, [templates]);
 
   if (loading) return <p>{t('dashboard.loading')}</p>;
   if (error) return <p>{t('dashboard.error', { error })}</p>;
@@ -29,7 +31,10 @@ export const DashboardPage: React.FC = () => {
     <div className="dashboard">
       <h1>{t('dashboard.title')}</h1>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={items.map(item => item.id.toString())} strategy={horizontalListSortingStrategy}>
+        <SortableContext
+          items={items.map((item) => item.id.toString())}
+          strategy={horizontalListSortingStrategy}
+        >
           <div className="dashboard__container" style={containerStyle}>
             {items.map((tmpl: TemplateData) => (
               <SortableItem key={tmpl.id} id={tmpl.id.toString()}>

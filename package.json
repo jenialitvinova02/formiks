@@ -1,0 +1,11 @@
+{
+  "name": "your-project-name",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "format": "prettier --write \"server/**/*.{js,ts,tsx,json,md}\" \"client/**/*.{js,ts,tsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
+}

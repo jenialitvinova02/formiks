@@ -2,12 +2,23 @@ import { useState } from 'react';
 import axios from '../axiosInstance';
 import { ROUTES } from '../constants/api';
 
-export interface NewQuestion { title: string; description: string; type: string; }
-export interface TemplateForm { title: string; description: string; topic: string; tags: string; isPublic: boolean; questions: NewQuestion[]; }
+export interface NewQuestion {
+  title: string;
+  description: string;
+  type: string;
+}
+export interface TemplateForm {
+  title: string;
+  description: string;
+  topic: string;
+  tags: string;
+  isPublic: boolean;
+  questions: NewQuestion[];
+}
 
 export function useCreateTemplate() {
   const [loading, setLoading] = useState(false);
-  const [error,   setError]   = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function create(data: TemplateForm) {
     setLoading(true);
@@ -33,7 +44,10 @@ export const createTemplate = async (templateData: any) => {
     console.log('[useCreateTemplate] Ответ сервера:', response.data);
     return response.data;
   } catch (error: any) {
-    console.error('[useCreateTemplate] Ошибка при создании шаблона:', error.response?.data || error.message);
+    console.error(
+      '[useCreateTemplate] Ошибка при создании шаблона:',
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };

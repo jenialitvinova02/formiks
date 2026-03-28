@@ -28,13 +28,26 @@ export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
         if (mode === 'login') {
           await login(emailInput.value, passwordInput.value);
         } else {
-          await register(usernameInput.value, emailInput.value, passwordInput.value, isAdmin ? 'admin' : 'user');
+          await register(
+            usernameInput.value,
+            emailInput.value,
+            passwordInput.value,
+            isAdmin ? 'admin' : 'user',
+          );
         }
         onSuccess();
-      } catch {
-      }
+      } catch {}
     },
-    [mode, emailInput.value, passwordInput.value, usernameInput.value, isAdmin, login, register, onSuccess]
+    [
+      mode,
+      emailInput.value,
+      passwordInput.value,
+      usernameInput.value,
+      isAdmin,
+      login,
+      register,
+      onSuccess,
+    ],
   );
 
   return (
@@ -66,7 +79,7 @@ export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
           <input
             type="checkbox"
             checked={isAdmin}
-            onChange={e => setIsAdmin(e.target.checked)}
+            onChange={(e) => setIsAdmin(e.target.checked)}
           />{' '}
           {t('authForm.admin')}
         </label>
@@ -80,14 +93,19 @@ export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
             : t('authForm.register')}
       </button>
       <div className="authForm__controls">
-          <select onChange={e => changeLanguage(e.target.value)} value={currentLanguage}>
-            {SUPPORTED_LANGUAGES.map(lang => (
-              <option key={lang.code} value={lang.code}>{lang.label}</option>
-            ))}
-          </select>
-          <button type="button" onClick={toggleTheme}>
-            {theme === 'dark' ? t('authForm.lightMode') : t('authForm.darkMode')}
-          </button>
+        <select
+          onChange={(e) => changeLanguage(e.target.value)}
+          value={currentLanguage}
+        >
+          {SUPPORTED_LANGUAGES.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              {lang.label}
+            </option>
+          ))}
+        </select>
+        <button type="button" onClick={toggleTheme}>
+          {theme === 'dark' ? t('authForm.lightMode') : t('authForm.darkMode')}
+        </button>
       </div>
     </form>
   );

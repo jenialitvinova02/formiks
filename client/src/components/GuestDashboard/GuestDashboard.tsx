@@ -7,15 +7,22 @@ const GuestDashboard: React.FC = () => {
 
   const items: TemplateInfo[] = useMemo(
     () =>
-      rawItems.map(t => ({
+      rawItems.map((t) => ({
         id: Number(t.id),
         title: t.name,
         description: t.description,
       })),
-    [rawItems]
+    [rawItems],
   );
 
-  return <TemplateList items={items} onSelect={() => { /* ... */ }} />;
+  return (
+    <TemplateList
+      items={items}
+      onSelect={() => {
+        /* ... */
+      }}
+    />
+  );
 };
 
 export default GuestDashboard;
