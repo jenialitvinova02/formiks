@@ -17,12 +17,15 @@ export * from './useIsAdmin';
 export * from './useLanguage';
 export * from './useNormalizedFieldType';
 export * from './useProfile';
-export * from './usePublicTemplates';
 export * from './useQuestions';
 export * from './useResponsesForTemplate';
 export * from './useSortableItems';
 export * from './useTemplate';
 export * from './useTemplateForm';
-export * from './useTemplates';
-export * from './useTheme';
+export * from './useTemplates';           
+
+export { usePublicTemplates } from './usePublicTemplates';
+export type { TemplateData as PublicTemplateData } from './usePublicTemplates';
+
 export * from './useUsers';
+export * from './useTheme';

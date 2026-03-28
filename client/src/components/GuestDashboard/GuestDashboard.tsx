@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { TemplateList, TemplateInfo } from '../../components';
-import { usePublicTemplates, TemplateData } from '../../hooks';
+import { usePublicTemplates, PublicTemplateData } from '../../hooks';
 
 const GuestDashboard: React.FC = () => {
-  const rawItems: TemplateData[] = usePublicTemplates();
+  const rawItems: PublicTemplateData[] = usePublicTemplates();
 
   const items: TemplateInfo[] = useMemo(
     () =>

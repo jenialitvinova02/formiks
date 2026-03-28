@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TemplateList, TemplateInfo } from '../../components';
-import { usePublicTemplates, TemplateData } from '../../hooks';
+import { usePublicTemplates, PublicTemplateData } from '../../hooks';
 
 export const GuestDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -9,7 +9,7 @@ export const GuestDashboard: React.FC = () => {
 
   console.log('GuestDashboard: raw templates:', raw);
 
-  const items: TemplateInfo[] = raw.map((t: TemplateData) => ({
+  const items: TemplateInfo[] = raw.map((t: PublicTemplateData) => ({
     id: Number(t.id),
     title: t.title,
     description: t.description,
