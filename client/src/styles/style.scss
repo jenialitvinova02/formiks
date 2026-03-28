@@ -28,8 +28,10 @@
     background-color: var(--background-color);
     font-family: Inter;
     color: var(--text-color);
+    height: 100%;
+
   }
-  
+
   button {
     border: none;
     border-radius: 10px;
@@ -54,7 +56,7 @@
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
+    height: 100%;
   }
   
   code {
@@ -119,7 +121,7 @@ h4 {
   font-weight: 500;
 }
 
-p {
+p, li {
   font-size: 1.5rem;
   color: white;
   margin-block-start: 0;
@@ -157,7 +159,7 @@ small {
   line-height: 140%;
   letter-spacing: -0.48px;
 }
-input {
+input, textarea,select {
   cursor: text;
   padding: 18px 28px;
   border-radius: 10px;
@@ -168,6 +170,8 @@ input {
   transition: background 0.2s ease-in-out;
   height: 24px;
   font-size: 24px;
+  resize: none;
+  overflow: hidden;
 
   &:hover {
     background: #3f3f3f;
@@ -182,5 +186,15 @@ input {
   }
   &:focus {
     background: #444;
+  }
+}
+select{
+  height: auto;
+  padding-left: 0;
+}
+li{
+  &:hover {
+    color: var(--color-blue);
+
   }
 }

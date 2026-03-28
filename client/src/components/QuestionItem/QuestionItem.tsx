@@ -1,5 +1,6 @@
 import React from 'react';
 import { QUESTION_TYPES } from '../../constants/form';
+import './QuestionItem.scss';
 
 interface Props {
   index: number;
@@ -10,8 +11,9 @@ interface Props {
 }
 
 const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChange }) => (
-  <div className="question-item">
+  <div className="questionItem">
     <h4>Question {index + 1}</h4>
+    <div className="questionItem__container">
     <input
       placeholder="Title"
       value={title}
@@ -27,6 +29,8 @@ const QuestionItem: React.FC<Props> = ({ index, title, description, type, onChan
         <option key={t.value} value={t.value}>{t.label}</option>
       ))}
     </select>
+    </div>
+
   </div>
 );
 

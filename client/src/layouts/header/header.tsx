@@ -33,10 +33,10 @@ const Header: React.FC = () => {
         {token && JSON.parse(atob(token.split('.')[1])).role === 'admin' && (
           <Link to="/admin">Admin Panel</Link>
         )}
-        {(token || isGuest) && (
-          <button onClick={handleLogout}>Logout</button>
-        )}
       </nav>
+      {(token || isGuest) && (
+          <button className="header__button" onClick={handleLogout}>Logout</button>
+        )}
     </header>
   );
 };

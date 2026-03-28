@@ -1,4 +1,3 @@
-// filepath: client/src/components/AuthForm/AuthForm.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import './AuthForm.scss';
@@ -21,11 +20,11 @@ const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
       if (mode === 'login') await login(email, password);
       else           await register(username, email, password, isAdmin ? 'admin' : 'user');
       onSuccess();
-    } catch {}  // error уже в хуке
+    } catch {}  
   };
 
   return (
-    <form className="auth-form" onSubmit={submit}>
+    <form className="authForm" onSubmit={submit}>
       {mode==='register' && (
         <input
           placeholder="Username"
@@ -47,7 +46,7 @@ const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
         required
       />
       {mode==='register' && (
-        <label>
+        <label className="authForm__check">
           <input
             type="checkbox"
             checked={isAdmin}

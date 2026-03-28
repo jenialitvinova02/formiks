@@ -55,10 +55,15 @@
   }
 }
 
-.toggle{
+.auth__box--toggle{
+    a{
     background-color: transparent;
     padding: 0;
     &:hover {
         background-color: transparent;
+        font-weight: normal;
+        color: white;
+
     }
+}
 }

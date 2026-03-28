@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
     <div className="dashboard">
       <h1>Dashboard</h1>
       {templates.length > 0 ? (
-        <div className="form-cards-container">
+        <div className="dashboard__container">
           {templates.map(t => (
             <TemplateCard
               key={t.id}

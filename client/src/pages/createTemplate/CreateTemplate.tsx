@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCreateTemplate, TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
 import QuestionItem from '../../components/QuestionItem/QuestionItem';
+import './CreateTemplate.scss';
 
 const CreateTemplate: React.FC = () => {
   const [meta, setMeta] = useState<Omit<TemplateForm, 'questions'>>({
@@ -40,9 +41,10 @@ const CreateTemplate: React.FC = () => {
   };
 
   return (
-    <form className="create-template" onSubmit={onSubmit}>
+    <form className="createTemplate" onSubmit={onSubmit}>
       <h1>Create Template</h1>
       {error && <p className="error">{error}</p>}
+      <div className="createTemplate__container">
 
       <input
         placeholder="Title"
@@ -73,9 +75,22 @@ const CreateTemplate: React.FC = () => {
         />
         Public
       </label>
+      </div>
 
       <hr />
       <h2>Questions</h2>
+      <div className="createTemplate__block">
+      <div className="createTemplate__block--buttons">
+
+      <button type="button" onClick={addQuestion}>
+        + Add Question
+      </button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating…' : 'Create Template'}
+      </button>
+      </div>
+
+      <div className="createTemplate__block--items">
       {questions.map((q, i) => (
         <QuestionItem
           key={i}
@@ -86,13 +101,9 @@ const CreateTemplate: React.FC = () => {
           onChange={(field, val) => handleQuestionChange(i, field, val)}
         />
       ))}
+      </div>
+      </div>
 
-      <button type="button" onClick={addQuestion}>
-        + Add Question
-      </button>
-      <button type="submit" disabled={loading}>
-        {loading ? 'Creating…' : 'Create Template'}
-      </button>
     </form>
   );
 };

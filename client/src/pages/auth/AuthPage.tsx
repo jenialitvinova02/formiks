@@ -10,10 +10,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className="auth">
-      {/* Левая колонка — фон-картинка */}
       <div className="auth__img" />
-
-      {/* Правая колонка — контейнер формы */}
       <div className="auth__container">
         <div className="auth__box">
           <h1 className="auth__box--title">
@@ -26,8 +23,6 @@ const AuthPage: React.FC = () => {
               onSuccess={() => navigate('/dashboard')}
             />
           </div>
-
-          {/* переключатель режимов */}
           <div className="auth__box--toggle">
             {mode === 'login' ? (
               <p>

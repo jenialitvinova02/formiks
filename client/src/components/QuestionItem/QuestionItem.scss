@@ -1,0 +1,9 @@
+.questionItem{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__container{
+        display: flex;
+        gap: 20px;
+    }
+}

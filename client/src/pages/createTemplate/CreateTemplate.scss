@@ -1,0 +1,27 @@
+.createTemplate{
+    &__container{
+   padding: 10px;
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   margin-top: 30px;
+
+}
+&__block{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 10px;
+
+    &--buttons{
+     display: flex;
+     gap: 10px;   
+    }
+    &--items{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+       }
+}
+}
+
