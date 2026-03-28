@@ -1,7 +1,7 @@
 import React from 'react';
 import ProfileForm from '../../components/ProfileForm/ProfileForm';
 import './ProfilePage.scss'
-const Profile: React.FC = () => {
+const ProfilePage: React.FC = () => {
     return (
         <div className='profilePage'>
             <ProfileForm />
@@ -9,4 +9,4 @@ const Profile: React.FC = () => {
     );
 }
 
-export default Profile;
+export default ProfilePage;

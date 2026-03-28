@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useCreateTemplate, TemplateForm, NewQuestion } from '../../hooks/useCreateTemplate';
 import QuestionItem from '../../components/QuestionItem/QuestionItem';
-import './CreateTemplate.scss';
+import './CreateTemplatePage.scss';
 
-const CreateTemplate: React.FC = () => {
+const CreateTemplatePage: React.FC = () => {
   const [meta, setMeta] = useState<Omit<TemplateForm, 'questions'>>({
     title: '',
     description: '',
@@ -36,8 +36,7 @@ const CreateTemplate: React.FC = () => {
     e.preventDefault();
     try {
       await create({ ...meta, questions });
-      // можно редиректить или сбрасывать форму
-    } catch { /* error уже в хуке */ }
+    } catch {  }
   };
 
   return (
@@ -108,4 +107,4 @@ const CreateTemplate: React.FC = () => {
   );
 };
 
-export default CreateTemplate;
+export default CreateTemplatePage;

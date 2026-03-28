@@ -1,19 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './layouts/header/header';
-import AuthPage from './pages/auth/AuthPage';
-import Dashboard from './pages/dashboard/dashboard';
-import Profile from './pages/profile/Profile';
-import Templates from './pages/templates/Templates';
-import CreateTemplate from './pages/createTemplate/CreateTemplate';
+import AuthPage from './pages/AuthPage/AuthPage';
+import DashboardPage from './pages/DashboardPage/DashboardPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import TemplatesPage from './pages/Templates/TemplatesPage';
+import CreateTemplatePage from './pages/CreateTemplatePage/CreateTemplatePage';
 import AdminPanel from './pages/AdminPanel/AdminPanel';
-import CreateForm from './pages/CreateForm/CreateForm';
+import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
 import GuestDashboard from './pages/GuestDashboard/GuestDashboard'; 
 import ProtectedRoute from './routes/ProtectedRoute';
-import FillForm from './pages/FillTemplate/FillTemplate';
-import FillTemplate from './pages/FillTemplate/FillTemplate';
-import FormAnswersList from './pages/templates/FormAnswersList';
-import ViewAnswer from './pages/templates/ViewAnswer';
+import FillForm from './pages/FillTemplatePage/FillTemplatePage';
+import FillTemplatePage from './pages/FillTemplatePage/FillTemplatePage';
+import FormAnswersListPage from './pages/Templates/FormAnswersListPage';
+import ViewAnswerPage from './pages/Templates/ViewAnswerPage';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -29,22 +29,22 @@ const AppContent: React.FC = () => {
         <Route path="/guest" element={<GuestDashboard />} />
         <Route path="/profile" element={
           <ProtectedRoute>
-            <Profile />
+            <ProfilePage />
           </ProtectedRoute>
         } />
         <Route path="/templates" element={
           <ProtectedRoute>
-            <Templates />
+            <TemplatesPage />
           </ProtectedRoute>
         } />
         <Route path="/create-template" element={
           <ProtectedRoute>
-            <CreateTemplate />
+            <CreateTemplatePage />
           </ProtectedRoute>
         } />
         <Route path="/create-form" element={
           <ProtectedRoute>
-            <CreateForm />
+            <CreateFormPage />
           </ProtectedRoute>
         } />
         <Route path="/admin" element={
@@ -54,37 +54,33 @@ const AppContent: React.FC = () => {
         } />
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardPage />
           </ProtectedRoute>
         } />
-        {/* Добавлен новый маршрут для заполнения шаблона */}
         <Route path="/fill-template/:id" element={
           <ProtectedRoute>
-            <FillTemplate />
+            <FillTemplatePage />
           </ProtectedRoute>
         } />
-        {/* Уже существующий маршрут, если необходим */}
         <Route path="/fill-form/:id" element={
           <ProtectedRoute>
             <FillForm />
           </ProtectedRoute>
         } />
  
-        {/* Route to see all answers for a specific template */}
         <Route
           path="/templates/:templateId/answers"
           element={
             <ProtectedRoute>
-              <FormAnswersList />
+              <FormAnswersListPage />
             </ProtectedRoute>
           }
         />
-        {/* Route to see a single answer's details */}
         <Route
-          path="/templates/:formId/answers/:answerId"
+          path="/templates/:templateId/answers/:answerId"
           element={
             <ProtectedRoute>
-              <ViewAnswer />
+              <ViewAnswerPage />
             </ProtectedRoute>
           }
         />

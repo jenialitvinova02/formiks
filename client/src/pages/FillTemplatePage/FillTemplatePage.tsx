@@ -5,7 +5,7 @@ import FieldInput from '../../components/FieldInput/FieldInput';
 import axios from '../../axiosInstance';
 
 
-const FillTemplate: React.FC = () => {
+const FillTemplatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { questions, loading, error } = useQuestions(id || '');
@@ -46,4 +46,4 @@ const FillTemplate: React.FC = () => {
   );
 };
 
-export default FillTemplate;
+export default FillTemplatePage;

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useResponsesForTemplate } from '../../hooks/useResponsesForTemplate';
 import ResponseList from '../../components/ResponseList/ResponseList';
 
-const FormAnswersList: React.FC = () => {
+const FormAnswersListPage: React.FC = () => {
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
   const { responses, loading, error } = useResponsesForTemplate(templateId!);
@@ -24,4 +24,4 @@ const FormAnswersList: React.FC = () => {
   );
 };
 
-export default FormAnswersList;
+export default FormAnswersListPage;

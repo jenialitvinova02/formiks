@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTemplates } from '../../hooks/useTemplates';
 import TemplateCard from '../../components/TemplateCard/TemplateCard';
-import './dashboard.scss';
+import './DashboardPage.scss';
 
-const Dashboard: React.FC = () => {
+const DashboardPage: React.FC = () => {
   const { data: templates, loading, error } = useTemplates();
   const navigate = useNavigate();
 
@@ -33,4 +33,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

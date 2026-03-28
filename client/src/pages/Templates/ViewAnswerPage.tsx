@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useTemplate } from '../../hooks/useTemplate';
 import { useAnswer } from '../../hooks/useAnswer';
 
-const ViewAnswer: React.FC = () => {
+const ViewAnswerPage: React.FC = () => {
   const { templateId, answerId } = useParams<{ templateId: string; answerId: string }>();
   const { data: tpl, loading: l1, error: e1 } = useTemplate(templateId);
   const { data: ans, loading: l2, error: e2 } = useAnswer(answerId);
@@ -33,4 +33,4 @@ const ViewAnswer: React.FC = () => {
   );
 };
 
-export default ViewAnswer;
+export default ViewAnswerPage;

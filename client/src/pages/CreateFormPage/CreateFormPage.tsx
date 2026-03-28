@@ -6,7 +6,7 @@ interface Question {
     type: 'text' | 'number' | 'checkbox'; 
 }
 
-const CreateForm: React.FC = () => {
+const CreateFormPage: React.FC = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [questionsCount, setQuestionsCount] = useState(0);
@@ -72,4 +72,4 @@ const CreateForm: React.FC = () => {
     );
 };
 
-export default CreateForm;
+export default CreateFormPage;
