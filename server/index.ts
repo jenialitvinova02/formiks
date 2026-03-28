@@ -15,6 +15,7 @@ import templateRoutes from './routes/templates';
 import questionRoutes from './routes/questions';
 import responseRoutes from './routes/responses';
 import answerRoutes from './routes/answers';
+import publicTemplates from './routes/publicTemplates';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -25,6 +26,8 @@ app.use(express.json());
 
 initAssociations();
 
+app.use('/api/public/templates', publicTemplates);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/templates', templateRoutes);
@@ -34,5 +37,5 @@ app.use('/api/answers', answerRoutes);
 
 sequelize.sync().then(() => {
   console.log('DB connected');
-  app.listen(process.env.PORT || 3000, () => console.log('Server running'));
+  app.listen(process.env.PORT || 3000, () => console.log('Server is running'));
 });

@@ -35,6 +35,11 @@ export const AuthPage: React.FC = () => {
               </p>
             )}
           </div>
+          <div className="auth__box--guest">
+            <button onClick={() => navigate('/guest')}>
+              {t('auth.guestLogin')}
+            </button>
+          </div>
         </div>
       </div>
     </div>

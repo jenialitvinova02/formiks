@@ -9,7 +9,7 @@ const GuestDashboard: React.FC = () => {
     () =>
       rawItems.map((t) => ({
         id: Number(t.id),
-        title: t.name,
+        title: t.title,
         description: t.description,
       })),
     [rawItems],

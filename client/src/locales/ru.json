@@ -24,7 +24,8 @@
     "dontHaveAccount": "Нет аккаунта?",
     "registerHere": "Зарегистрироваться",
     "alreadyHaveAccount": "Уже есть аккаунт?",
-    "signInHere": "Войти"
+    "signInHere": "Войти",
+    "guestLogin": "Войти как гость"
   },
   "dashboard": {
     "title": "Панель управления",

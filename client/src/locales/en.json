@@ -24,7 +24,8 @@
     "dontHaveAccount": "Don't have an account?",
     "registerHere": "Register here",
     "alreadyHaveAccount": "Already have an account?",
-    "signInHere": "Sign In here"
+    "signInHere": "Sign In here",
+    "guestLogin": "Continue as Guest"
   },
   "authForm": {
     "username": "Username",

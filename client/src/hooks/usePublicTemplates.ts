@@ -3,19 +3,25 @@ import axios from '../axiosInstance';
 
 export interface TemplateData {
   id: string;
-  name: string;
+  title: string;
   description: string;
 }
 
-export function usePublicTemplates() {
+export function usePublicTemplates(): TemplateData[] {
   const [data, setData] = useState<TemplateData[]>([]);
+
   useEffect(() => {
     axios
-      .get('templates?public=true')
-      .then((r) => setData(r.data))
-      .catch(() => {
-        /*…*/
+      .get<TemplateData[]>('/public/templates')
+      .then((r) => {
+        console.log('usePublicTemplates: received data:', r.data);
+        setData(r.data);
+      })
+      .catch((e) => {
+        console.error('usePublicTemplates: error:', e);
+        setData([]);
       });
   }, []);
+
   return data;
 }
