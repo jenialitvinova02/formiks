@@ -9,7 +9,7 @@
     cursor: pointer;
     transition: background-color 0.2s;
     &:hover {
-      background-color: #3f3f3f; 
+      background-color: var(--input-hover); 
     }
     h3,
     p {

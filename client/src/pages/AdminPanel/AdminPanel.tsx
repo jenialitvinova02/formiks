@@ -57,7 +57,6 @@ const AdminPanel: React.FC = () => {
         </div>
       )}
 
-      {/* Список пользователей показывается всегда */}
       <ul className="adminPanel__userList">
         {users.map(user => (
           <li key={user.id}>

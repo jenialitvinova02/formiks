@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.scss';
 import Logo from '../../assets/logo.png';
@@ -12,6 +12,21 @@ const Header: React.FC = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('guest');
     navigate('/login');
+  };
+
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    // Если тема светлая, устанавливаем data-theme="white", иначе сбрасываем атрибут
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'white');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   return (
@@ -34,9 +49,14 @@ const Header: React.FC = () => {
           <Link to="/admin">Admin Panel</Link>
         )}
       </nav>
-      {(token || isGuest) && (
+      <div className="header__right">
+        <button onClick={toggleTheme}>
+          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </button>
+        {(token || isGuest) && (
           <button className="header__button" onClick={handleLogout}>Logout</button>
         )}
+      </div>
     </header>
   );
 };
