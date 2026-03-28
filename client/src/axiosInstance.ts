@@ -1,20 +1,20 @@
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: 'http://localhost:3000/api/',
-});
+const baseURL =
+  import.meta.env.VITE_API_BASE_URL   
+  ?? '/api';                          
+
+const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use(
-  (config) => {
+  cfg => {
     const token = localStorage.getItem('token');
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (token && cfg.headers) {
+      cfg.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
+    return cfg;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  err => Promise.reject(err)
 );
 
 export default instance;
