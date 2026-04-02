@@ -1,3 +1,5 @@
+@use "../../styles/breakpoints.scss" as bp;
+
 .profileForm, .profileEdit{
     display: flex;
     flex-direction: column;
@@ -34,4 +36,41 @@
         align-self: center;
     }
 }
+}
+
+
+@include bp.phone {
+  .profileForm,
+  .profileEdit {
+    gap: 30px;
+
+    &__container {
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      gap: 15px;
+
+      p,
+      label,
+      input {
+        width: auto;
+      }
+
+      &--button {
+        width: 100%;
+      }
+
+      &--buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-self: center;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
 }

@@ -1,30 +1,63 @@
+@use "../../styles/breakpoints.scss" as bp;
+
 .formGroup {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  &__container{
+
+  &__container {
     gap: 30px;
     background-color: var(--background-second);
     padding: 30px 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    &--block{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    
-        input,
-        textarea {
-          width: 400px;
-        }
+
+    &--block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+
+      input,
+      textarea {
+        width: 400px;
+      }
     }
   }
+
   button {
-    margin: 0 auto;
+    margin: 30px auto 0;
     display: block;
-    margin-top: 30px;
+  }
+}
+
+@include bp.phone {
+  .formGroup {
+    padding: 20px 0;
+    min-height: auto;
+
+    &__container {
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    &__container--block {
+      align-items: stretch;
+
+      input,
+      textarea {
+        width: auto;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 0;
+      font-size: 1rem;
+    }
   }
 }
 

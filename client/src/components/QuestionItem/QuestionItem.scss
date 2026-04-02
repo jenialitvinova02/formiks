@@ -1,9 +1,28 @@
-.questionItem{
+@use "../../styles/breakpoints.scss" as bp;
+
+.questionItem {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    &__container{
+
+    &__container {
         display: flex;
         gap: 20px;
+    }
+}
+
+@include bp.phone {
+    .questionItem {
+        gap: 15px;
+
+        &__container {
+            flex-direction: column;
+            gap: 15px;
+
+            input,
+            select {
+                width: auto;
+            }
+        }
     }
 }

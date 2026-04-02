@@ -1,3 +1,5 @@
+@use "../../styles/breakpoints.scss" as bp;
+
 .auth {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -66,4 +68,34 @@
 
     }
 }
+}
+
+@include bp.phone {
+  .auth {
+    display: block;
+    background:
+      linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
+      url('../../assets/login.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    &__box {
+        padding: 15px 25px;
+
+    }
+  }
+
+  .auth__img {
+    display: none;
+  }
+
+  .auth__container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 0 1.25rem;
+    z-index: 1;
+  }
 }

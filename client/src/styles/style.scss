@@ -1,3 +1,5 @@
+@use "./breakpoints" as bp;
+
 :root {
   --background-color: #383B40;
   --text-color: white;
@@ -192,5 +194,33 @@ select {
 li {
   &:hover {
     color: var(--color-blue);
+  }
+}
+@include bp.phone {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+
+  p,
+  li { font-size: 1rem; }
+
+  a {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  small { font-size: 0.875rem; }
+
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+    padding: 12px 20px;
   }
 }

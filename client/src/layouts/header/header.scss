@@ -1,46 +1,110 @@
-.header{
-    display: flex;
-    height: 50px;
-    padding: 20px 5% 20px 5%;
-    align-items: center;
-    background-color: var(--background-second);
-    justify-content: space-between;
-}
-.header__logo{
+@use "../../styles/breakpoints.scss" as bp;
+
+.header {
+  display: flex;
+  height: 50px;
+  padding: 20px 5%;
+  align-items: center;
+  background-color: var(--background-second);
+  justify-content: space-between;
+
+  &__logo {
     height: 100%;
     width: auto;
-}
-.header__right{
+  }
+
+  &__links {
     display: flex;
     gap: 40px;
-    height: 100%;
-    align-items: center;
+  }
 
-}
-.header__links{
+  &__right {
     display: flex;
-    gap:40px;
-}
-.header__button{
+    gap: 40px;
+    align-items: center;
+  }
+
+  &__button {
     margin-left: auto;
+  }
 
+  &__burger {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__mobile-menu {
+    display: none;
+  }
 }
-.header__button-counter {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #FFFFFF;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
+
+.bp-phone { @include bp.phone { } } 
+
+@include bp.phone {
+  .header {
+    .header__logo,
+    .header__links,
+    .header__right {
+      display: none;
+    }
+
+    .header__burger {
+      display: block;
+    }
+  }
+
+  .header__mobile-menu {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    color: #35B8BE;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
-}
+    flex-direction: column;
+    align-items: center; 
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--background-second);
+    padding: 20px;
+    gap: 20px;
+    z-index: 100;
+    overflow-y: auto;
 
-.header__link--active {
-    color: #35B8BE;
+    .header__mobile-close {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+  }
+
+  .header__mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; 
+    a {
+      width: auto; 
+      display: inline-block;
+    }
+  }
+
+  .header__mobile-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; 
+    select,
+    button {
+      width: auto; 
+      max-width: 200px; 
+    }
+  }
 }
