@@ -22,43 +22,45 @@ export const AdminPanel: React.FC = () => {
   return (
     <div className="adminPanel">
       <h1>{t('admin.title')}</h1>
-      <div className="adminPanel__buttons">
-        {action === null ? (
-          <>
-            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_ADMIN)}>
-              {t('admin.makeAdmin')}
-            </button>
-            <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_USER)}>
-              {t('admin.makeUser')}
-            </button>
-            <button onClick={() => setAction(ADMIN_ACTIONS.DELETE)}>
-              {t('admin.delete')}
-            </button>
-          </>
-        ) : (
-          <div className="adminPanel__managementButtons">
-            <button onClick={handleConfirm}>{t('admin.confirm')}</button>
-            <button onClick={cancelAction}>{t('admin.cancel')}</button>
-          </div>
-        )}
+      <div className="adminPanel__container">
+        {action !== null && <p>{t('admin.selectUsers')}</p>}
+        <ul className="adminPanel__userList">
+          {users.map((user) => (
+            <li key={user.id}>
+              <label>
+                {action !== null && (
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(user.id)}
+                    onChange={() => toggleSelection(user.id)}
+                  />
+                )}
+                {user.username} ({user.email}) – {user.role}
+              </label>
+            </li>
+          ))}
+        </ul>
+        <div className="adminPanel__buttons">
+          {action === null ? (
+            <>
+              <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_ADMIN)}>
+                {t('admin.makeAdmin')}
+              </button>
+              <button onClick={() => setAction(ADMIN_ACTIONS.MAKE_USER)}>
+                {t('admin.makeUser')}
+              </button>
+              <button onClick={() => setAction(ADMIN_ACTIONS.DELETE)}>
+                {t('admin.delete')}
+              </button>
+            </>
+          ) : (
+            <div className="adminPanel__managementButtons">
+              <button onClick={handleConfirm}>{t('admin.confirm')}</button>
+              <button onClick={cancelAction}>{t('admin.cancel')}</button>
+            </div>
+          )}
+        </div>
       </div>
-      {action !== null && <p>{t('admin.selectUsers')}</p>}
-      <ul className="adminPanel__userList">
-        {users.map((user) => (
-          <li key={user.id}>
-            <label>
-              {action !== null && (
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(user.id)}
-                  onChange={() => toggleSelection(user.id)}
-                />
-              )}
-              {user.username} ({user.email}) – {user.role}
-            </label>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

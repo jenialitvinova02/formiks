@@ -1,13 +1,12 @@
 @use "../../styles/breakpoints.scss" as bp;
 
-.FormAnswersList {
+.ViewAnswerPage {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
   padding: 20px;
-  flex-direction: column;
-    gap: 50px;
+
   &__container {
     background-color: var(--background-second);
     padding: 30px 50px;
@@ -20,14 +19,15 @@
     gap: 20px;
   }
 
-  &__buttons {
-    display: flex;
-    gap: 20px;
+  &__item {
+    padding: 15px;
+    background-color: var(--background-color);
+    border-radius: 6px;
   }
 }
 
 @include bp.phone {
-  .FormAnswersList {
+  .ViewAnswerPage {
     padding: 10px;
 
     &__container {
@@ -35,21 +35,8 @@
       gap: 15px;
     }
 
-    &__buttons {
-      flex-direction: column;
-      button {
-        width: 100%;
-      }
-    }
-
-    .response-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      li {
-        padding: 10px;
-      }
+    &__item {
+      padding: 10px;
     }
   }
 }

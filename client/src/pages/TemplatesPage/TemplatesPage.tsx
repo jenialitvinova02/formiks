@@ -54,67 +54,71 @@ export const TemplatesPage: React.FC = () => {
     <div className="TemplatesPage">
       <h1>{t('templates.myTemplates')}</h1>
 
-      {isAdmin && (
-        <div className="TemplatesPage__buttons">
-          {mode === 'normal' ? (
-            <>
-              <button onClick={enterDeleteMode}>{t('templates.delete')}</button>
-              <button onClick={enterEditMode}>{t('templates.edit')}</button>
-            </>
-          ) : (
-            <div>
+      <div className="TemplatesPage__container">
+        <ul className="template-list">
+          {templates.map((tmpl) => (
+            <li
+              key={tmpl.id}
+              className="template-list__item"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                cursor: mode === 'normal' ? 'pointer' : 'default',
+              }}
+              onClick={() => {
+                if (mode === 'normal')
+                  navigate(`/templates/${tmpl.id}/answers`);
+              }}
+            >
               {mode === 'delete' && (
-                <button onClick={handleDeleteConfirm}>
-                  {t('templates.confirmDelete')}
-                </button>
+                <input
+                  type="checkbox"
+                  checked={selectedDelete.includes(tmpl.id)}
+                  onChange={() => toggleDeleteSelection(tmpl.id)}
+                />
               )}
               {mode === 'edit' && (
-                <button onClick={handleEditConfirm}>
-                  {t('templates.confirmEdit')}
-                </button>
+                <input
+                  type="radio"
+                  name="editSelection"
+                  checked={selectedEdit === tmpl.id}
+                  onChange={() => setSelectedEdit(tmpl.id)}
+                />
               )}
-              <button onClick={cancelAction}>{t('templates.cancel')}</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      <ul className="template-list">
-        {templates.map((tmpl) => (
-          <li
-            key={tmpl.id}
-            className="template-list__item"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              cursor: mode === 'normal' ? 'pointer' : 'default',
-            }}
-            onClick={() => {
-              if (mode === 'normal') navigate(`/templates/${tmpl.id}/answers`);
-            }}
-          >
-            {mode === 'delete' && (
-              <input
-                type="checkbox"
-                checked={selectedDelete.includes(tmpl.id)}
-                onChange={() => toggleDeleteSelection(tmpl.id)}
-              />
+              <span>
+                <strong>{tmpl.title}</strong>: {tmpl.description}
+              </span>
+            </li>
+          ))}
+        </ul>
+        {isAdmin && (
+          <div className="TemplatesPage__buttons">
+            {mode === 'normal' ? (
+              <>
+                <button onClick={enterDeleteMode}>
+                  {t('templates.delete')}
+                </button>
+                <button onClick={enterEditMode}>{t('templates.edit')}</button>
+              </>
+            ) : (
+              <div>
+                {mode === 'delete' && (
+                  <button onClick={handleDeleteConfirm}>
+                    {t('templates.confirmDelete')}
+                  </button>
+                )}
+                {mode === 'edit' && (
+                  <button onClick={handleEditConfirm}>
+                    {t('templates.confirmEdit')}
+                  </button>
+                )}
+                <button onClick={cancelAction}>{t('templates.cancel')}</button>
+              </div>
             )}
-            {mode === 'edit' && (
-              <input
-                type="radio"
-                name="editSelection"
-                checked={selectedEdit === tmpl.id}
-                onChange={() => setSelectedEdit(tmpl.id)}
-              />
-            )}
-            <span>
-              <strong>{tmpl.title}</strong>: {tmpl.description}
-            </span>
-          </li>
-        ))}
-      </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

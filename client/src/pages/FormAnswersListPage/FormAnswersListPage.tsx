@@ -71,74 +71,75 @@ export const FormAnswersListPage: React.FC = () => {
   return (
     <div className="FormAnswersList">
       <h2>{t('formAnswersList.responsesFor', { templateId })}</h2>
-      {isAdmin && (
-        <div className="FormAnswersList__buttons">
-          {mode === 'normal' && (
-            <>
-              <button onClick={enterDeleteMode}>
-                {t('formAnswersList.deleteButton')}
-              </button>
-              <button onClick={enterEditMode}>
-                {t('formAnswersList.editButton')}
-              </button>
-            </>
-          )}
-          {mode !== 'normal' && (
-            <>
+      <div className="FormAnswersList__container">
+        <ul className="response-list">
+          {responses.map((r: ResponseInfo) => (
+            <li
+              key={r.id}
+              onClick={() => {
+                if (mode === 'normal')
+                  navigate(`/templates/${templateId}/answers/${r.id}`);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                cursor: mode === 'normal' ? 'pointer' : 'default',
+              }}
+            >
               {mode === 'delete' && (
-                <button onClick={handleDeleteConfirm}>
-                  {t('formAnswersList.confirmDelete')}
-                </button>
+                <input
+                  type="checkbox"
+                  checked={selectedDelete.includes(r.id)}
+                  onChange={() => toggleDeleteSelection(r.id)}
+                />
               )}
               {mode === 'edit' && (
-                <button onClick={handleEditConfirm}>
-                  {t('formAnswersList.confirmEdit')}
-                </button>
+                <input
+                  type="radio"
+                  name="editSelection"
+                  checked={selectedEdit === r.id}
+                  onChange={() => setSelectedEdit(r.id)}
+                />
               )}
-              <button onClick={cancelAction}>
-                {t('formAnswersList.cancel')}
-              </button>
-            </>
-          )}
-        </div>
-      )}
-
-      <ul className="response-list">
-        {responses.map((r: ResponseInfo) => (
-          <li
-            key={r.id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              cursor: mode === 'normal' ? 'pointer' : 'default',
-            }}
-            onClick={() => {
-              if (mode === 'normal')
-                navigate(`/templates/${templateId}/answers/${r.id}`);
-            }}
-          >
-            {mode === 'delete' && (
-              <input
-                type="checkbox"
-                checked={selectedDelete.includes(r.id)}
-                onChange={() => toggleDeleteSelection(r.id)}
-              />
+              <span>
+                #{r.id} – {new Date(r.createdAt).toLocaleString()}
+              </span>
+            </li>
+          ))}
+        </ul>
+        {isAdmin && (
+          <div className="FormAnswersList__buttons">
+            {mode === 'normal' && (
+              <>
+                <button onClick={enterDeleteMode}>
+                  {t('formAnswersList.deleteButton')}
+                </button>
+                <button onClick={enterEditMode}>
+                  {t('formAnswersList.editButton')}
+                </button>
+              </>
             )}
-            {mode === 'edit' && (
-              <input
-                type="radio"
-                name="editSelection"
-                checked={selectedEdit === r.id}
-                onChange={() => setSelectedEdit(r.id)}
-              />
+            {mode !== 'normal' && (
+              <>
+                {mode === 'delete' && (
+                  <button onClick={handleDeleteConfirm}>
+                    {t('formAnswersList.confirmDelete')}
+                  </button>
+                )}
+                {mode === 'edit' && (
+                  <button onClick={handleEditConfirm}>
+                    {t('formAnswersList.confirmEdit')}
+                  </button>
+                )}
+                <button onClick={cancelAction}>
+                  {t('formAnswersList.cancel')}
+                </button>
+              </>
             )}
-            <span>
-              #{r.id} – {new Date(r.createdAt).toLocaleString()}
-            </span>
-          </li>
-        ))}
-      </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

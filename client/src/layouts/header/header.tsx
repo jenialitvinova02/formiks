@@ -15,7 +15,8 @@ export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (theme === 'light') document.documentElement.setAttribute('data-theme', 'white');
+    if (theme === 'light')
+      document.documentElement.setAttribute('data-theme', 'white');
     else document.documentElement.removeAttribute('data-theme');
   }, [theme]);
 
@@ -23,7 +24,8 @@ export const Header: React.FC = () => {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -33,13 +35,20 @@ export const Header: React.FC = () => {
 
   const commonLinks = (
     <>
-      <Link to={token || isGuest ? '/dashboard' : '/login'}>{t('header.dashboard')}</Link>
-      {!isGuest && <>
-        <Link to="/templates">{t('header.myTemplates')}</Link>
-        <Link to="/create-template">{t('header.createTemplate')}</Link>
-      </>}
-      {token ? <Link to="/profile">{t('header.profile')}</Link>
-              : <Link to="/login">{t('header.login')}</Link>}
+      <Link to={token || isGuest ? '/dashboard' : '/login'}>
+        {t('header.dashboard')}
+      </Link>
+      {!isGuest && (
+        <>
+          <Link to="/templates">{t('header.myTemplates')}</Link>
+          <Link to="/create-template">{t('header.createTemplate')}</Link>
+        </>
+      )}
+      {token ? (
+        <Link to="/profile">{t('header.profile')}</Link>
+      ) : (
+        <Link to="/login">{t('header.login')}</Link>
+      )}
       {token && JSON.parse(atob(token.split('.')[1])).role === 'admin' && (
         <Link to="/admin">Admin</Link>
       )}
@@ -48,7 +57,10 @@ export const Header: React.FC = () => {
 
   const commonControls = (
     <>
-      <select onChange={e => changeLanguage(e.target.value)} defaultValue={i18n.language}>
+      <select
+        onChange={(e) => changeLanguage(e.target.value)}
+        defaultValue={i18n.language}
+      >
         <option value="en">EN</option>
         <option value="ru">RU</option>
         <option value="pl">PL</option>
@@ -75,7 +87,7 @@ export const Header: React.FC = () => {
       {/* burger */}
       <button
         className="header__burger"
-        onClick={() => setMenuOpen(prev => !prev)}
+        onClick={() => setMenuOpen((prev) => !prev)}
       >
         <img src={burger} alt="Menu" />
       </button>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useTemplate, useAnswersForResponse } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import './ViewAnswerPage.scss';
 
 export const ViewAnswerPage: React.FC = () => {
   const { t } = useTranslation();
@@ -14,7 +15,7 @@ export const ViewAnswerPage: React.FC = () => {
     return <p>{t('viewAnswer.noAnswerId')}</p>;
   }
 
-  const { data: tpl, loading: l1, error: e1 } = useTemplate(templateId);
+  const { data: tpl, loading: l1, error: e1 } = useTemplate(templateId!);
   const {
     data: answers,
     loading: l2,
@@ -27,28 +28,30 @@ export const ViewAnswerPage: React.FC = () => {
   if (!tpl || answers.length === 0) return <p>{t('viewAnswer.noAnswers')}</p>;
 
   return (
-    <div>
-      <h1>{tpl.title}</h1>
-      <p>{tpl.description}</p>
-      <h2>
-        {t('viewAnswer.response')} #{answerId}
-      </h2>
-      {answers.map((answer) => (
-        <div key={answer.id}>
-          {answer.question && (
-            <>
-              <strong>{t('viewAnswer.question')}: </strong>{' '}
-              {answer.question.title}
-              <br />
-              <em>{t('viewAnswer.type')}: </em> {answer.question.type}
-              <br />
-            </>
-          )}
-          <p>
-            <strong>{t('viewAnswer.answer')}: </strong> {answer.value}
-          </p>
-        </div>
-      ))}
+    <div className="ViewAnswerPage">
+      <div className="ViewAnswerPage__container">
+        <h1>{tpl.title}</h1>
+        <p>{tpl.description}</p>
+        <h2>
+          {t('viewAnswer.response')} #{answerId}
+        </h2>
+        {answers.map((answer) => (
+          <div key={answer.id} className="ViewAnswerPage__item">
+            {answer.question && (
+              <>
+                <strong>{t('viewAnswer.question')}: </strong>
+                {answer.question.title}
+                <br />
+                <em>{t('viewAnswer.type')}: </em> {answer.question.type}
+                <br />
+              </>
+            )}
+            <p>
+              <strong>{t('viewAnswer.answer')}: </strong> {answer.value}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
