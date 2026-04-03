@@ -34,6 +34,10 @@ export const FillTemplatePage: React.FC = () => {
   return (
     <div className="formGroup">
       <form className="formGroup__container" onSubmit={handleSubmit}>
+        <div className="page-title">
+          <h1>Template Response</h1>
+          <p>Answer each field below and submit the completed response.</p>
+        </div>
         {questions.map((q) => (
           <div key={q.id} className="formGroup__container--block">
             <label>{q.title}</label>

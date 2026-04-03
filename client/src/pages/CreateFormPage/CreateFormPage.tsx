@@ -3,6 +3,7 @@ import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
 import { useInput } from '../../hooks';
 import { DEFAULT_QUESTION } from '../../constants';
+import './CreateFormPage.scss';
 
 interface Question {
   title: string;
@@ -55,46 +56,50 @@ export const CreateFormPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{t('createForm.createFormTitle')}</h1>
-      {error && <p>{error}</p>}
-      <input
-        type="text"
-        placeholder={t('createForm.formTitlePlaceholder')}
-        value={title.value}
-        onChange={title.onChange}
-      />
-      <textarea
-        placeholder={t('createForm.descriptionPlaceholder')}
-        value={description.value}
-        onChange={description.onChange}
-      />
-      <input
-        type="number"
-        placeholder={t('createForm.questionsCountPlaceholder')}
-        value={questionsCount}
-        onChange={(e) => handleQuestionsCountChange(Number(e.target.value))}
-      />
-      {questions.map((q, index) => (
-        <div key={index}>
-          <input
-            placeholder={t('createForm.questionTitlePlaceholder', {
-              number: index + 1,
-            })}
-            value={q.title}
-            onChange={(e) => updateQuestionAt(index, 'title', e.target.value)}
-          />
-          <select
-            value={q.type}
-            onChange={(e) => updateQuestionAt(index, 'type', e.target.value)}
-          >
-            <option value="text">{t('createForm.optionText')}</option>
-            <option value="number">{t('createForm.optionNumber')}</option>
-            <option value="checkbox">{t('createForm.optionCheckbox')}</option>
-          </select>
-        </div>
-      ))}
-      <button onClick={handleSubmit}>{t('createForm.submitButton')}</button>
+    <div className="createFormPage">
+      <div className="page-title">
+        <h1>{t('createForm.createFormTitle')}</h1>
+      </div>
+      <div className="createFormPage__container">
+        {error && <p className="error">{error}</p>}
+        <input
+          type="text"
+          placeholder={t('createForm.formTitlePlaceholder')}
+          value={title.value}
+          onChange={title.onChange}
+        />
+        <textarea
+          placeholder={t('createForm.descriptionPlaceholder')}
+          value={description.value}
+          onChange={description.onChange}
+        />
+        <input
+          type="number"
+          placeholder={t('createForm.questionsCountPlaceholder')}
+          value={questionsCount}
+          onChange={(e) => handleQuestionsCountChange(Number(e.target.value))}
+        />
+        {questions.map((q, index) => (
+          <div key={index} className="createFormPage__question">
+            <input
+              placeholder={t('createForm.questionTitlePlaceholder', {
+                number: index + 1,
+              })}
+              value={q.title}
+              onChange={(e) => updateQuestionAt(index, 'title', e.target.value)}
+            />
+            <select
+              value={q.type}
+              onChange={(e) => updateQuestionAt(index, 'type', e.target.value)}
+            >
+              <option value="text">{t('createForm.optionText')}</option>
+              <option value="number">{t('createForm.optionNumber')}</option>
+              <option value="checkbox">{t('createForm.optionCheckbox')}</option>
+            </select>
+          </div>
+        ))}
+        <button onClick={handleSubmit}>{t('createForm.submitButton')}</button>
+      </div>
     </div>
   );
 };

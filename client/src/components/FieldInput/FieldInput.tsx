@@ -14,15 +14,11 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
   const { t } = useTranslation();
   const normalizedType = useNormalizedFieldType(type);
 
-  console.log(
-    `Rendering FieldInput for question id ${id} with normalized type:`,
-    normalizedType,
-  );
-
   switch (normalizedType) {
     case 'number':
       return (
         <input
+          className="fieldInput"
           type="number"
           value={value}
           onChange={(e) => onChange(id, e.target.value)}
@@ -31,6 +27,7 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     case 'text':
       return (
         <input
+          className="fieldInput"
           type="text"
           value={value}
           onChange={(e) => onChange(id, e.target.value)}
@@ -39,6 +36,7 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     case 'textarea':
       return (
         <textarea
+          className="fieldInput fieldInput--textarea"
           value={value}
           onChange={(e) => onChange(id, e.target.value)}
         />
@@ -46,6 +44,7 @@ export const FieldInput: React.FC<Props> = ({ question, value, onChange }) => {
     case 'checkbox':
       return (
         <input
+          className="fieldInput fieldInput--checkbox"
           type="checkbox"
           checked={value === 'true' || value === 'on'}
           onChange={(e) => onChange(id, e.target.checked)}

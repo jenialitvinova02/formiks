@@ -21,7 +21,9 @@ export const AdminPanel: React.FC = () => {
 
   return (
     <div className="adminPanel">
-      <h1>{t('admin.title')}</h1>
+      <div className="page-title">
+        <h1>{t('admin.title')}</h1>
+      </div>
       <div className="adminPanel__container">
         {action !== null && <p>{t('admin.selectUsers')}</p>}
         <ul className="adminPanel__userList">

@@ -1,0 +1,29 @@
+.TemplateList {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    cursor: pointer;
+    transition:
+      transform 180ms ease,
+      background 180ms ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: var(--surface-hover);
+    }
+
+    strong {
+      color: var(--text);
+    }
+  }
+}

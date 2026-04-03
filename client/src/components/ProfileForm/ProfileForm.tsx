@@ -21,7 +21,9 @@ export const ProfileForm: React.FC = () => {
 
   return editing ? (
     <div className="profileEdit">
-      <h1>{t('profileForm.editProfile')}</h1>
+      <div className="page-title">
+        <h1>{t('profileForm.editProfile')}</h1>
+      </div>
       <div className="profileEdit__container">
         <div className="profileEdit__container--inputs">
           <label>{t('profileForm.username')}</label>
@@ -43,7 +45,9 @@ export const ProfileForm: React.FC = () => {
     </div>
   ) : (
     <div className="profileForm">
-      <h1>{t('profileForm.profile')}</h1>
+      <div className="page-title">
+        <h1>{t('profileForm.profile')}</h1>
+      </div>
       <div className="profileForm__container">
         <p>
           {t('profileForm.username')}: {form.username}

@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TemplateList, TemplateInfo } from '../../components';
 import { usePublicTemplates, PublicTemplateData } from '../../hooks';
+import './GuestDashboard.scss';
 
 export const GuestDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -16,15 +17,19 @@ export const GuestDashboard: React.FC = () => {
   }));
 
   return (
-    <div>
-      <h1>{t('guestDashboard.allPublicTemplates')}</h1>
+    <div className="guestDashboard">
+      <div className="page-title">
+        <h1>{t('guestDashboard.allPublicTemplates')}</h1>
+      </div>
       {items.length > 0 ? (
-        <TemplateList
-          items={items}
-          onSelect={(id) => {
-            console.log('Template selected:', id);
-          }}
-        />
+        <div className="guestDashboard__container">
+          <TemplateList
+            items={items}
+            onSelect={(id) => {
+              console.log('Template selected:', id);
+            }}
+          />
+        </div>
       ) : (
         <p>{t('guestDashboard.noPublicTemplates')}</p>
       )}

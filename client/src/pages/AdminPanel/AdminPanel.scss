@@ -1,88 +1,50 @@
 @use "../../styles/breakpoints.scss" as bp;
 
-.userList {
-  margin-top: 20px;
-}
-
 .adminPanel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  padding: 20px;
-  justify-content: center;
-  flex-direction: column;
-  gap: 50px;
+  gap: 24px;
 
   &__container {
-    background-color: var(--background-second);
-    padding: 30px 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 800px;
+    padding: 28px;
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  &__buttons {
+  &__buttons,
+  &__managementButtons {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
-  }
-
-  &__management {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   &__userList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
 
     li {
-      padding: 10px;
-      background: var(--background-color);
-      border-radius: 6px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
     }
-  }
 
-  &__managementButtons {
-    display: flex;
-    gap: 20px;
+    label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+    }
   }
 }
 
 @include bp.phone {
-  .adminPanel {
-    padding: 10px;
+  .adminPanel__container {
+    padding: 18px;
+  }
 
-    &__container {
-      padding: 20px;
-      gap: 15px;
-    }
-
-    &__buttons,
-    &__managementButtons {
-      flex-direction: column;
-
-      button {
-        width: 100%;
-      }
-    }
-
-    &__userList {
-      gap: 8px;
-
-      li {
-        padding: 8px;
-      }
-    }
+  .adminPanel__buttons,
+  .adminPanel__managementButtons {
+    flex-direction: column;
   }
 }

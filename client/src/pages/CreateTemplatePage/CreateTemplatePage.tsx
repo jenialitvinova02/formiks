@@ -43,12 +43,15 @@ export const CreateTemplatePage: React.FC = () => {
 
   return (
     <form className="createTemplate" onSubmit={onSubmit}>
-      <h1>
-        {isEditMode
-          ? t('createTemplate.editTemplate')
-          : t('createTemplate.createTemplate')}
-      </h1>
-      <div className="createTemplate__container container">
+      <div className="page-title">
+        <h1>
+          {isEditMode
+            ? t('createTemplate.editTemplate')
+            : t('createTemplate.createTemplate')}
+        </h1>
+        <p>Set template metadata, design question flows and prepare a cleaner form experience.</p>
+      </div>
+      <div className="createTemplate__container">
         <input
           placeholder={t('createTemplate.title')}
           value={meta.title}
@@ -81,8 +84,10 @@ export const CreateTemplatePage: React.FC = () => {
       </div>
 
       <hr />
-      <h2>{t('createTemplate.questionsTitle')}</h2>
       <div className="createTemplate__block">
+        <div className="page-title">
+          <h2>{t('createTemplate.questionsTitle')}</h2>
+        </div>
         <div className="createTemplate__block--buttons">
           <button type="button" onClick={addQuestion}>
             {t('createTemplate.addQuestion')}

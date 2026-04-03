@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'light' ? 'light' : 'dark';
+  });
 
   useEffect(() => {
     if (theme === 'light') {
@@ -9,6 +12,7 @@ export const useTheme = () => {
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () =>

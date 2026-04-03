@@ -18,11 +18,11 @@ export const TemplateCard: React.FC<Props> = ({
   const { t } = useTranslation();
   return (
     <div className="template-card" onClick={onClick}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <small>
+      <small className="template-card__topic">
         {t('templateCard.topic')}: {topic}
       </small>
+      <h3>{title}</h3>
+      <p>{description}</p>
     </div>
   );
 };

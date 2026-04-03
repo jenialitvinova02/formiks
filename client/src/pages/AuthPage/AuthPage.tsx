@@ -12,12 +12,24 @@ export const AuthPage: React.FC = () => {
 
   return (
     <div className="auth">
-      <div className="auth__img" />
-      <div className="auth__container">
-        <div className="auth__box">
-          <h1 className="auth__box--title">
+      <div className="auth__hero">
+        <div className="auth__hero-backdrop" />
+        <div className="auth__hero-content">
+          <span className="auth__eyebrow">Formics</span>
+          <h1 className="auth__title">
             {mode === 'login' ? t('auth.signIn') : t('auth.register')}
           </h1>
+          <p className="auth__subtitle">
+            Form builder, response tracking and team-ready workflows in one
+            workspace.
+          </p>
+        </div>
+      </div>
+      <div className="auth__container">
+        <div className="auth__box">
+          <h2 className="auth__box--title">
+            {mode === 'login' ? t('auth.signIn') : t('auth.register')}
+          </h2>
 
           <div className="auth__box--form">
             <AuthForm mode={mode} onSuccess={() => navigate('/dashboard')} />

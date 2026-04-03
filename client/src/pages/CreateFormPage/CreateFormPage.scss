@@ -1,0 +1,26 @@
+.createFormPage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__container {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg-elevated) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+  }
+
+  &__question {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+}

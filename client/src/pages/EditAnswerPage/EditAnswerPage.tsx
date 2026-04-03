@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useAnswersForResponse, useAnswerValues } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import './EditAnswerPage.scss';
 
 export const EditAnswerPage: React.FC = () => {
   const { t } = useTranslation();
@@ -36,10 +37,12 @@ export const EditAnswerPage: React.FC = () => {
   if (error) return <p>{t('editAnswer.error', { error })}</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="container">
-      <h2>{t('editAnswer.title', { answerId })}</h2>
+    <form onSubmit={handleSubmit} className="editAnswerPage">
+      <div className="page-title">
+        <h1>{t('editAnswer.title', { answerId })}</h1>
+      </div>
       {answers.map((a) => (
-        <div key={a.id} className="form-group">
+        <div key={a.id} className="editAnswerPage__group">
           <label>{a.question.title}</label>
           {a.question.type === 'multi-line' ? (
             <textarea
@@ -55,10 +58,12 @@ export const EditAnswerPage: React.FC = () => {
           )}
         </div>
       ))}
-      <button type="submit">{t('editAnswer.saveChanges')}</button>
-      <button type="button" onClick={() => navigate(-1)}>
-        {t('editAnswer.cancel')}
-      </button>
+      <div className="actions-row">
+        <button type="submit">{t('editAnswer.saveChanges')}</button>
+        <button type="button" onClick={() => navigate(-1)}>
+          {t('editAnswer.cancel')}
+        </button>
+      </div>
     </form>
   );
 };

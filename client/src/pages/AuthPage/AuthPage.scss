@@ -1,101 +1,149 @@
 @use "../../styles/breakpoints.scss" as bp;
 
 .auth {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 520px);
+  background:
+    radial-gradient(circle at left top, rgba(124, 242, 201, 0.2), transparent 34%),
+    linear-gradient(135deg, rgba(9, 15, 32, 0.96), rgba(12, 22, 44, 0.9));
+
+  &__hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(4, 8, 20, 0.34), rgba(4, 8, 20, 0.72)),
+      url('../../assets/login.jpg') center / cover no-repeat;
+  }
+
+  &__hero-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(124, 242, 201, 0.26), transparent 25%),
+      linear-gradient(135deg, rgba(93, 149, 255, 0.22), transparent 45%);
+  }
+
+  &__hero-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 18px;
+    padding: 56px;
+    max-width: 620px;
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ebfff8;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  &__title {
+    max-width: 10ch;
+  }
+
+  &__subtitle {
+    max-width: 34rem;
+    font-size: 1.1rem;
+    color: rgba(247, 247, 251, 0.82);
+  }
+
+  &__container {
+    display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-.auth__container{
-    display: flex;
-    justify-content: center;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
-}
-&__box {
-    background-color: var(--background-second);
-    display: inline-block;
-    padding: 30px 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    &--title{
-        text-align: center;
-    }
-    &--form{
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-        margin-top: 40px;
-        &-inputs{
-            display: grid;
-            grid-template-columns: 1.3fr 3fr;
-            align-items: center;
-        }
-    }
-    &--toggle{
-        margin-top: 7px;
-        display: flex;
-       justify-self: flex-end;
-      
-    }
-    &--buttons {
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
-}
-.auth__img {
-    width: auto;
-    height: 100%; 
-    background:
-    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
-    url('../../assets/login.jpg');
-    background-size: cover;
+    padding: 32px;
   }
-}
 
-.auth__box--toggle{
-    a{
-    background-color: transparent;
-    padding: 0;
-    &:hover {
-        background-color: transparent;
-        font-weight: normal;
-        color: white;
+  &__box {
+    width: 100%;
+    max-width: 440px;
+    padding: 36px;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg-elevated) 100%);
+    border: 1px solid var(--border);
+    border-radius: 32px;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(18px);
 
+    &--title {
+      margin-bottom: 28px;
     }
-}
+
+    &--form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    &--toggle {
+      margin-top: 18px;
+      font-size: 0.95rem;
+
+      a {
+        padding: 0;
+        background: transparent;
+        color: var(--accent);
+        font-weight: 700;
+
+        &:hover {
+          background: transparent;
+          color: var(--accent-strong);
+        }
+      }
+    }
+
+    &--guest {
+      margin-top: 18px;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
 
 @include bp.phone {
   .auth {
     display: block;
-    background:
-      linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
-      url('../../assets/login.jpg');
-    background-size: cover;
-    background-position: center;
     position: relative;
-    &__box {
-        padding: 15px 25px;
 
+    &__hero {
+      position: absolute;
+      inset: 0;
     }
-  }
 
-  .auth__img {
-    display: none;
-  }
+    &__hero-content {
+      justify-content: flex-start;
+      padding: 20px;
+      gap: 10px;
+    }
 
-  .auth__container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    padding: 0 1.25rem;
-    z-index: 1;
+    &__title,
+    &__subtitle {
+      display: none;
+    }
+
+    &__container {
+      position: relative;
+      min-height: 100vh;
+      padding: 88px 12px 20px;
+    }
+
+    &__box {
+      padding: 24px 18px;
+      border-radius: 24px;
+    }
   }
 }

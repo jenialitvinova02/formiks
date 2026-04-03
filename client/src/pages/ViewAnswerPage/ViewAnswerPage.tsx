@@ -30,11 +30,13 @@ export const ViewAnswerPage: React.FC = () => {
   return (
     <div className="ViewAnswerPage">
       <div className="ViewAnswerPage__container">
-        <h1>{tpl.title}</h1>
-        <p>{tpl.description}</p>
-        <h2>
-          {t('viewAnswer.response')} #{answerId}
-        </h2>
+        <div className="page-title">
+          <h1>{tpl.title}</h1>
+          <p>{tpl.description}</p>
+          <h2>
+            {t('viewAnswer.response')} #{answerId}
+          </h2>
+        </div>
         {answers.map((answer) => (
           <div key={answer.id} className="ViewAnswerPage__item">
             {answer.question && (

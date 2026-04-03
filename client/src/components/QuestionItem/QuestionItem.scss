@@ -1,28 +1,27 @@
 @use "../../styles/breakpoints.scss" as bp;
 
 .questionItem {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 
-    &__container {
-        display: flex;
-        gap: 20px;
-    }
+  &__container {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 220px;
+    gap: 14px;
+  }
 }
 
 @include bp.phone {
-    .questionItem {
-        gap: 15px;
+  .questionItem {
+    padding: 16px;
 
-        &__container {
-            flex-direction: column;
-            gap: 15px;
-
-            input,
-            select {
-                width: auto;
-            }
-        }
+    &__container {
+      grid-template-columns: 1fr;
     }
+  }
 }

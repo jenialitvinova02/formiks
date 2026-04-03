@@ -1,0 +1,31 @@
+@use "../../styles/breakpoints.scss" as bp;
+
+.editAnswerPage {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+
+    label {
+      color: var(--text);
+      font-weight: 700;
+    }
+  }
+}
+
+@include bp.phone {
+  .editAnswerPage {
+    padding: 18px;
+  }
+}

@@ -1,19 +1,41 @@
+@use "../../styles/breakpoints.scss" as bp;
+
 .dashboard {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  &__container{
+  gap: 28px;
+
+  &__hero,
+  &__container {
+    padding: 30px;
+  }
+
+  &__hero {
+    min-height: 220px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    align-items: flex-end;
+    background:
+      radial-gradient(circle at top right, rgba(124, 242, 201, 0.18), transparent 30%),
+      linear-gradient(135deg, rgba(95, 145, 255, 0.22), transparent 48%),
+      linear-gradient(180deg, var(--bg-soft) 0%, var(--bg-elevated) 100%);
+  }
+
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
   }
 }
 
+@include bp.phone {
+  .dashboard {
+    gap: 18px;
 
+    &__hero,
+    &__container {
+      padding: 18px;
+    }
 
-.dashboard__container {
-  display: flex;
-  overflow-x: auto;
-  padding: 16px 0;
+    &__hero {
+      min-height: auto;
+    }
+  }
 }

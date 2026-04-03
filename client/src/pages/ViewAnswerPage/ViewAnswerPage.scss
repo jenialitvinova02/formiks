@@ -1,42 +1,26 @@
 @use "../../styles/breakpoints.scss" as bp;
 
 .ViewAnswerPage {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 80vh;
-  padding: 20px;
 
   &__container {
-    background-color: var(--background-second);
-    padding: 30px 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px;
+    width: min(100%, 860px);
+    padding: 28px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
   }
 
   &__item {
-    padding: 15px;
-    background-color: var(--background-color);
-    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
   }
 }
 
 @include bp.phone {
-  .ViewAnswerPage {
-    padding: 10px;
-
-    &__container {
-      padding: 20px;
-      gap: 15px;
-    }
-
-    &__item {
-      padding: 10px;
-    }
+  .ViewAnswerPage__container {
+    padding: 18px;
   }
 }

@@ -1,76 +1,52 @@
 @use "../../styles/breakpoints.scss" as bp;
 
-.profileForm, .profileEdit{
+.profileForm,
+.profileEdit {
+  gap: 24px;
+
+  &__container {
+    padding: 28px;
     display: flex;
     flex-direction: column;
-    gap: 50px;
-    align-items: center;
-    &__container{
-    background-color: var(--background-second);
-    display: flex;
-    flex-direction: column;
-    padding: 30px 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-}
-.profileForm{
-    &__container{
-    gap: 10px;
-    &--button{
-        margin-top: 20px;
-    }
-}
-}
-.profileEdit{
-    &__container{
-    gap: 30px;
-    &--inputs{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    &--buttons{
-        display: flex;
-        gap: 10px;
-        align-self: center;
-    }
-}
+    gap: 20px;
+    max-width: 720px;
+    width: 100%;
+  }
 }
 
+.profileForm__container p {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.profileEdit__container {
+  &--inputs {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 14px 16px;
+    align-items: center;
+  }
+
+  &--buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
 
 @include bp.phone {
-  .profileForm,
-  .profileEdit {
-    gap: 30px;
+  .profileForm__container,
+  .profileEdit__container {
+    padding: 18px;
+  }
 
-    &__container {
-      padding: 20px;
-      width: 90%;
-      max-width: 400px;
-      gap: 15px;
+  .profileEdit__container--inputs {
+    grid-template-columns: 1fr;
+  }
 
-      p,
-      label,
-      input {
-        width: auto;
-      }
-
-      &--button {
-        width: 100%;
-      }
-
-      &--buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        align-self: center;
-
-        button {
-          width: 100%;
-        }
-      }
-    }
+  .profileEdit__container--buttons {
+    flex-direction: column;
   }
 }

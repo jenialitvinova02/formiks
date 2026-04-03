@@ -1,12 +1,19 @@
-.authForm{
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__check {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    &__check{
-        display: flex;
-        align-items: center;
-    }
-    &__controls{
-        display: flex;
-justify-content: space-between;    }
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  &__controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 }

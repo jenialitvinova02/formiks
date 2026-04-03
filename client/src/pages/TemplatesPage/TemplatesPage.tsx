@@ -52,7 +52,10 @@ export const TemplatesPage: React.FC = () => {
 
   return (
     <div className="TemplatesPage">
-      <h1>{t('templates.myTemplates')}</h1>
+      <div className="page-title">
+        <h1>{t('templates.myTemplates')}</h1>
+        <p>Manage published forms, update drafts and review response collections.</p>
+      </div>
 
       <div className="TemplatesPage__container">
         <ul className="template-list">
@@ -60,35 +63,32 @@ export const TemplatesPage: React.FC = () => {
             <li
               key={tmpl.id}
               className="template-list__item"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: mode === 'normal' ? 'pointer' : 'default',
-              }}
+              data-mode={mode}
               onClick={() => {
-                if (mode === 'normal')
-                  navigate(`/templates/${tmpl.id}/answers`);
+                if (mode === 'normal') navigate(`/templates/${tmpl.id}/answers`);
               }}
             >
-              {mode === 'delete' && (
-                <input
-                  type="checkbox"
-                  checked={selectedDelete.includes(tmpl.id)}
-                  onChange={() => toggleDeleteSelection(tmpl.id)}
-                />
-              )}
-              {mode === 'edit' && (
-                <input
-                  type="radio"
-                  name="editSelection"
-                  checked={selectedEdit === tmpl.id}
-                  onChange={() => setSelectedEdit(tmpl.id)}
-                />
-              )}
-              <span>
-                <strong>{tmpl.title}</strong>: {tmpl.description}
-              </span>
+              <div className="template-list__meta">
+                {mode === 'delete' && (
+                  <input
+                    type="checkbox"
+                    checked={selectedDelete.includes(tmpl.id)}
+                    onChange={() => toggleDeleteSelection(tmpl.id)}
+                  />
+                )}
+                {mode === 'edit' && (
+                  <input
+                    type="radio"
+                    name="editSelection"
+                    checked={selectedEdit === tmpl.id}
+                    onChange={() => setSelectedEdit(tmpl.id)}
+                  />
+                )}
+                <div className="template-list__copy">
+                  <strong>{tmpl.title}</strong>
+                  <span>{tmpl.description}</span>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

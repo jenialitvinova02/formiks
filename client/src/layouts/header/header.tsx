@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../../hooks';
 import './header.scss';
 import Logo from '../../assets/logo.png';
 import burger from '../../assets/burger.svg';
@@ -11,21 +12,13 @@ export const Header: React.FC = () => {
   const isGuest = localStorage.getItem('guest') === 'true';
   const navigate = useNavigate();
   const location = useLocation();
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (theme === 'light')
-      document.documentElement.setAttribute('data-theme', 'white');
-    else document.documentElement.removeAttribute('data-theme');
-  }, [theme]);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -78,21 +71,25 @@ export const Header: React.FC = () => {
 
   return (
     <header className="header">
-      <img className="header__logo" src={Logo} alt="Logo" />
+      <Link className="header__brand" to={token || isGuest ? '/dashboard' : '/login'}>
+        <img className="header__logo" src={Logo} alt="Logo" />
+        <div className="header__brand-copy">
+          <strong>Formics</strong>
+          <small>Smart form workspace</small>
+        </div>
+      </Link>
 
-      {/* desktop */}
       <nav className="header__links">{commonLinks}</nav>
       <div className="header__right">{commonControls}</div>
 
-      {/* burger */}
       <button
         className="header__burger"
         onClick={() => setMenuOpen((prev) => !prev)}
+        aria-label="Toggle navigation"
       >
         <img src={burger} alt="Menu" />
       </button>
 
-      {/* mobile menu */}
       {menuOpen && (
         <div className="header__mobile-menu">
           <button

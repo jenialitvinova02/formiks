@@ -1,4 +1,5 @@
 import React from 'react';
+import './TemplateList.scss';
 
 export interface TemplateInfo {
   id: number;
@@ -12,14 +13,11 @@ interface Props {
 }
 
 export const TemplateList: React.FC<Props> = ({ items, onSelect }) => (
-  <ul>
+  <ul className="TemplateList">
     {items.map((t) => (
-      <li
-        key={t.id}
-        onClick={() => onSelect(t.id)}
-        style={{ cursor: 'pointer' }}
-      >
-        <strong>{t.title}</strong>: {t.description}
+      <li key={t.id} className="TemplateList__item" onClick={() => onSelect(t.id)}>
+        <strong>{t.title}</strong>
+        <span>{t.description}</span>
       </li>
     ))}
   </ul>

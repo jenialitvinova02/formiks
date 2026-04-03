@@ -18,6 +18,8 @@ import answerRoutes from './routes/answers';
 import publicTemplates from './routes/publicTemplates';
 
 import dotenv from 'dotenv';
+import { databaseMode, databaseLocation } from './db';
+import { seedLocalData } from './seedLocalData';
 dotenv.config();
 
 const app = express();
@@ -35,7 +37,21 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/responses', responseRoutes);
 app.use('/api/answers', answerRoutes);
 
-sequelize.sync().then(() => {
-  console.log('DB connected');
-  app.listen(process.env.PORT || 3000, () => console.log('Server is running'));
-});
+async function start() {
+  try {
+    await sequelize.sync();
+
+    if (databaseMode === 'sqlite') {
+      await seedLocalData();
+    }
+
+    const port = Number(process.env.PORT || 3000);
+    console.log(`DB connected via ${databaseMode}: ${databaseLocation}`);
+    app.listen(port, () => console.log(`Server is running on port ${port}`));
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+start();

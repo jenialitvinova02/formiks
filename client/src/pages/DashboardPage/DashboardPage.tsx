@@ -11,10 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { TemplateData } from '../../hooks/useTemplates';
 import './DashboardPage.scss';
 
-const containerStyle: React.CSSProperties = {
-  display: 'flex',
-};
-
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
   const { data: templates, loading, error } = useTemplates();
@@ -29,13 +25,18 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <h1>{t('dashboard.title')}</h1>
+      <section className="dashboard__hero">
+        <div className="page-title">
+          <h1>{t('dashboard.title')}</h1>
+          <p>Browse templates, reorder priorities and launch form flows faster.</p>
+        </div>
+      </section>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={items.map((item) => item.id.toString())}
           strategy={horizontalListSortingStrategy}
         >
-          <div className="dashboard__container" style={containerStyle}>
+          <div className="dashboard__container">
             {items.map((tmpl: TemplateData) => (
               <SortableItem key={tmpl.id} id={tmpl.id.toString()}>
                 <TemplateCard

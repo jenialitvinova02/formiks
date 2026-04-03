@@ -70,41 +70,41 @@ export const FormAnswersListPage: React.FC = () => {
 
   return (
     <div className="FormAnswersList">
-      <h2>{t('formAnswersList.responsesFor', { templateId })}</h2>
+      <div className="page-title">
+        <h1>{t('formAnswersList.responsesFor', { templateId })}</h1>
+      </div>
       <div className="FormAnswersList__container">
         <ul className="response-list">
           {responses.map((r: ResponseInfo) => (
             <li
               key={r.id}
+              className="response-list__item"
+              data-mode={mode}
               onClick={() => {
                 if (mode === 'normal')
                   navigate(`/templates/${templateId}/answers/${r.id}`);
               }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: mode === 'normal' ? 'pointer' : 'default',
-              }}
             >
-              {mode === 'delete' && (
-                <input
-                  type="checkbox"
-                  checked={selectedDelete.includes(r.id)}
-                  onChange={() => toggleDeleteSelection(r.id)}
-                />
-              )}
-              {mode === 'edit' && (
-                <input
-                  type="radio"
-                  name="editSelection"
-                  checked={selectedEdit === r.id}
-                  onChange={() => setSelectedEdit(r.id)}
-                />
-              )}
-              <span>
-                #{r.id} – {new Date(r.createdAt).toLocaleString()}
-              </span>
+              <div className="response-list__meta">
+                {mode === 'delete' && (
+                  <input
+                    type="checkbox"
+                    checked={selectedDelete.includes(r.id)}
+                    onChange={() => toggleDeleteSelection(r.id)}
+                  />
+                )}
+                {mode === 'edit' && (
+                  <input
+                    type="radio"
+                    name="editSelection"
+                    checked={selectedEdit === r.id}
+                    onChange={() => setSelectedEdit(r.id)}
+                  />
+                )}
+                <span>
+                  #{r.id} – {new Date(r.createdAt).toLocaleString()}
+                </span>
+              </div>
             </li>
           ))}
         </ul>
