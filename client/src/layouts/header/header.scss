@@ -78,7 +78,7 @@
       transform 180ms ease;
 
     &:hover {
-      background: var(--surface);
+      background: rgba(124, 242, 201, 0.12);
       color: var(--text);
       transform: translateY(-1px);
     }

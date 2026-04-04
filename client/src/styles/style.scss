@@ -25,7 +25,7 @@
   --radius-md: 18px;
   --radius-sm: 14px;
   --container: 1180px;
-  --header-height: 96px;
+  --header-height: 132px;
 }
 
 [data-theme='white'] {
@@ -276,7 +276,7 @@ ul {
 }
 
 .app-shell--with-header {
-  padding-top: calc(var(--header-height) + 24px);
+  padding-top: calc(var(--header-height) + 28px);
 }
 
 .app-main {
@@ -401,7 +401,7 @@ ul {
 
 @include bp.phone {
   :root {
-    --header-height: 82px;
+    --header-height: 104px;
   }
 
   .app-main {
@@ -410,7 +410,7 @@ ul {
   }
 
   .app-shell--with-header {
-    padding-top: calc(var(--header-height) + 18px);
+    padding-top: calc(var(--header-height) + 16px);
   }
 
   button {
