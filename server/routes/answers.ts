@@ -1,109 +1,82 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { authenticateJWT, AuthRequest } from '../middleware/authenticateJWT';
+import { asyncHandler } from '../utils/asyncHandler';
+import { idParamValidator } from '../validators/commonValidators';
+import { validateRequest } from '../middleware/validateRequest';
+import { requireAnswerAccess, requireResponseAccess } from '../services/accessService';
 import Answer from '../models/Answer';
-import { authenticateJWT } from '../middleware/authenticateJWT';
+import { body } from 'express-validator';
 
 const router = Router();
 
 router.get(
   '/response/:responseId',
   authenticateJWT,
-  async (
-    req: Request<{ responseId: string }>,
-    res: Response,
-  ): Promise<void> => {
-    try {
-      const responseId = Number(req.params.responseId);
-      const answers = await Answer.findAll({
-        where: { responseId },
-        include: ['question'],
-      });
-      res.json(answers);
-    } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  idParamValidator('responseId'),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    await requireResponseAccess(authReq, Number(req.params.responseId));
+    const answers = await Answer.findAll({
+      where: { responseId: Number(req.params.responseId) },
+      include: ['question'],
+    });
+    res.json(answers);
+  }),
 );
 
 router.get(
   '/:id',
   authenticateJWT,
-  async (req: Request<{ id: string }>, res: Response): Promise<void> => {
-    try {
-      const ans = await Answer.findByPk(req.params.id);
-      if (!ans) {
-        res.status(404).json({ error: 'Answer not found' });
-        return;
-      }
-      res.json(ans);
-    } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  idParamValidator('id'),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    const answer = await requireAnswerAccess(authReq, Number(req.params.id));
+    res.json(answer);
+  }),
 );
 
 router.post(
   '/',
   authenticateJWT,
-  async (
-    req: Request<
-      {},
-      {},
-      { responseId: number; questionId: number; value: string }
-    >,
-    res: Response,
-  ): Promise<void> => {
-    try {
-      const { responseId, questionId, value } = req.body;
-      const ans = await Answer.create({ responseId, questionId, value });
-      res.json(ans);
-    } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  body('responseId').isInt({ min: 1 }),
+  body('questionId').isInt({ min: 1 }),
+  body('value').isString(),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    await requireResponseAccess(authReq, Number(req.body.responseId));
+    const answer = await Answer.create(req.body);
+    res.status(201).json(answer);
+  }),
 );
 
 router.put(
   '/:id',
   authenticateJWT,
-  async (
-    req: Request<{ id: string }, {}, { value: string }>,
-    res: Response,
-  ): Promise<void> => {
-    try {
-      const ans = await Answer.findByPk(req.params.id);
-      if (!ans) {
-        res.status(404).json({ error: 'Answer not found' });
-        return;
-      }
-      await ans.update(req.body);
-      res.json(ans);
-    } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  idParamValidator('id'),
+  body('value').isString(),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    const answer = await requireAnswerAccess(authReq, Number(req.params.id));
+    await answer.update({ value: req.body.value });
+    res.json(answer);
+  }),
 );
 
 router.delete(
   '/:id',
   authenticateJWT,
-  async (req: Request<{ id: string }>, res: Response): Promise<void> => {
-    try {
-      const ans = await Answer.findByPk(req.params.id);
-      if (!ans) {
-        res.status(404).json({ error: 'Answer not found' });
-        return;
-      }
-      await ans.destroy();
-      res.json({ message: 'Answer deleted' });
-    } catch (e: any) {
-      console.error(e);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
+  idParamValidator('id'),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    const answer = await requireAnswerAccess(authReq, Number(req.params.id));
+    await answer.destroy();
+    res.json({ message: 'Answer deleted' });
+  }),
 );
 
 export default router;

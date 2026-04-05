@@ -1,32 +1,34 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import Form from '../models/Response';
+import { ROLE_ADMIN } from '../constants/roles';
+import { AppError } from '../errors/AppError';
 import { AuthRequest } from './authenticateJWT';
 
 export const authorizeAdmin = (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ): void => {
-  if (req.user && req.user.role === 'admin') {
+  if (req.user && req.user.role === ROLE_ADMIN) {
     next();
   } else {
-    res.status(403).json({ error: 'Access denied, admin only' });
+    next(new AppError(403, 'Access denied, admin only'));
   }
 };
 
 export const authorizeResponseOwner = async (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const form = await Form.findByPk(req.params.id);
   if (!form) {
-    res.status(404).json({ error: 'Form not found' });
+    next(new AppError(404, 'Response not found'));
     return;
   }
-  if (req.user.role === 'admin' || form.get('userId') === req.user.id) {
+  if (req.user?.role === ROLE_ADMIN || form.get('userId') === req.user?.id) {
     next();
   } else {
-    res.status(403).json({ error: 'Access denied' });
+    next(new AppError(403, 'Access denied'));
   }
 };

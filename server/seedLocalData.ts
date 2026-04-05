@@ -4,6 +4,7 @@ import Template from './models/Template';
 import Question from './models/Question';
 import ResponseModel from './models/Response';
 import Answer from './models/Answer';
+import { logger } from './utils/logger';
 
 const DEFAULT_PASSWORD = 'password123';
 
@@ -108,7 +109,7 @@ export async function seedLocalData() {
     },
   ]);
 
-  console.log('Local demo data created.');
-  console.log('Admin login: admin@local.test / password123');
-  console.log('User login: demo@local.test / password123');
+  logger.info('Local demo data created.');
+  logger.info('Admin login: admin@local.test / password123');
+  logger.info('User login: demo@local.test / password123');
 }

@@ -1,32 +1,36 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { AppError } from '../errors/AppError';
+import { verifyJwt } from '../utils/jwt';
 
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: {
+    id: number;
+    email: string;
+    role: string;
+  };
 }
 
 export const authenticateJWT = (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    res.status(401).json({ error: 'Token missing' });
+    next(new AppError(401, 'Token missing'));
     return;
   }
 
   const token = authHeader.split(' ')[1];
-  jwt.verify(
-    token,
-    process.env.JWT_SECRET || 'your_jwt_secret',
-    (err, user) => {
-      if (err) {
-        res.status(403).json({ error: 'Invalid token' });
-        return;
-      }
-      req.user = user;
-      next();
-    },
-  );
+  if (!token) {
+    next(new AppError(401, 'Bearer token is required'));
+    return;
+  }
+
+  try {
+    req.user = verifyJwt(token) as AuthRequest['user'];
+    next();
+  } catch {
+    next(new AppError(403, 'Invalid token'));
+  }
 };

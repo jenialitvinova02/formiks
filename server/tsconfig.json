@@ -5,9 +5,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
+    "outDir": "dist",
+    "types": ["node", "vitest/globals"],
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "test", "coverage", "vitest.config.ts"]
 }

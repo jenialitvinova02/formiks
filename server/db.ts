@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import { logger } from './utils/logger';
 dotenv.config();
 
 const mysqlUri = process.env.DB_URI?.trim();
@@ -31,17 +32,17 @@ const sequelize = useSqlite
         underscored: true,
         timestamps: true,
       },
-      logging: console.log,
+      logging: (sql) => logger.debug({ sql }, 'sequelize query'),
     });
 
 sequelize
   .authenticate()
   .then(() => {
     const mode = useSqlite ? `sqlite (${sqliteStorage})` : 'mysql';
-    console.log(`Database connection has been established successfully: ${mode}`);
+    logger.info(`Database connection has been established successfully: ${mode}`);
   })
   .catch((error) => {
-    console.error('Unable to connect to the database:', error);
+    logger.error({ err: error }, 'Unable to connect to the database');
   });
 
 export const databaseMode = useSqlite ? 'sqlite' : 'mysql';

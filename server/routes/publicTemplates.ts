@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Template from '../models/Template';
 import Question from '../models/Question';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     });
     res.json(templates);
   } catch (e: any) {
-    console.error(e);
+    logger.error({ err: e }, 'Failed to load public templates');
     res.status(500).json({ error: 'Internal server error' });
   }
 });
