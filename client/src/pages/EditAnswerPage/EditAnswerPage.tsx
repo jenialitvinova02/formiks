@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
+import { InlineAlert, LoadingSkeleton } from '../../components';
 import { useAnswersForResponse, useAnswerValues } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import { pushNotification, useAppDispatch } from '../../store';
 import './EditAnswerPage.scss';
 
 export const EditAnswerPage: React.FC = () => {
@@ -12,6 +14,7 @@ export const EditAnswerPage: React.FC = () => {
     answerId: string;
   }>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { data: answers, loading, error } = useAnswersForResponse(answerId!);
   const { values, handleChange } = useAnswerValues(answers);
@@ -25,16 +28,39 @@ export const EditAnswerPage: React.FC = () => {
             axios.put(`answers/${id}`, { value: val }),
           ),
         );
+        dispatch(
+          pushNotification({
+            type: 'success',
+            message: 'Answer updated successfully.',
+          }),
+        );
         navigate(`/templates/${templateId}/answers`);
       } catch (e: any) {
-        alert(e.response?.data?.error || e.message);
+        dispatch(
+          pushNotification({
+            type: 'error',
+            message: e.response?.data?.error || e.message,
+          }),
+        );
       }
     },
-    [values, navigate, templateId],
+    [values, navigate, templateId, dispatch],
   );
 
-  if (loading) return <p>{t('editAnswer.loading')}</p>;
-  if (error) return <p>{t('editAnswer.error', { error })}</p>;
+  if (loading) {
+    return (
+      <div className="editAnswerPage">
+        <LoadingSkeleton rows={4} />
+      </div>
+    );
+  }
+  if (error)
+    return (
+      <InlineAlert
+        title="Failed to load answer"
+        message={t('editAnswer.error', { error })}
+      />
+    );
 
   return (
     <form onSubmit={handleSubmit} className="editAnswerPage">

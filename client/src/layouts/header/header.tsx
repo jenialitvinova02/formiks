@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../hooks';
+import { clearSession, useAppDispatch, useAppSelector } from '../../store';
 import './header.scss';
 import Logo from '../../assets/logo.png';
 import burger from '../../assets/burger.svg';
 
 export const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const token = localStorage.getItem('token');
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.session.token);
+  const user = useAppSelector((state) => state.session.user);
   const isGuest = localStorage.getItem('guest') === 'true';
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,8 +24,7 @@ export const Header: React.FC = () => {
 
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('guest');
+    dispatch(clearSession());
     navigate('/login');
   };
 
@@ -42,9 +44,7 @@ export const Header: React.FC = () => {
       ) : (
         <Link to="/login">{t('header.login')}</Link>
       )}
-      {token && JSON.parse(atob(token.split('.')[1])).role === 'admin' && (
-        <Link to="/admin">Admin</Link>
-      )}
+      {token && user?.role === 'admin' && <Link to="/admin">Admin</Link>}
     </>
   );
 

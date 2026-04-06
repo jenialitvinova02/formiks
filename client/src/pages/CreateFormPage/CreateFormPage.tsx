@@ -48,8 +48,7 @@ export const CreateFormPage: React.FC = () => {
         description: description.value,
         questions,
       };
-      const response = await axios.post('forms', payload);
-      console.log('Form created:', response.data);
+      await axios.post('forms', payload);
     } catch (err: any) {
       setError(err.response?.data?.error || t('createForm.creationError'));
     }

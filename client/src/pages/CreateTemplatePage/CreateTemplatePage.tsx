@@ -2,14 +2,16 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { useTranslation } from 'react-i18next';
-import { QuestionItem } from '../../components';
+import { InlineAlert, LoadingSkeleton, QuestionItem } from '../../components';
 import { useTemplateForm } from '../../hooks';
+import { pushNotification, useAppDispatch } from '../../store';
 import './CreateTemplatePage.scss';
 
 export const CreateTemplatePage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId?: string }>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     isEditMode,
@@ -28,18 +30,49 @@ export const CreateTemplatePage: React.FC = () => {
     try {
       if (isEditMode && templateId) {
         await axios.put(`templates/${templateId}`, payload);
+        dispatch(
+          pushNotification({
+            type: 'success',
+            message: 'Template updated successfully.',
+          }),
+        );
         navigate('/templates');
       } else {
         const created = await axios.post('templates', payload);
+        dispatch(
+          pushNotification({
+            type: 'success',
+            message: 'Template created successfully.',
+          }),
+        );
         navigate(`/fill-template/${created.data.id}`);
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch {
+      dispatch(
+        pushNotification({
+          type: 'error',
+          message: 'Failed to save the template.',
+        }),
+      );
     }
   };
 
-  if (isEditMode && loading) return <p>{t('createTemplate.loading')}</p>;
-  if (isEditMode && error) return <p>{t('createTemplate.error', { error })}</p>;
+  if (isEditMode && loading) {
+    return (
+      <div className="createTemplate">
+        <div className="createTemplate__container">
+          <LoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+  if (isEditMode && error)
+    return (
+      <InlineAlert
+        title="Failed to load template"
+        message={t('createTemplate.error', { error })}
+      />
+    );
 
   return (
     <form className="createTemplate" onSubmit={onSubmit}>

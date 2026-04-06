@@ -10,6 +10,12 @@
     gap: 20px;
   }
 
+  &__filters {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 12px;
+  }
+
   &__buttons {
     display: flex;
     flex-wrap: wrap;
@@ -66,6 +72,10 @@
 
     &__buttons {
       flex-direction: column;
+    }
+
+    &__filters {
+      grid-template-columns: 1fr;
     }
   }
 

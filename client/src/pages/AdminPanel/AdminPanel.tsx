@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { InlineAlert, LoadingSkeleton } from '../../components';
 import { useAdminPanel, useUsers } from '../../hooks';
 import { ADMIN_ACTIONS } from '../../constants';
 import './AdminPanel.scss';
@@ -16,8 +17,26 @@ export const AdminPanel: React.FC = () => {
     handleConfirm,
   } = useAdminPanel({ updateRole });
 
-  if (loading) return <p>{t('loading')}</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <div className="adminPanel">
+        <div className="page-title">
+          <h1>{t('admin.title')}</h1>
+        </div>
+        <div className="adminPanel__container">
+          <LoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="adminPanel">
+        <InlineAlert title="Failed to load users" message={error} />
+      </div>
+    );
+  }
 
   return (
     <div className="adminPanel">

@@ -1,12 +1,14 @@
 import { useState, useCallback } from 'react';
 import axios from '../axiosInstance';
 import { ADMIN_ACTIONS, AdminAction } from '../constants/adminActions';
+import { pushNotification, useAppDispatch } from '../store';
 
 interface UseAdminPanelProps {
   updateRole: (id: number, role: string) => Promise<void>;
 }
 
 export function useAdminPanel({ updateRole }: UseAdminPanelProps) {
+  const dispatch = useAppDispatch();
   const [action, setAction] = useState<AdminAction>(null);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -31,11 +33,22 @@ export function useAdminPanel({ updateRole }: UseAdminPanelProps) {
       } else if (action === ADMIN_ACTIONS.DELETE) {
         await Promise.all(selectedIds.map((id) => axios.delete(`users/${id}`)));
       }
+      dispatch(
+        pushNotification({
+          type: 'success',
+          message: 'Admin action completed successfully.',
+        }),
+      );
       cancelAction();
     } catch (err: any) {
-      alert(err.response?.data?.error || err.message);
+      dispatch(
+        pushNotification({
+          type: 'error',
+          message: err.response?.data?.error || err.message,
+        }),
+      );
     }
-  }, [action, selectedIds, updateRole, cancelAction]);
+  }, [action, selectedIds, updateRole, cancelAction, dispatch]);
 
   return {
     action,

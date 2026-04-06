@@ -36,18 +36,3 @@ export function useCreateTemplate() {
 
   return { create, loading, error };
 }
-
-export const createTemplate = async (templateData: any) => {
-  try {
-    console.log('[useCreateTemplate] Отправка данных шаблона:', templateData);
-    const response = await axios.post('/api/templates', templateData);
-    console.log('[useCreateTemplate] Ответ сервера:', response.data);
-    return response.data;
-  } catch (error: any) {
-    console.error(
-      '[useCreateTemplate] Ошибка при создании шаблона:',
-      error.response?.data || error.message,
-    );
-    throw error;
-  }
-};

@@ -1,14 +1,10 @@
 import { useMemo } from 'react';
+import { useAppSelector } from '../store';
 
 export function useIsAdmin(): boolean {
-  const token = localStorage.getItem('token');
+  const user = useAppSelector((state) => state.session.user);
+
   return useMemo(() => {
-    if (!token) return false;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role === 'admin';
-    } catch {
-      return false;
-    }
-  }, [token]);
+    return user?.role === 'admin';
+  }, [user]);
 }

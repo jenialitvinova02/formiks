@@ -6,7 +6,12 @@ import {
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useTemplates, useSortableItems } from '../../hooks';
-import { TemplateCard, SortableItem } from '../../components';
+import {
+  InlineAlert,
+  LoadingSkeleton,
+  TemplateCard,
+  SortableItem,
+} from '../../components';
 import { useTranslation } from 'react-i18next';
 import { TemplateData } from '../../hooks/useTemplates';
 import './DashboardPage.scss';
@@ -20,8 +25,31 @@ export const DashboardPage: React.FC = () => {
 
   useEffect(() => {}, [templates]);
 
-  if (loading) return <p>{t('dashboard.loading')}</p>;
-  if (error) return <p>{t('dashboard.error', { error })}</p>;
+  if (loading) {
+    return (
+      <div className="dashboard">
+        <section className="dashboard__hero">
+          <div className="page-title">
+            <h1>{t('dashboard.title')}</h1>
+          </div>
+        </section>
+        <div className="dashboard__container">
+          <LoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard">
+        <InlineAlert
+          title="Failed to load dashboard"
+          message={t('dashboard.error', { error })}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">

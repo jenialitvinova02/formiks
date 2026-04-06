@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEditableProfile } from '../../hooks';
+import { InlineAlert, LoadingSkeleton } from '../../components';
 import './ProfileForm.scss';
 
 export const ProfileForm: React.FC = () => {
@@ -16,8 +17,27 @@ export const ProfileForm: React.FC = () => {
     error,
   } = useEditableProfile();
 
-  if (loading) return <p>{t('profileForm.loading')}</p>;
-  if (error || !form) return <p>{error || t('profileForm.error')}</p>;
+  if (loading) {
+    return (
+      <div className="profileForm">
+        <div className="page-title">
+          <h1>{t('profileForm.profile')}</h1>
+        </div>
+        <div className="profileForm__container">
+          <LoadingSkeleton rows={2} />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !form) {
+    return (
+      <InlineAlert
+        title="Failed to load profile"
+        message={error || t('profileForm.error')}
+      />
+    );
+  }
 
   return editing ? (
     <div className="profileEdit">

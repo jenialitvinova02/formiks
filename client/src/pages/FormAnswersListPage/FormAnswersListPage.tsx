@@ -2,28 +2,48 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants';
+import { InlineAlert, LoadingSkeleton } from '../../components';
 import { useResponsesForTemplate, ResponseInfo } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import { pushNotification, useAppDispatch, useAppSelector } from '../../store';
 import './FormAnswersListPage.scss';
 
 export const FormAnswersListPage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const token = localStorage.getItem('token');
-  const isAdmin = token
-    ? (JSON.parse(atob(token.split('.')[1])) as any).role === 'admin'
-    : false;
+  const isAdmin = useAppSelector((state) => state.session.user?.role === 'admin');
 
   const { responses, loading, error } = useResponsesForTemplate(templateId!);
   const [mode, setMode] = useState<'normal' | 'delete' | 'edit'>('normal');
   const [selectedDelete, setSelectedDelete] = useState<number[]>([]);
   const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
 
-  if (loading) return <p>{t('formAnswersList.loading')}</p>;
-  if (error) return <p>{t('formAnswersList.error', { error })}</p>;
-  if (!responses.length) return <p>{t('formAnswersList.noResponses')}</p>;
+  if (loading) {
+    return (
+      <div className="FormAnswersList">
+        <div className="page-title">
+          <h1>{t('formAnswersList.responsesFor', { templateId })}</h1>
+        </div>
+        <div className="FormAnswersList__container">
+          <LoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="FormAnswersList">
+        <InlineAlert
+          title="Failed to load responses"
+          message={t('formAnswersList.error', { error })}
+        />
+      </div>
+    );
+  }
 
   const toggleDeleteSelection = (id: number) => {
     setSelectedDelete((prev) =>
@@ -54,15 +74,31 @@ export const FormAnswersListPage: React.FC = () => {
       await Promise.all(
         selectedDelete.map((id) => axios.delete(`${ROUTES.responses}/${id}`)),
       );
+      dispatch(
+        pushNotification({
+          type: 'success',
+          message: 'Responses deleted successfully.',
+        }),
+      );
       navigate(0);
     } catch (err: any) {
-      alert(err.response?.data?.error || err.message);
+      dispatch(
+        pushNotification({
+          type: 'error',
+          message: err.response?.data?.error || err.message,
+        }),
+      );
     }
   };
 
   const handleEditConfirm = () => {
     if (selectedEdit === null) {
-      alert(t('formAnswersList.selectEditAlert'));
+      dispatch(
+        pushNotification({
+          type: 'info',
+          message: t('formAnswersList.selectEditAlert'),
+        }),
+      );
       return;
     }
     navigate(`/templates/${templateId}/answers/${selectedEdit}/edit`);
@@ -74,6 +110,12 @@ export const FormAnswersListPage: React.FC = () => {
         <h1>{t('formAnswersList.responsesFor', { templateId })}</h1>
       </div>
       <div className="FormAnswersList__container">
+        {!responses.length && (
+          <InlineAlert
+            title="No responses yet"
+            message={t('formAnswersList.noResponses')}
+          />
+        )}
         <ul className="response-list">
           {responses.map((r: ResponseInfo) => (
             <li

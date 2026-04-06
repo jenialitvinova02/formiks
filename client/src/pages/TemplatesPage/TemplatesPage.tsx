@@ -1,15 +1,23 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants';
+import {
+  InlineAlert,
+  LoadingSkeleton,
+} from '../../components';
 import { useTemplates, useIsAdmin, useFormAnswersActions } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import { pushNotification, useAppDispatch } from '../../store';
 import './TemplatesPage.scss';
 
 export const TemplatesPage: React.FC = () => {
   const { t } = useTranslation();
   const { data: templates, loading, error, refetch } = useTemplates();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState<'title' | 'newest'>('title');
 
   const isAdmin = useIsAdmin();
 
@@ -33,22 +41,76 @@ export const TemplatesPage: React.FC = () => {
       );
       refetch();
       cancelAction();
+      dispatch(
+        pushNotification({
+          type: 'success',
+          message: 'Templates deleted successfully.',
+        }),
+      );
     } catch (err: any) {
-      alert(err.response?.data?.error || err.message);
+      dispatch(
+        pushNotification({
+          type: 'error',
+          message: err.response?.data?.error || err.message,
+        }),
+      );
     }
-  }, [selectedDelete, refetch, cancelAction, t]);
+  }, [selectedDelete, refetch, cancelAction, t, dispatch]);
 
   const handleEditConfirm = useCallback(() => {
     if (selectedEdit === null) {
-      alert(t('templates.pleaseSelectEdit'));
+      dispatch(
+        pushNotification({
+          type: 'info',
+          message: t('templates.pleaseSelectEdit'),
+        }),
+      );
       return;
     }
     navigate(`/templates/edit/${selectedEdit}`);
-  }, [selectedEdit, navigate, t]);
+  }, [selectedEdit, navigate, t, dispatch]);
 
-  if (loading) return <p>{t('templates.loading')}</p>;
-  if (error) return <p>{t('templates.error', { error })}</p>;
-  if (!templates.length) return <p>{t('templates.noTemplates')}</p>;
+  const visibleTemplates = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+    const filtered = templates.filter((template) =>
+      [template.title, template.description, template.topic]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedSearch),
+    );
+
+    return [...filtered].sort((left, right) => {
+      if (sortBy === 'newest') {
+        return (
+          new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()
+        );
+      }
+
+      return left.title.localeCompare(right.title);
+    });
+  }, [templates, search, sortBy]);
+
+  if (loading)
+    return (
+      <div className="TemplatesPage">
+        <div className="page-title">
+          <h1>{t('templates.myTemplates')}</h1>
+        </div>
+        <div className="TemplatesPage__container">
+          <LoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="TemplatesPage">
+        <InlineAlert
+          title="Failed to load templates"
+          message={t('templates.error', { error })}
+        />
+      </div>
+    );
 
   return (
     <div className="TemplatesPage">
@@ -58,8 +120,36 @@ export const TemplatesPage: React.FC = () => {
       </div>
 
       <div className="TemplatesPage__container">
+        <div className="TemplatesPage__filters">
+          <input
+            aria-label="Search templates"
+            placeholder="Search by title, description or topic"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+          <select
+            aria-label="Sort templates"
+            value={sortBy}
+            onChange={(event) =>
+              setSortBy(event.target.value as 'title' | 'newest')
+            }
+          >
+            <option value="title">Sort by title</option>
+            <option value="newest">Sort by newest</option>
+          </select>
+        </div>
+        {!visibleTemplates.length && (
+          <InlineAlert
+            title="No results"
+            message={
+              templates.length === 0
+                ? t('templates.noTemplates')
+                : 'No templates match the current filters.'
+            }
+          />
+        )}
         <ul className="template-list">
-          {templates.map((tmpl) => (
+          {visibleTemplates.map((tmpl) => (
             <li
               key={tmpl.id}
               className="template-list__item"

@@ -7,21 +7,21 @@ export interface TemplateData {
   description: string;
 }
 
-export function usePublicTemplates(): TemplateData[] {
+export function usePublicTemplates() {
   const [data, setData] = useState<TemplateData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     axios
       .get<TemplateData[]>('/public/templates')
-      .then((r) => {
-        console.log('usePublicTemplates: received data:', r.data);
-        setData(r.data);
-      })
+      .then((r) => setData(r.data))
       .catch((e) => {
-        console.error('usePublicTemplates: error:', e);
+        setError(e.response?.data?.error || e.message);
         setData([]);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  return data;
+  return { data, loading, error };
 }
