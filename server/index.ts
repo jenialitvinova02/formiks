@@ -15,9 +15,8 @@ const app = createApp();
 
 async function start() {
   try {
-    await sequelize.sync();
-
     if (databaseMode === 'sqlite') {
+      await sequelize.sync();
       await seedLocalData();
     }
 

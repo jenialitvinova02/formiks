@@ -42,16 +42,23 @@ Question.init(
       primaryKey: true,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(150),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [2, 150],
+      },
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
     },
     type: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      validate: {
+        isIn: [['text', 'textarea', 'number', 'checkbox', 'single-line', 'multi-line', 'integer']],
+      },
     },
     order: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -65,7 +72,7 @@ Question.init(
     },
     templateId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: Template,
         key: 'id',
@@ -79,6 +86,10 @@ Question.init(
     tableName: 'questions',
     timestamps: true,
     underscored: true,
+    indexes: [
+      { fields: ['template_id'] },
+      { fields: ['template_id', 'order'] },
+    ],
   },
 );
 

@@ -1,3 +1,4 @@
+import sequelize from '../db';
 import Question from '../models/Question';
 import Template from '../models/Template';
 
@@ -23,6 +24,13 @@ export async function getTemplateWithQuestions(templateId: number) {
   });
 }
 
+async function getTemplateWithQuestionsTx(templateId: number, transaction: any) {
+  return Template.findByPk(templateId, {
+    include: [{ model: Question, as: 'questions' }],
+    transaction,
+  });
+}
+
 export async function createTemplateWithQuestions(
   userId: number,
   payload: {
@@ -35,32 +43,40 @@ export async function createTemplateWithQuestions(
     questions?: TemplateQuestionPayload[];
   },
 ) {
-  const template = await Template.create({
-    title: payload.title,
-    description: payload.description,
-    topic: payload.topic,
-    image: payload.image,
-    tags: payload.tags,
-    isPublic: payload.isPublic ?? false,
-    userId,
-  });
-
-  if (Array.isArray(payload.questions)) {
-    await Promise.all(
-      payload.questions.map((question, index) =>
-        Question.create({
-          title: question.title,
-          description: question.description ?? '',
-          type: question.type,
-          order: Number(question.order ?? index),
-          showInTable: question.showInTable ?? true,
-          templateId: template.id,
-        }),
-      ),
+  return sequelize.transaction(async (transaction) => {
+    const template = await Template.create(
+      {
+        title: payload.title,
+        description: payload.description,
+        topic: payload.topic,
+        image: payload.image,
+        tags: payload.tags,
+        isPublic: payload.isPublic ?? false,
+        userId,
+      },
+      { transaction },
     );
-  }
 
-  return getTemplateWithQuestions(template.id);
+    if (Array.isArray(payload.questions)) {
+      await Promise.all(
+        payload.questions.map((question, index) =>
+          Question.create(
+            {
+              title: question.title,
+              description: question.description ?? '',
+              type: question.type,
+              order: Number(question.order ?? index),
+              showInTable: question.showInTable ?? true,
+              templateId: template.id,
+            },
+            { transaction },
+          ),
+        ),
+      );
+    }
+
+    return getTemplateWithQuestionsTx(template.id, transaction);
+  });
 }
 
 export async function updateTemplateWithQuestions(
@@ -75,30 +91,38 @@ export async function updateTemplateWithQuestions(
     questions?: TemplateQuestionPayload[];
   },
 ) {
-  await template.update({
-    title: payload.title,
-    description: payload.description,
-    topic: payload.topic,
-    image: payload.image,
-    tags: payload.tags,
-    isPublic: payload.isPublic ?? false,
-  });
-
-  await Question.destroy({ where: { templateId: template.id } });
-  if (Array.isArray(payload.questions)) {
-    await Promise.all(
-      payload.questions.map((question, index) =>
-        Question.create({
-          title: question.title,
-          description: question.description ?? '',
-          type: question.type,
-          order: Number(question.order ?? index),
-          showInTable: question.showInTable ?? true,
-          templateId: template.id,
-        }),
-      ),
+  return sequelize.transaction(async (transaction) => {
+    await template.update(
+      {
+        title: payload.title,
+        description: payload.description,
+        topic: payload.topic,
+        image: payload.image,
+        tags: payload.tags,
+        isPublic: payload.isPublic ?? false,
+      },
+      { transaction },
     );
-  }
 
-  return getTemplateWithQuestions(template.id);
+    await Question.destroy({ where: { templateId: template.id }, transaction });
+    if (Array.isArray(payload.questions)) {
+      await Promise.all(
+        payload.questions.map((question, index) =>
+          Question.create(
+            {
+              title: question.title,
+              description: question.description ?? '',
+              type: question.type,
+              order: Number(question.order ?? index),
+              showInTable: question.showInTable ?? true,
+              templateId: template.id,
+            },
+            { transaction },
+          ),
+        ),
+      );
+    }
+
+    return getTemplateWithQuestionsTx(template.id, transaction);
+  });
 }

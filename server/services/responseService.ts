@@ -1,4 +1,5 @@
 import Answer from '../models/Answer';
+import sequelize from '../db';
 import ResponseModel from '../models/Response';
 
 export async function listResponsesForUser(userId: number) {
@@ -25,25 +26,33 @@ export async function createResponseFromAnswers(
   templateId: number,
   answers: Record<string, string | boolean>,
 ) {
-  const response = await ResponseModel.create({
-    templateId,
-    userId,
+  return sequelize.transaction(async (transaction) => {
+    const response = await ResponseModel.create(
+      {
+        templateId,
+        userId,
+      },
+      { transaction },
+    );
+
+    const createdAnswers = await Promise.all(
+      Object.entries(answers).map(([questionId, value]) =>
+        Answer.create(
+          {
+            responseId: response.id,
+            questionId: Number(questionId),
+            value: String(value),
+          },
+          { transaction },
+        ),
+      ),
+    );
+
+    return {
+      response,
+      answers: createdAnswers,
+    };
   });
-
-  const createdAnswers = await Promise.all(
-    Object.entries(answers).map(([questionId, value]) =>
-      Answer.create({
-        responseId: response.id,
-        questionId: Number(questionId),
-        value: String(value),
-      }),
-    ),
-  );
-
-  return {
-    response,
-    answers: createdAnswers,
-  };
 }
 
 export async function listResponsesForTemplate(templateId: number) {

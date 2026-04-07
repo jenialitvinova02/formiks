@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../db';
 import Question from './Question';
+import User from './User';
 
 interface TemplateAttributes {
   id: number;
@@ -42,23 +43,34 @@ Template.init(
       primaryKey: true,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(150),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [3, 150],
+      },
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     topic: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [2, 100],
+      },
     },
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: true,
     },
     tags: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: true,
     },
     isPublic: {
@@ -69,11 +81,21 @@ Template.init(
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      references: {
+        model: User,
+        key: 'id',
+      },
+      field: 'user_id',
     },
   },
   {
     sequelize,
     tableName: 'templates',
+    indexes: [
+      { fields: ['user_id'] },
+      { fields: ['topic'] },
+      { fields: ['is_public'] },
+    ],
   },
 );
 

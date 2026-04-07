@@ -34,16 +34,23 @@ Response.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: { model: Template, key: 'id' },
+      field: 'template_id',
     },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: { model: User, key: 'id' },
+      field: 'user_id',
     },
   },
   {
     sequelize,
     tableName: 'responses',
+    indexes: [
+      { fields: ['template_id'] },
+      { fields: ['user_id'] },
+      { fields: ['created_at'] },
+    ],
   },
 );
 
