@@ -47,6 +47,7 @@ flowchart LR
 - `/register`
 - `/guest`
 - `/dashboard`
+- `/analytics`
 - `/templates`
 - `/create-template`
 - `/profile`
@@ -72,6 +73,7 @@ flowchart LR
 flowchart TD
     A["Login / Register"] --> B["Dashboard"]
     B --> C["Templates List"]
+    B --> L["Live Analytics"]
     C --> D["Create or Edit Template"]
     C --> E["Responses List"]
     E --> F["View Response"]

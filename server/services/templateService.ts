@@ -1,6 +1,7 @@
 import sequelize from '../db';
 import Question from '../models/Question';
 import Template from '../models/Template';
+import { realtimeAnalyticsService } from './realtimeAnalyticsService';
 
 interface TemplateQuestionPayload {
   title: string;
@@ -43,7 +44,7 @@ export async function createTemplateWithQuestions(
     questions?: TemplateQuestionPayload[];
   },
 ) {
-  return sequelize.transaction(async (transaction) => {
+  const created = await sequelize.transaction(async (transaction) => {
     const template = await Template.create(
       {
         title: payload.title,
@@ -77,6 +78,17 @@ export async function createTemplateWithQuestions(
 
     return getTemplateWithQuestionsTx(template.id, transaction);
   });
+
+  if (created) {
+    realtimeAnalyticsService.recordEvent({
+      type: 'template_created',
+      userId,
+      templateId: created.id,
+      templateTitle: created.title,
+    });
+  }
+
+  return created;
 }
 
 export async function updateTemplateWithQuestions(
@@ -91,7 +103,7 @@ export async function updateTemplateWithQuestions(
     questions?: TemplateQuestionPayload[];
   },
 ) {
-  return sequelize.transaction(async (transaction) => {
+  const updated = await sequelize.transaction(async (transaction) => {
     await template.update(
       {
         title: payload.title,
@@ -125,4 +137,15 @@ export async function updateTemplateWithQuestions(
 
     return getTemplateWithQuestionsTx(template.id, transaction);
   });
+
+  if (updated) {
+    realtimeAnalyticsService.recordEvent({
+      type: 'template_updated',
+      userId: updated.userId,
+      templateId: updated.id,
+      templateTitle: updated.title,
+    });
+  }
+
+  return updated;
 }

@@ -37,6 +37,7 @@ export const Header: React.FC = () => {
         <>
           <Link to="/templates">{t('header.myTemplates')}</Link>
           <Link to="/create-template">{t('header.createTemplate')}</Link>
+          <Link to="/analytics">Live Analytics</Link>
         </>
       )}
       {token ? (

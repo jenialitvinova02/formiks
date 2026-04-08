@@ -19,6 +19,7 @@ export * from './useNormalizedFieldType';
 export * from './useProfile';
 export * from './useQuestions';
 export * from './useResponsesForTemplate';
+export * from './useRealtimeAnalytics';
 export * from './useSortableItems';
 export * from './useTemplate';
 export * from './useTemplateForm';

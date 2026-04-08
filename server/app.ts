@@ -15,6 +15,7 @@ import questionRoutes from './routes/questions';
 import responseRoutes from './routes/responses';
 import answerRoutes from './routes/answers';
 import publicTemplates from './routes/publicTemplates';
+import analyticsRoutes from './routes/analytics';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 initAssociations();
@@ -24,7 +25,19 @@ export function createApp() {
 
   app.use(cors());
   app.use(express.json());
-  app.use(pinoHttp({ logger }));
+  app.use(
+    pinoHttp({
+      logger,
+      serializers: {
+        req(req) {
+          return {
+            method: req.method,
+            url: req.url.split('?')[0],
+          };
+        },
+      },
+    }),
+  );
 
   app.use('/api/public/templates', publicTemplates);
   app.use('/api/auth', authRoutes);
@@ -33,6 +46,7 @@ export function createApp() {
   app.use('/api/questions', questionRoutes);
   app.use('/api/responses', responseRoutes);
   app.use('/api/answers', answerRoutes);
+  app.use('/api/analytics', analyticsRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

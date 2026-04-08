@@ -12,5 +12,6 @@ export * from './FillTemplatePage/index';
 export * from './FormAnswersListPage/index';
 export * from './GuestDashboard/index';
 export * from './ProfilePage/index';
+export * from './RealtimeAnalyticsPage/index';
 export * from './TemplatesPage/index';
 export * from './ViewAnswerPage/index';

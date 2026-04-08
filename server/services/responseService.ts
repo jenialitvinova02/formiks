@@ -1,6 +1,8 @@
 import Answer from '../models/Answer';
 import sequelize from '../db';
 import ResponseModel from '../models/Response';
+import Template from '../models/Template';
+import { realtimeAnalyticsService } from './realtimeAnalyticsService';
 
 export async function listResponsesForUser(userId: number) {
   return ResponseModel.findAll({
@@ -26,7 +28,7 @@ export async function createResponseFromAnswers(
   templateId: number,
   answers: Record<string, string | boolean>,
 ) {
-  return sequelize.transaction(async (transaction) => {
+  const created = await sequelize.transaction(async (transaction) => {
     const response = await ResponseModel.create(
       {
         templateId,
@@ -53,6 +55,17 @@ export async function createResponseFromAnswers(
       answers: createdAnswers,
     };
   });
+
+  const template = await Template.findByPk(templateId);
+  realtimeAnalyticsService.recordEvent({
+    type: 'response_submitted',
+    userId,
+    templateId,
+    templateTitle: template?.title,
+    answersCount: Object.keys(answers).length,
+  });
+
+  return created;
 }
 
 export async function listResponsesForTemplate(templateId: number) {

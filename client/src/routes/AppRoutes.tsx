@@ -11,6 +11,7 @@ import {
   AuthPage,
   DashboardPage,
   ProfilePage,
+  RealtimeAnalyticsPage,
   TemplatesPage,
   CreateTemplatePage,
 } from '../pages';
@@ -35,6 +36,14 @@ const AppRoutes: React.FC = () => {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <RealtimeAnalyticsPage />
               </ProtectedRoute>
             }
           />
