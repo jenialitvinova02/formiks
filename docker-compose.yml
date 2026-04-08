@@ -1,0 +1,94 @@
+services:
+  # React SPA served by nginx with reverse proxy to the API.
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    image: formics-frontend:${FORMICS_VERSION:-1.0.0}
+    container_name: formics-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-5173}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - edge
+      - app
+
+  # Node.js API with Sequelize and structured logs to stdout.
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: formics-backend:${FORMICS_VERSION:-1.0.0}
+    container_name: formics-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-replace-with-a-strong-secret}
+      DB_DIALECT: mysql
+      DB_URI: mysql://${MYSQL_APP_USER:-formics_write}:${MYSQL_APP_PASSWORD:-change_me_write}@mysql:3306/${MYSQL_DATABASE:-formics}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - server_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - app
+
+  # Primary OLTP database using an official MySQL image.
+  mysql:
+    image: mysql:8.4.6
+    container_name: formics-mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-formics}
+      MYSQL_USER: ${MYSQL_APP_USER:-formics_write}
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:-change_me_write}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me_root}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./server/database/sql:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -u${MYSQL_APP_USER:-formics_write} -p${MYSQL_APP_PASSWORD:-change_me_write} --silent"
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app
+
+networks:
+  edge:
+    driver: bridge
+  app:
+    driver: bridge
+    internal: true
+
+volumes:
+  mysql_data:
+  server_data:

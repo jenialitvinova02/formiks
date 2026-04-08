@@ -22,7 +22,18 @@ async function start() {
 
     const port = Number(process.env.PORT || 3000);
     logger.info(`DB connected via ${databaseMode}: ${databaseLocation}`);
-    app.listen(port, () => logger.info(`Server is running on port ${port}`));
+    const server = app.listen(port, () => logger.info(`Server is running on port ${port}`));
+
+    const shutdown = (signal: string) => {
+      logger.info({ signal }, 'Shutting down server');
+      server.close(async () => {
+        await sequelize.close();
+        process.exit(0);
+      });
+    };
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
   } catch (error) {
     logger.error({ err: error }, 'Failed to start server');
     process.exit(1);
