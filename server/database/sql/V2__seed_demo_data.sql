@@ -2,8 +2,8 @@ USE formics;
 
 INSERT INTO users (username, email, password, role)
 VALUES
-  ('Local Admin', 'admin@local.test', '$2b$10$abcdefghijklmnopqrstuvabcdefghijklmnopqrstuvabcd', 'admin'),
-  ('Demo User', 'demo@local.test', '$2b$10$abcdefghijklmnopqrstuvabcdefghijklmnopqrstuvabcd', 'user')
+  ('Local Admin', 'admin@local.test', '$2b$10$k3W6H2NfhY8kxjdva0VUceVCO00gwq7zrVOtl8xYfQ2zA0ccR2Swq', 'admin'),
+  ('Demo User', 'demo@local.test', '$2b$10$k3W6H2NfhY8kxjdva0VUceVCO00gwq7zrVOtl8xYfQ2zA0ccR2Swq', 'user')
 ON DUPLICATE KEY UPDATE username = VALUES(username);
 
 INSERT INTO templates (user_id, title, description, topic, tags, is_public)

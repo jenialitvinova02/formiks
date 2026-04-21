@@ -180,3 +180,40 @@ docker images
 docker compose up --build
 docker stats
 ```
+
+## Render Deployment
+
+This repository includes a Render Blueprint:
+
+- [render.yaml](/Users/danila/Projets/Formics/render.yaml)
+
+Deployment layout:
+
+- `frontend`: public Docker web service built from [client/Dockerfile](/Users/danila/Projets/Formics/client/Dockerfile)
+- `backend`: public Docker web service built from [server/Dockerfile](/Users/danila/Projets/Formics/server/Dockerfile)
+- `mysql`: private Docker service built from [deploy/mysql/Dockerfile](/Users/danila/Projets/Formics/deploy/mysql/Dockerfile)
+
+Important naming assumption:
+
+- the frontend nginx config proxies API requests to `http://backend:3000/api/`;
+- the backend connects to MySQL via `mysql:3306`;
+- so in Render the service names should remain exactly `frontend`, `backend`, and `mysql`.
+
+Render setup steps:
+
+1. Push this repository to GitHub.
+2. In Render, choose `New -> Blueprint`.
+3. Connect the repository that contains [render.yaml](/Users/danila/Projets/Formics/render.yaml).
+4. Confirm creation of all services.
+5. Wait until `mysql`, `backend`, and `frontend` finish their first deploy.
+6. Open the public URL of `frontend`.
+
+What to verify after deploy:
+
+- frontend opens at the Render URL;
+- backend responds at `/health`;
+- login works;
+- public templates load;
+- form submission works;
+- admin panel works for admin user;
+- live analytics opens and updates.
