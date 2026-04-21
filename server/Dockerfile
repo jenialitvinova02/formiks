@@ -1,4 +1,4 @@
-FROM node:20.19.0-alpine3.22 AS deps
+FROM node:20-alpine AS deps
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ COPY utils ./utils
 COPY validators ./validators
 RUN npm run build && npm prune --omit=dev
 
-FROM node:20.19.0-alpine3.22 AS runtime
+FROM node:20-alpine AS runtime
 
 ENV NODE_ENV=production
 WORKDIR /app
