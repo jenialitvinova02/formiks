@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import pinoHttp from 'pino-http';
 import { logger } from './utils/logger';
 import './models/User';
@@ -17,13 +16,18 @@ import answerRoutes from './routes/answers';
 import publicTemplates from './routes/publicTemplates';
 import analyticsRoutes from './routes/analytics';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import {
+  apiRateLimiter,
+  authRateLimiter,
+  corsMiddleware,
+} from './middleware/security';
 
 initAssociations();
 
 export function createApp() {
   const app = express();
 
-  app.use(cors());
+  app.use(corsMiddleware);
   app.use(express.json());
   app.use(
     pinoHttp({
@@ -43,8 +47,9 @@ export function createApp() {
     res.json({ status: 'ok' });
   });
 
+  app.use('/api', apiRateLimiter);
   app.use('/api/public/templates', publicTemplates);
-  app.use('/api/auth', authRoutes);
+  app.use('/api/auth', authRateLimiter, authRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/templates', templateRoutes);
   app.use('/api/questions', questionRoutes);

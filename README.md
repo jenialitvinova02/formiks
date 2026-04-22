@@ -139,6 +139,7 @@ flowchart LR
 - `VITE_API_BASE_URL`: frontend API base path, `/api` for reverse-proxy setup
 - `LOG_LEVEL`: backend structured log level
 - `JWT_SECRET`: backend JWT signing secret
+- `CORS_ORIGIN`: allowed frontend origin for browser access to backend API
 - `MYSQL_DATABASE`: MySQL schema name
 - `MYSQL_APP_USER`: application DB user
 - `MYSQL_APP_PASSWORD`: application DB password
