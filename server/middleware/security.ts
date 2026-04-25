@@ -20,7 +20,22 @@ function getAllowedOrigins(): string[] {
     .filter(Boolean);
 }
 
-const allowedOrigins = new Set(getAllowedOrigins());
+const allowedOrigins = getAllowedOrigins();
+
+function isOriginAllowed(origin: string): boolean {
+  return allowedOrigins.some((allowedOrigin) => {
+    if (allowedOrigin === origin) {
+      return true;
+    }
+
+    if (allowedOrigin.startsWith('*.')) {
+      const suffix = allowedOrigin.slice(1);
+      return origin.endsWith(suffix);
+    }
+
+    return false;
+  });
+}
 
 export const corsOptions: CorsOptions = {
   origin(origin, callback) {
@@ -30,15 +45,17 @@ export const corsOptions: CorsOptions = {
       return;
     }
 
-    if (allowedOrigins.has(origin)) {
+    if (isOriginAllowed(origin)) {
       callback(null, true);
       return;
     }
 
-    callback(new Error('CORS origin is not allowed'));
+    // Reject browser origin without throwing a server error.
+    callback(null, false);
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
 };
 
 export const apiRateLimiter = rateLimit({
