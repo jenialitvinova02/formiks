@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from '../axiosInstance';
+import { Question } from './useQuestions';
 
 export interface TemplateData {
   id: string;
   title: string;
   description: string;
+  topic?: string;
+  questions?: Question[];
 }
 
 export function usePublicTemplates() {
@@ -22,6 +25,33 @@ export function usePublicTemplates() {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  return { data, loading, error };
+}
+
+export function usePublicTemplate(templateId?: number | string) {
+  const [data, setData] = useState<TemplateData | null>(null);
+  const [loading, setLoading] = useState(Boolean(templateId));
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!templateId) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    axios
+      .get<TemplateData>(`/public/templates/${templateId}`)
+      .then((r) => setData(r.data))
+      .catch((e) => {
+        setError(e.response?.data?.error || e.message);
+        setData(null);
+      })
+      .finally(() => setLoading(false));
+  }, [templateId]);
 
   return { data, loading, error };
 }

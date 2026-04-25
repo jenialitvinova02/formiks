@@ -97,11 +97,7 @@ const AppRoutes: React.FC = () => {
           />
           <Route
             path="/fill-template/:id"
-            element={
-              <ProtectedRoute>
-                <FillTemplatePage />
-              </ProtectedRoute>
-            }
+            element={<FillTemplatePage />}
           />
           <Route
             path="/templates/:templateId/answers"

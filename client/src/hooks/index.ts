@@ -25,7 +25,7 @@ export * from './useTemplate';
 export * from './useTemplateForm';
 export * from './useTemplates';
 
-export { usePublicTemplates } from './usePublicTemplates';
+export { usePublicTemplate, usePublicTemplates } from './usePublicTemplates';
 export type { TemplateData as PublicTemplateData } from './usePublicTemplates';
 
 export * from './useUsers';

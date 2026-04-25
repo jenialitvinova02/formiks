@@ -5,7 +5,7 @@ import { ROUTES } from '../constants/api';
 export interface Question {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   type: string;
 }
 

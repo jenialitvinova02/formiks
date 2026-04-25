@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TemplateList, TemplateInfo } from '../../components';
 import { usePublicTemplates } from '../../hooks';
 
 const GuestDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const { data: rawItems } = usePublicTemplates();
 
   const items: TemplateInfo[] = useMemo(
@@ -18,9 +20,7 @@ const GuestDashboard: React.FC = () => {
   return (
     <TemplateList
       items={items}
-      onSelect={() => {
-        /* ... */
-      }}
+      onSelect={(id) => navigate(`/fill-template/${id}`)}
     />
   );
 };

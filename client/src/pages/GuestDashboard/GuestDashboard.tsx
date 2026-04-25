@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { InlineAlert, LoadingSkeleton, TemplateList, TemplateInfo } from '../../components';
 import { usePublicTemplates, PublicTemplateData } from '../../hooks';
@@ -6,6 +7,7 @@ import './GuestDashboard.scss';
 
 export const GuestDashboard: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data: raw, loading, error } = usePublicTemplates();
 
   if (loading) {
@@ -44,7 +46,7 @@ export const GuestDashboard: React.FC = () => {
         <div className="guestDashboard__container">
           <TemplateList
             items={items}
-            onSelect={() => {}}
+            onSelect={(id) => navigate(`/fill-template/${id}`)}
           />
         </div>
       ) : (

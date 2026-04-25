@@ -13,7 +13,10 @@ import {
   requireResponseAccess,
   requireTemplateAccess,
 } from '../services/accessService';
-import { createResponseFromAnswers } from '../services/responseService';
+import {
+  createPublicResponseFromAnswers,
+  createResponseFromAnswers,
+} from '../services/responseService';
 import {
   getResponseWithAnswers,
   listResponsesForTemplate,
@@ -283,6 +286,82 @@ describe('Backend business logic', () => {
     expect(result.response.templateId).toBe(template.id);
     expect(result.answers).toHaveLength(1);
     expect(result.answers[0].value).toBe('hello');
+  });
+
+  it('creates public guest responses only for public template questions', async () => {
+    const owner = await User.create({
+      username: 'Public Owner',
+      email: 'public-owner@example.com',
+      password: 'hashed',
+      role: ROLE_USER,
+    });
+    const template = await Template.create({
+      title: 'Public Template',
+      description: 'Desc',
+      topic: 'topic',
+      isPublic: true,
+      userId: owner.id,
+    });
+    const question = await Question.create({
+      title: 'Public Question',
+      description: '',
+      type: 'text',
+      templateId: template.id,
+      order: 0,
+      showInTable: true,
+    });
+
+    const result = await createPublicResponseFromAnswers(template.id, {
+      [question.id]: 'guest answer',
+    });
+
+    const guestUser = await User.findOne({ where: { email: 'guest@local.test' } });
+    expect(guestUser).toBeTruthy();
+    expect(result.response.userId).toBe(guestUser?.id);
+    expect(result.answers[0].value).toBe('guest answer');
+  });
+
+  it('rejects public responses for private templates and unrelated questions', async () => {
+    const owner = await User.create({
+      username: 'Private Owner',
+      email: 'private-owner@example.com',
+      password: 'hashed',
+      role: ROLE_USER,
+    });
+    const publicTemplate = await Template.create({
+      title: 'Public Template 2',
+      description: 'Desc',
+      topic: 'topic',
+      isPublic: true,
+      userId: owner.id,
+    });
+    const privateTemplate = await Template.create({
+      title: 'Private Template 2',
+      description: 'Desc',
+      topic: 'topic',
+      isPublic: false,
+      userId: owner.id,
+    });
+    const privateQuestion = await Question.create({
+      title: 'Private Question',
+      description: '',
+      type: 'text',
+      templateId: privateTemplate.id,
+      order: 0,
+      showInTable: true,
+    });
+
+    await expect(
+      createPublicResponseFromAnswers(privateTemplate.id, {
+        [privateQuestion.id]: 'blocked',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+
+    await expect(
+      createPublicResponseFromAnswers(publicTemplate.id, {
+        [privateQuestion.id]: 'blocked',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('lists and loads response entities', async () => {
