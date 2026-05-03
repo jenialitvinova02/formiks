@@ -20,6 +20,7 @@ export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
   const emailInput = useInput('');
   const passwordInput = useInput('');
   const usernameInput = useInput('');
+  const [showPassword, setShowPassword] = React.useState(false);
   const [validationError, setValidationError] = React.useState<string | null>(
     null,
   );
@@ -90,13 +91,29 @@ export const AuthForm: React.FC<Props> = ({ mode, onSuccess }) => {
         onChange={emailInput.onChange}
         required
       />
-      <input
-        type="password"
-        placeholder={t('authForm.password')}
-        value={passwordInput.value}
-        onChange={passwordInput.onChange}
-        required
-      />
+      <div className="authForm__password">
+        <input
+          type={showPassword ? 'text' : 'password'}
+          placeholder={t('authForm.password')}
+          value={passwordInput.value}
+          onChange={passwordInput.onChange}
+          required
+        />
+        <button
+          type="button"
+          className="authForm__passwordToggle"
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
+          onClick={() => setShowPassword((prev) => !prev)}
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            focusable="false"
+          >
+            <path d="M12 5c5 0 8.5 4.4 9.7 6.3.3.4.3.9 0 1.3C20.5 14.6 17 19 12 19s-8.5-4.4-9.7-6.3a1.2 1.2 0 0 1 0-1.3C3.5 9.4 7 5 12 5Zm0 2C8.3 7 5.5 10 4.4 12c1.1 2 3.9 5 7.6 5s6.5-3 7.6-5C18.5 10 15.7 7 12 7Zm0 2.2A2.8 2.8 0 1 1 12 14.8 2.8 2.8 0 0 1 12 9.2Z" />
+          </svg>
+        </button>
+      </div>
       {validationError && <p className="error">{validationError}</p>}
       {error && <p className="error">{error}</p>}
       <button type="submit" disabled={loading}>

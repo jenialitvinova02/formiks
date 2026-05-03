@@ -15,7 +15,13 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const templates = await Template.findAll({
       where: { isPublic: true },
-      include: [{ model: Question, as: 'questions' }],
+      include: [
+        {
+          model: Question,
+          as: 'questions',
+          attributes: { exclude: ['correctAnswer', 'correct_answer'] },
+        },
+      ],
     });
     res.json(templates);
   } catch (e: any) {
@@ -31,7 +37,13 @@ router.get(
   asyncHandler(async (req, res) => {
     const template = await Template.findOne({
       where: { id: Number(req.params.id), isPublic: true },
-      include: [{ model: Question, as: 'questions' }],
+      include: [
+        {
+          model: Question,
+          as: 'questions',
+          attributes: { exclude: ['correctAnswer', 'correct_answer'] },
+        },
+      ],
     });
 
     if (!template) {

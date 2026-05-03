@@ -18,6 +18,7 @@ import {
   createResponseFromAnswers,
 } from '../services/responseService';
 import {
+  getResponseAnalyticsForTemplate,
   getResponseWithAnswers,
   listResponsesForTemplate,
   listResponsesForUser,
@@ -286,6 +287,70 @@ describe('Backend business logic', () => {
     expect(result.response.templateId).toBe(template.id);
     expect(result.answers).toHaveLength(1);
     expect(result.answers[0].value).toBe('hello');
+  });
+
+  it('stores multiple choice answers and calculates response analytics', async () => {
+    const owner = await User.create({
+      username: 'Analytics Owner',
+      email: 'analytics-owner@example.com',
+      password: 'hashed',
+      role: ROLE_USER,
+    });
+    const template = await Template.create({
+      title: 'Quiz Template',
+      description: 'Desc',
+      topic: 'quiz',
+      isPublic: true,
+      userId: owner.id,
+    });
+    const singleChoice = await Question.create({
+      title: 'Capital',
+      description: '',
+      type: 'single-choice',
+      options: ['Paris', 'Rome'],
+      correctAnswer: 'Paris',
+      templateId: template.id,
+      order: 0,
+      showInTable: true,
+    });
+    const multipleChoice = await Question.create({
+      title: 'Prime numbers',
+      description: '',
+      type: 'multiple-choice',
+      options: ['2', '3', '4'],
+      correctAnswer: JSON.stringify(['2', '3']),
+      templateId: template.id,
+      order: 1,
+      showInTable: true,
+    });
+
+    await createResponseFromAnswers(owner.id, template.id, {
+      [singleChoice.id]: 'Paris',
+      [multipleChoice.id]: ['3', '2'],
+    });
+    await createResponseFromAnswers(owner.id, template.id, {
+      [singleChoice.id]: 'Rome',
+      [multipleChoice.id]: ['4'],
+    });
+
+    const analytics = await getResponseAnalyticsForTemplate(template.id);
+
+    expect(analytics.totalResponses).toBe(2);
+    expect(analytics.correctCount).toBe(2);
+    expect(analytics.incorrectCount).toBe(2);
+    expect(analytics.questions[0]).toMatchObject({
+      questionId: singleChoice.id,
+      correctCount: 1,
+      incorrectCount: 1,
+      accuracy: 50,
+    });
+    expect(analytics.questions[1].optionCounts).toEqual(
+      expect.arrayContaining([
+        { option: '2', count: 1 },
+        { option: '3', count: 1 },
+        { option: '4', count: 1 },
+      ]),
+    );
   });
 
   it('creates public guest responses only for public template questions', async () => {

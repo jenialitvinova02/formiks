@@ -3,7 +3,12 @@ import axios from '../axiosInstance';
 
 export interface AnswerFull {
   id: number;
-  question: { id: number; title: string; type: string };
+  question: {
+    id: number;
+    title: string;
+    type: string;
+    correctAnswer?: string | null;
+  };
   value: string;
 }
 

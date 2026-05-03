@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS questions (
   title VARCHAR(150) NOT NULL,
   description TEXT NOT NULL,
   type VARCHAR(50) NOT NULL,
+  options JSON NULL,
+  correct_answer TEXT NULL,
   `order` INT UNSIGNED NOT NULL DEFAULT 0,
   show_in_table BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -52,7 +54,7 @@ CREATE TABLE IF NOT EXISTS questions (
     ON DELETE CASCADE,
   CONSTRAINT chk_questions_title CHECK (CHAR_LENGTH(TRIM(title)) >= 2),
   CONSTRAINT chk_questions_type CHECK (
-    type IN ('text', 'textarea', 'number', 'checkbox', 'single-line', 'multi-line', 'integer')
+    type IN ('text', 'textarea', 'number', 'checkbox', 'single-line', 'multi-line', 'integer', 'single-choice', 'multiple-choice')
   )
 );
 

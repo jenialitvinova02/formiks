@@ -6,6 +6,8 @@ export interface NewQuestion {
   title: string;
   description: string;
   type: string;
+  options: string[];
+  correctAnswer: string;
 }
 export interface TemplateForm {
   title: string;

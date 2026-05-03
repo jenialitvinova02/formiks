@@ -7,6 +7,8 @@ export interface TemplateData {
   title: string;
   description: string;
   topic: string;
+  tags?: string;
+  isPublic: boolean;
   createdAt: string;
 }
 

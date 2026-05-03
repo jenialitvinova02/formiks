@@ -12,6 +12,8 @@ export async function createQuestion(payload: {
   title: string;
   description?: string;
   type: string;
+  options?: string[];
+  correctAnswer?: string;
   order?: number;
   showInTable?: boolean;
 }) {
@@ -20,6 +22,8 @@ export async function createQuestion(payload: {
     title: payload.title,
     description: payload.description ?? '',
     type: payload.type,
+    options: payload.options ?? null,
+    correctAnswer: payload.correctAnswer?.trim() || null,
     order: payload.order ?? 0,
     showInTable: payload.showInTable ?? true,
   });

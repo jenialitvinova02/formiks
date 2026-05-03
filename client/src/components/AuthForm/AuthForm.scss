@@ -16,4 +16,25 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
+
+  &__password {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__passwordToggle {
+    width: 44px;
+    min-width: 44px;
+    padding-inline: 0;
+    display: grid;
+    place-items: center;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+  }
 }

@@ -7,8 +7,51 @@ interface TemplateQuestionPayload {
   title: string;
   description?: string;
   type: string;
+  options?: string[];
+  correctAnswer?: string;
   order?: number;
   showInTable?: boolean;
+}
+
+function normalizeQuestionOptions(question: TemplateQuestionPayload) {
+  if (!Array.isArray(question.options)) {
+    return null;
+  }
+
+  const options = question.options
+    .map((option) => String(option).trim())
+    .filter(Boolean);
+
+  return options.length ? options : null;
+}
+
+function normalizeCorrectAnswer(question: TemplateQuestionPayload) {
+  const value = question.correctAnswer?.trim();
+  if (!value) {
+    return null;
+  }
+
+  if (question.type === 'multiple-choice') {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return JSON.stringify(
+          parsed.map((option) => String(option).trim()).filter(Boolean),
+        );
+      }
+    } catch {
+      // Comma-separated form input is normalized below.
+    }
+
+    return JSON.stringify(
+      value
+        .split(',')
+        .map((option) => option.trim())
+        .filter(Boolean),
+    );
+  }
+
+  return value;
 }
 
 export async function listTemplatesForUser(user: { id: number; role: string }) {
@@ -66,6 +109,8 @@ export async function createTemplateWithQuestions(
               title: question.title,
               description: question.description ?? '',
               type: question.type,
+              options: normalizeQuestionOptions(question),
+              correctAnswer: normalizeCorrectAnswer(question),
               order: Number(question.order ?? index),
               showInTable: question.showInTable ?? true,
               templateId: template.id,
@@ -125,6 +170,8 @@ export async function updateTemplateWithQuestions(
               title: question.title,
               description: question.description ?? '',
               type: question.type,
+              options: normalizeQuestionOptions(question),
+              correctAnswer: normalizeCorrectAnswer(question),
               order: Number(question.order ?? index),
               showInTable: question.showInTable ?? true,
               templateId: template.id,
@@ -148,4 +195,20 @@ export async function updateTemplateWithQuestions(
   }
 
   return updated;
+}
+
+export async function updateTemplatePublicAccess(
+  template: Template,
+  isPublic: boolean,
+) {
+  await template.update({ isPublic });
+
+  realtimeAnalyticsService.recordEvent({
+    type: 'template_updated',
+    userId: template.userId,
+    templateId: template.id,
+    templateTitle: template.title,
+  });
+
+  return template;
 }

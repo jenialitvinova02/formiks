@@ -6,7 +6,17 @@ export interface TemplateDetail {
   id: number;
   title: string;
   description: string;
-  questions: { id: number; title: string; type: string }[];
+  topic?: string;
+  tags?: string;
+  isPublic?: boolean;
+  questions: {
+    id: number;
+    title: string;
+    description?: string;
+    type: string;
+    options?: string[];
+    correctAnswer?: string | null;
+  }[];
 }
 
 export function useTemplate(id: string | undefined) {

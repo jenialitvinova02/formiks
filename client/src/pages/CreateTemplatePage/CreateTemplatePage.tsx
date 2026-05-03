@@ -140,6 +140,8 @@ export const CreateTemplatePage: React.FC = () => {
               title={q.title}
               description={q.description}
               type={q.type}
+              options={q.options}
+              correctAnswer={q.correctAnswer}
               onChange={(field, val) => handleQuestionChange(i, field, val)}
             />
           ))}

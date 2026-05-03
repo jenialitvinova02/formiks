@@ -3,7 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../axiosInstance';
 import { ROUTES } from '../../constants';
 import { InlineAlert, LoadingSkeleton } from '../../components';
-import { useResponsesForTemplate, ResponseInfo } from '../../hooks';
+import {
+  useResponsesForTemplate,
+  useTemplateResponseAnalytics,
+  ResponseInfo,
+} from '../../hooks';
 import { useTranslation } from 'react-i18next';
 import { pushNotification, useAppDispatch, useAppSelector } from '../../store';
 import './FormAnswersListPage.scss';
@@ -17,6 +21,11 @@ export const FormAnswersListPage: React.FC = () => {
   const isAdmin = useAppSelector((state) => state.session.user?.role === 'admin');
 
   const { responses, loading, error } = useResponsesForTemplate(templateId!);
+  const {
+    analytics,
+    loading: analyticsLoading,
+    error: analyticsError,
+  } = useTemplateResponseAnalytics(templateId!);
   const [mode, setMode] = useState<'normal' | 'delete' | 'edit'>('normal');
   const [selectedDelete, setSelectedDelete] = useState<number[]>([]);
   const [selectedEdit, setSelectedEdit] = useState<number | null>(null);
@@ -110,6 +119,57 @@ export const FormAnswersListPage: React.FC = () => {
         <h1>{t('formAnswersList.responsesFor', { templateId })}</h1>
       </div>
       <div className="FormAnswersList__container">
+        {!analyticsLoading && analytics && (
+          <section className="FormAnswersList__analytics">
+            <article>
+              <span>Total responses</span>
+              <strong>{analytics.totalResponses}</strong>
+            </article>
+            <article>
+              <span>Total answers</span>
+              <strong>{analytics.totalAnswers}</strong>
+            </article>
+            <article>
+              <span>Correct</span>
+              <strong>{analytics.correctCount}</strong>
+            </article>
+            <article>
+              <span>Incorrect</span>
+              <strong>{analytics.incorrectCount}</strong>
+            </article>
+          </section>
+        )}
+        {analyticsError && (
+          <InlineAlert title="Analytics unavailable" message={analyticsError} />
+        )}
+        {analytics?.questions.some((question) => question.totalAnswers > 0) && (
+          <section className="FormAnswersList__questionStats">
+            <h2>Form answer analytics</h2>
+            {analytics.questions.map((question) => (
+              <article key={question.questionId}>
+                <div>
+                  <strong>{question.title}</strong>
+                  <span>
+                    {question.totalAnswers} answers
+                    {question.accuracy !== null
+                      ? ` • ${question.accuracy}% correct`
+                      : ''}
+                  </span>
+                </div>
+                {question.optionCounts.length > 0 && (
+                  <ul>
+                    {question.optionCounts.map((entry) => (
+                      <li key={entry.option}>
+                        <span>{entry.option}</span>
+                        <strong>{entry.count}</strong>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </section>
+        )}
         {!responses.length && (
           <InlineAlert
             title="No responses yet"

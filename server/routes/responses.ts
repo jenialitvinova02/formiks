@@ -5,6 +5,7 @@ import { authorizeAdmin } from '../middleware/authorize';
 import {
   createResponseFromAnswers,
   getResponseWithAnswers,
+  getResponseAnalyticsForTemplate,
   listAllResponses,
   listResponsesForTemplate,
   listResponsesForUser,
@@ -64,6 +65,18 @@ router.post(
       req.body.answers,
     );
     res.status(201).json(created);
+  }),
+);
+
+router.get(
+  '/template/:templateId/analytics',
+  authenticateJWT,
+  idParamValidator('templateId'),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    await requireTemplateAccess(authReq, Number(req.params.templateId));
+    res.json(await getResponseAnalyticsForTemplate(Number(req.params.templateId)));
   }),
 );
 

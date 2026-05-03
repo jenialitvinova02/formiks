@@ -7,6 +7,8 @@ export interface Question {
   title: string;
   description?: string;
   type: string;
+  options?: string[];
+  correctAnswer?: string | null;
 }
 
 export function useQuestions(templateId: number | string) {

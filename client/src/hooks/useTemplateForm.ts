@@ -3,6 +3,19 @@ import { useTemplate } from './useTemplate';
 import { DEFAULT_QUESTION } from '../constants/form';
 import { TemplateForm, NewQuestion } from './useCreateTemplate';
 
+function formatCorrectAnswerForForm(question: any) {
+  if (question.type !== 'multiple-choice' || !question.correctAnswer) {
+    return question.correctAnswer || '';
+  }
+
+  try {
+    const parsed = JSON.parse(question.correctAnswer);
+    return Array.isArray(parsed) ? parsed.join(', ') : question.correctAnswer;
+  } catch {
+    return question.correctAnswer;
+  }
+}
+
 export const useTemplateForm = (templateId?: string) => {
   const isEditMode = Boolean(templateId);
   const { data: template, loading, error } = useTemplate(templateId);
@@ -32,6 +45,8 @@ export const useTemplateForm = (templateId?: string) => {
             title: q.title,
             description: q.description || '',
             type: q.type,
+            options: Array.isArray(q.options) ? q.options : [],
+            correctAnswer: formatCorrectAnswerForForm(q),
           })),
         );
       }
@@ -46,7 +61,7 @@ export const useTemplateForm = (templateId?: string) => {
   );
 
   const handleQuestionChange = useCallback(
-    (idx: number, field: keyof NewQuestion, value: string) => {
+    (idx: number, field: keyof NewQuestion, value: string | string[]) => {
       setQuestions((prev) =>
         prev.map((q, i) => (i === idx ? { ...q, [field]: value } : q)),
       );
@@ -57,7 +72,7 @@ export const useTemplateForm = (templateId?: string) => {
   const addQuestion = useCallback(() => {
     setQuestions((prev) => [
       ...prev,
-      { ...DEFAULT_QUESTION, type: 'single-line' },
+      { ...DEFAULT_QUESTION, type: 'single-line', options: [] },
     ]);
   }, []);
 

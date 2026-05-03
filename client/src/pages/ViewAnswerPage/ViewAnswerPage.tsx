@@ -5,6 +5,32 @@ import { useTranslation } from 'react-i18next';
 import { InlineAlert, LoadingSkeleton } from '../../components';
 import './ViewAnswerPage.scss';
 
+function formatAnswerValue(value: string) {
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) {
+      return parsed.join(', ');
+    }
+  } catch {
+    return value;
+  }
+
+  return value;
+}
+
+function normalizeValue(value: string) {
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) {
+      return parsed.map((item) => String(item).trim().toLowerCase()).sort().join('|');
+    }
+  } catch {
+    return value.trim().toLowerCase();
+  }
+
+  return value.trim().toLowerCase();
+}
+
 export const ViewAnswerPage: React.FC = () => {
   const { t } = useTranslation();
   const { templateId, answerId } = useParams<{
@@ -73,8 +99,16 @@ export const ViewAnswerPage: React.FC = () => {
               </>
             )}
             <p>
-              <strong>{t('viewAnswer.answer')}: </strong> {answer.value}
+              <strong>{t('viewAnswer.answer')}: </strong> {formatAnswerValue(answer.value)}
             </p>
+            {answer.question?.correctAnswer && (
+              <p>
+                <strong>Check: </strong>
+                {normalizeValue(answer.value) === normalizeValue(answer.question.correctAnswer)
+                  ? 'Correct'
+                  : 'Incorrect'}
+              </p>
+            )}
           </div>
         ))}
       </div>

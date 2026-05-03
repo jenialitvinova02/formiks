@@ -13,6 +13,11 @@
     display: grid;
     grid-template-columns: 1.1fr 1.4fr 220px;
     gap: 14px;
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
   }
 }
 

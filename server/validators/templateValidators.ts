@@ -16,4 +16,23 @@ export const templatePayloadValidator = [
   body('image').optional().isString(),
   body('isPublic').optional().isBoolean(),
   questionValidator,
+  body('questions.*.title').optional().trim().isLength({ min: 2 }),
+  body('questions.*.description').optional().isString(),
+  body('questions.*.type')
+    .optional()
+    .isIn([
+      'text',
+      'textarea',
+      'number',
+      'checkbox',
+      'single-line',
+      'multi-line',
+      'integer',
+      'single-choice',
+      'multiple-choice',
+    ])
+    .withMessage('Unsupported question type'),
+  body('questions.*.options').optional().isArray(),
+  body('questions.*.options.*').optional().isString(),
+  body('questions.*.correctAnswer').optional().isString(),
 ];

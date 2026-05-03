@@ -6,7 +6,7 @@ import {
   InlineAlert,
   LoadingSkeleton,
 } from '../../components';
-import { useTemplates, useIsAdmin, useFormAnswersActions } from '../../hooks';
+import { useTemplates, useFormAnswersActions } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 import { pushNotification, useAppDispatch } from '../../store';
 import './TemplatesPage.scss';
@@ -18,8 +18,6 @@ export const TemplatesPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<'title' | 'newest'>('title');
-
-  const isAdmin = useIsAdmin();
 
   const {
     mode,
@@ -69,6 +67,57 @@ export const TemplatesPage: React.FC = () => {
     }
     navigate(`/templates/edit/${selectedEdit}`);
   }, [selectedEdit, navigate, t, dispatch]);
+
+  const handleDeleteTemplate = useCallback(
+    async (id: number) => {
+      if (!window.confirm(t('templates.deleteConfirm'))) return;
+      try {
+        await axios.delete(`${ROUTES.templates}/${id}`);
+        refetch();
+        dispatch(
+          pushNotification({
+            type: 'success',
+            message: 'Template deleted successfully.',
+          }),
+        );
+      } catch (err: any) {
+        dispatch(
+          pushNotification({
+            type: 'error',
+            message: err.response?.data?.error || err.message,
+          }),
+        );
+      }
+    },
+    [dispatch, refetch, t],
+  );
+
+  const handleTogglePublic = useCallback(
+    async (templateId: number, isPublic: boolean) => {
+      try {
+        await axios.patch(`${ROUTES.templates}/${templateId}/public`, {
+          isPublic: !isPublic,
+        });
+        refetch();
+        dispatch(
+          pushNotification({
+            type: 'success',
+            message: !isPublic
+              ? 'Public access enabled.'
+              : 'Public access disabled.',
+          }),
+        );
+      } catch (err: any) {
+        dispatch(
+          pushNotification({
+            type: 'error',
+            message: err.response?.data?.error || err.message,
+          }),
+        );
+      }
+    },
+    [dispatch, refetch],
+  );
 
   const visibleTemplates = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -177,37 +226,61 @@ export const TemplatesPage: React.FC = () => {
                 <div className="template-list__copy">
                   <strong>{tmpl.title}</strong>
                   <span>{tmpl.description}</span>
+                  <small>{tmpl.isPublic ? 'Public' : 'Private'}</small>
                 </div>
               </div>
+              {mode === 'normal' && (
+                <div
+                  className="template-list__actions"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/templates/edit/${tmpl.id}`)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePublic(tmpl.id, tmpl.isPublic)}
+                  >
+                    {tmpl.isPublic ? 'Make private' : 'Make public'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteTemplate(tmpl.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>
-        {isAdmin && (
-          <div className="TemplatesPage__buttons">
-            {mode === 'normal' ? (
-              <>
-                <button onClick={enterDeleteMode}>
-                  {t('templates.delete')}
+        <div className="TemplatesPage__buttons">
+          {mode === 'normal' ? (
+            <>
+              <button onClick={enterDeleteMode}>
+                {t('templates.delete')}
+              </button>
+              <button onClick={enterEditMode}>{t('templates.edit')}</button>
+            </>
+          ) : (
+            <div>
+              {mode === 'delete' && (
+                <button onClick={handleDeleteConfirm}>
+                  {t('templates.confirmDelete')}
                 </button>
-                <button onClick={enterEditMode}>{t('templates.edit')}</button>
-              </>
-            ) : (
-              <div>
-                {mode === 'delete' && (
-                  <button onClick={handleDeleteConfirm}>
-                    {t('templates.confirmDelete')}
-                  </button>
-                )}
-                {mode === 'edit' && (
-                  <button onClick={handleEditConfirm}>
-                    {t('templates.confirmEdit')}
-                  </button>
-                )}
-                <button onClick={cancelAction}>{t('templates.cancel')}</button>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+              {mode === 'edit' && (
+                <button onClick={handleEditConfirm}>
+                  {t('templates.confirmEdit')}
+                </button>
+              )}
+              <button onClick={cancelAction}>{t('templates.cancel')}</button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

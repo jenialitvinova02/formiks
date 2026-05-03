@@ -8,7 +8,12 @@ interface Props {
   title: string;
   description: string;
   type: string;
-  onChange: (field: 'title' | 'description' | 'type', value: string) => void;
+  options?: string[];
+  correctAnswer?: string;
+  onChange: (
+    field: 'title' | 'description' | 'type' | 'options' | 'correctAnswer',
+    value: string | string[],
+  ) => void;
 }
 
 export const QuestionItem: React.FC<Props> = ({
@@ -16,9 +21,14 @@ export const QuestionItem: React.FC<Props> = ({
   title,
   description,
   type,
+  options = [],
+  correctAnswer = '',
   onChange,
 }) => {
   const { t } = useTranslation();
+  const usesOptions = type === 'single-choice' || type === 'multiple-choice';
+  const optionText = options.join('\n');
+
   return (
     <div className="questionItem">
       <h4>
@@ -38,10 +48,34 @@ export const QuestionItem: React.FC<Props> = ({
         <select value={type} onChange={(e) => onChange('type', e.target.value)}>
           {QUESTION_TYPES.map((option) => (
             <option key={option.value} value={option.value}>
-              {t(`questionItem.option.${option.value}`)}
+              {t(`questionItem.option.${option.value}`, option.label)}
             </option>
           ))}
         </select>
+        {usesOptions && (
+          <textarea
+            placeholder="Answer options, one per line"
+            value={optionText}
+            onChange={(e) =>
+              onChange(
+                'options',
+                e.target.value
+                  .split('\n')
+                  .map((item) => item.trim())
+                  .filter(Boolean),
+              )
+            }
+          />
+        )}
+        <input
+          placeholder={
+            usesOptions
+              ? 'Correct answer. For multiple choice use comma-separated values'
+              : 'Correct answer (optional)'
+          }
+          value={correctAnswer}
+          onChange={(e) => onChange('correctAnswer', e.target.value)}
+        />
       </div>
     </div>
   );

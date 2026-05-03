@@ -38,6 +38,9 @@
       background 180ms ease,
       border-color 180ms ease;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
 
     &[data-mode='normal']:hover {
       transform: translateY(-2px);
@@ -61,6 +64,18 @@
       color: var(--text);
       font-size: 1.05rem;
     }
+
+    small {
+      color: var(--text-muted);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 
@@ -79,7 +94,14 @@
     }
   }
 
-  .template-list__item {
-    padding: 16px;
+  .template-list {
+    &__item {
+      padding: 16px;
+      flex-direction: column;
+    }
+
+    &__actions {
+      justify-content: flex-start;
+    }
   }
 }

@@ -7,6 +7,8 @@ interface QuestionAttributes {
   title: string;
   description: string;
   type: string;
+  options: string[] | null;
+  correctAnswer: string | null;
   order: number;
   showInTable: boolean;
   templateId?: number;
@@ -15,7 +17,7 @@ interface QuestionAttributes {
 interface QuestionCreationAttributes
   extends Optional<
     QuestionAttributes,
-    'id' | 'order' | 'showInTable' | 'templateId'
+    'id' | 'options' | 'correctAnswer' | 'order' | 'showInTable' | 'templateId'
   > {}
 
 class Question
@@ -26,6 +28,8 @@ class Question
   public title!: string;
   public description!: string;
   public type!: string;
+  public options!: string[] | null;
+  public correctAnswer!: string | null;
   public order!: number;
   public showInTable!: boolean;
   public templateId?: number;
@@ -57,8 +61,27 @@ Question.init(
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isIn: [['text', 'textarea', 'number', 'checkbox', 'single-line', 'multi-line', 'integer']],
+        isIn: [[
+          'text',
+          'textarea',
+          'number',
+          'checkbox',
+          'single-line',
+          'multi-line',
+          'integer',
+          'single-choice',
+          'multiple-choice',
+        ]],
       },
+    },
+    options: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    correctAnswer: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      field: 'correct_answer',
     },
     order: {
       type: DataTypes.INTEGER.UNSIGNED,

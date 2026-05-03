@@ -6,6 +6,7 @@ import {
   createTemplateWithQuestions,
   getTemplateWithQuestions,
   listTemplatesForUser,
+  updateTemplatePublicAccess,
   updateTemplateWithQuestions,
 } from '../services/templateService';
 import { AppError } from '../errors/AppError';
@@ -64,6 +65,22 @@ router.put(
     const template = await requireTemplateAccess(authReq, Number(req.params.id));
     const updated = await updateTemplateWithQuestions(template, req.body);
     res.json(updated);
+  }),
+);
+
+router.patch(
+  '/:id/public',
+  authenticateJWT,
+  idParamValidator('id'),
+  validateRequest,
+  asyncHandler(async (req, res) => {
+    const authReq = req as AuthRequest;
+    if (typeof req.body.isPublic !== 'boolean') {
+      throw new AppError(400, 'isPublic boolean value is required');
+    }
+
+    const template = await requireTemplateAccess(authReq, Number(req.params.id));
+    res.json(await updateTemplatePublicAccess(template, req.body.isPublic));
   }),
 );
 
