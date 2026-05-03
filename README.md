@@ -50,7 +50,7 @@ flowchart LR
 ### Frontend image
 
 - Purpose: serve the React SPA and proxy `/api` requests to the backend.
-- Dockerfile: [client/Dockerfile](/Users/danila/Projets/Formics/client/Dockerfile)
+- Dockerfile: [client/Dockerfile](client/Dockerfile)
 - Base images:
   - `node:20.19.0-alpine3.22` for build
   - `nginxinc/nginx-unprivileged:1.27.5-alpine3.21-perl` for runtime
@@ -64,7 +64,7 @@ flowchart LR
 ### Backend image
 
 - Purpose: run the Express API, Sequelize integration, authentication, and real-time analytics stream.
-- Dockerfile: [server/Dockerfile](/Users/danila/Projets/Formics/server/Dockerfile)
+- Dockerfile: [server/Dockerfile](server/Dockerfile)
 - Base image: `node:20.19.0-alpine3.22`
 - Main optimizations:
   - multi-stage build
@@ -170,7 +170,7 @@ Minimum recommended local resources:
 - Secrets are not stored in Dockerfiles or images.
 - Logs are written to stdout/stderr in structured JSON format by the backend.
 - The stack starts with a single command: `docker compose up`.
-- SQL bootstrap files are versioned in Git under [server/database/sql](/Users/danila/Projets/Formics/server/database/sql).
+- SQL bootstrap files are versioned in Git under [server/database/sql](server/database/sql).
 
 ## Metrics and Verification
 
@@ -186,13 +186,13 @@ docker stats
 
 This repository includes a Render Blueprint:
 
-- [render.yaml](/Users/danila/Projets/Formics/render.yaml)
+- [render.yaml](render.yaml)
 
 Deployment layout:
 
-- `frontend`: public Docker web service built from [client/Dockerfile](/Users/danila/Projets/Formics/client/Dockerfile)
-- `backend`: public Docker web service built from [server/Dockerfile](/Users/danila/Projets/Formics/server/Dockerfile)
-- `mysql`: private Docker service built from [deploy/mysql/Dockerfile](/Users/danila/Projets/Formics/deploy/mysql/Dockerfile)
+ - `frontend`: public Docker web service built from [client/Dockerfile](client/Dockerfile)
+ - `backend`: public Docker web service built from [server/Dockerfile](server/Dockerfile)
+ - `mysql`: private Docker service built from [deploy/mysql/Dockerfile](deploy/mysql/Dockerfile)
 
 Important naming assumption:
 
@@ -204,7 +204,7 @@ Render setup steps:
 
 1. Push this repository to GitHub.
 2. In Render, choose `New -> Blueprint`.
-3. Connect the repository that contains [render.yaml](/Users/danila/Projets/Formics/render.yaml).
+3. Connect the repository that contains [render.yaml](render.yaml).
 4. Confirm creation of all services.
 5. Wait until `mysql`, `backend`, and `frontend` finish their first deploy.
 6. Open the public URL of `frontend`.
