@@ -1,0 +1,77 @@
+site_name: "Formics - Diploma Documentation"
+site_description: "Diploma thesis documentation for Formics, a web platform for dynamic forms"
+site_author: "Evgeniya Litvinova"
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Project Overview:
+    - Overview: 01-project-overview/index.md
+    - Problem & Goals: 01-project-overview/problem-and-goals.md
+    - Stakeholders: 01-project-overview/stakeholders.md
+    - Scope: 01-project-overview/scope.md
+    - Features: 01-project-overview/features.md
+  - Technical:
+    - Architecture: 02-technical/index.md
+    - Tech Stack: 02-technical/tech-stack.md
+    - Backend: 02-technical/criteria/backend.md
+    - Frontend: 02-technical/criteria/frontend.md
+    - Database: 02-technical/criteria/database.md
+    - Real-Time Analytics: 02-technical/criteria/realtime-analytics.md
+    - Cloud Deployment: 02-technical/criteria/cloud.md
+    - Containerization: 02-technical/criteria/containerization.md
+    - Testing and API Quality: 02-technical/criteria/testing-api-quality.md
+    - Deployment: 02-technical/deployment.md
+  - User Guide:
+    - Getting Started: 03-user-guide/index.md
+    - Features: 03-user-guide/features.md
+    - FAQ: 03-user-guide/faq.md
+  - Retrospective: 04-retrospective/index.md
+  - Appendices:
+    - Glossary: appendices/glossary.md
+    - API Reference: appendices/api-reference.md
+    - Database Schema: appendices/db-schema.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: "https://github.com/jenialitvinova02/formiks"
